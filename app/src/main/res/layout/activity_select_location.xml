@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".selectLocation">
+
+    <TextView
+        android:id="@+id/txtAdonde"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="25dp"
+        android:textColor="@color/black"
+        android:text="¿A que escuela te dirijes?"/>
+    
+    <EditText
+        android:id="@+id/et_location"
+        android:layout_width="350dp"
+        android:layout_height="52dp"
+        android:layout_below="@+id/txtAdonde"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_input"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="12dp"
+        android:gravity="center"
+        android:hint="Campues/Facultad/Escuela/Carrera"
+        android:drawableLeft="@drawable/ic_baseline_search_24"
+        android:paddingHorizontal="10dp"/>
+
+    <TextView
+        android:id="@+id/txtResultados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_location"
+        android:layout_marginTop="33dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="30dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="#575757"
+        android:textSize="11dp"
+        android:text="Resultados"/>
+
+    <!--Linea-->
+    <View
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="28dp"
+        android:layout_height="2dp"
+        android:layout_below="@+id/et_location"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="#E0E0E0"/>
+
+    <!--Boton de Prueba-->
+    <Button
+        android:id="@+id/irHome"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:text="Ir a home"/>
+
+
+    <!--Aqui va el ReciclerView-->
+
+
+</RelativeLayout>
