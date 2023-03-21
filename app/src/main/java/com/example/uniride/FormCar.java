@@ -24,7 +24,7 @@ public class FormCar extends AppCompatActivity {
         SpinerColorCar = (Spinner)findViewById(R.id.SpinerColorVehiculo);
 
         ArrayAdapter<String> aa = new ArrayAdapter<String>(FormCar.this,
-                R.layout.listviewresours, opciones2);
+                R.layout.listviewresours, opciones);
         SpinerTipoCar.setAdapter(aa);
         SpinerTipoCar.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
