@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".travel_details">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hola2452"
+        android:textSize="30dp"
+        android:layout_centerInParent="true"/>
+
+    <!--
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_baseline_arrow_back_24"/>
+
+    <TextView
+        android:id="@+id/txtDetailsTravel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="25dp"
+        android:textColor="#040415"
+        android:text="Detalles del viaje"/>
+    
+    
+    <RelativeLayout
+        android:id="@+id/pDetailsTravel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtDetailsTravel"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/txtSalida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/poppins_light"
+            android:textSize="16dp"
+            android:textColor="#040415"
+            android:text="Salida"/>
+
+        <TextView
+            android:id="@+id/fechaYhoraSalida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtSalida"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="-5dp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="#040415"
+            android:textSize="19dp"
+            android:text="Lunes 13,Marzo - 6:20A.M"/>-->
+
+        <!--Dibujo de los circulos de las ubicaciones-->
+        <!--
+        <LinearLayout
+            android:id="@+id/imgIconsLocation"
+            android:layout_width="20dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/fechaYhoraSalida"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="4dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/circle2"/>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="15dp"
+                android:background="#000000"/>
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/circle2"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/startingLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fechaYhoraSalida"
+            android:layout_marginTop="15dp"
+            android:layout_toLeftOf="@+id/imgIconsLocation"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="12dp"
+            android:textColor="#3E3E3E"
+            android:text="Barrio 5 Valle de las Garzas, Avenida Elias Zamora"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/destinationLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/startingLocation"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/imgIconsLocation"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="12dp"
+            android:textColor="#3E3E3E"
+            android:text="Campues el naranjo"
+            android:gravity="right"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/destinationLocation"
+            android:layout_marginTop="20dp"
+            android:clickable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="14dp"
+                    android:textColor="#040415"
+                    android:text="Ver ruta en el mapa"
+                    android:gravity="center_vertical"/>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="2dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+
+
+
+    </RelativeLayout>
+
+
+-->
+
+</RelativeLayout>
