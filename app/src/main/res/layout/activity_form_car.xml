@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        tools:context=".FormCar">
+
+        <ImageView
+            android:id="@+id/Salir"
+            android:layout_width="34dp"
+            android:layout_height="33dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/baseline_navigate_before_24"
+            app:layout_constraintBottom_toTopOf="@+id/DatosVehiculo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/DatosVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Salir"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Datos del vehículo"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:id="@+id/ingresadatosvehiculo"
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="1dp"
+            android:text="Ingresa los datos de tu vehículo"
+            android:textColor="#90000000"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="13dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DatosVehiculo" />
+
+        <!--Ingreso de datos-->
+
+        <TextView
+            android:id="@+id/MarcaVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="33dp"
+            android:fontFamily="@font/poppins"
+            android:text="Marca del vehículo"
+            android:textColor="#011855"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ingresadatosvehiculo" />
+
+        <EditText
+            android:id="@+id/EditTextMarcaVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/poppins"
+            android:text="Suzuki"
+            android:textColor="#7E000000"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/MarcaVehiculo" />
+
+        <TextView
+            android:id="@+id/ModeloaVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/poppins"
+            android:text="Modelo del vehículo"
+            android:textColor="#011855"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/EditTextMarcaVehiculo" />
+
+        <EditText
+            android:id="@+id/EditTextModeloVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/poppins"
+            android:text="Swift"
+            android:textColor="#7E000000"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ModeloaVehiculo" />
+
+        <TextView
+            android:id="@+id/NumeroPlaca"
+            android:layout_width="0dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/poppins"
+            android:text="Número de placa"
+            android:textColor="#011855"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/EditTextModeloVehiculo" />
+
+        <EditText
+            android:id="@+id/EditTextNumeroPlaca"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/poppins"
+            android:text="E23-BC2"
+            android:textColor="#7E000000"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/NumeroPlaca" />
+        <TextView
+            android:id="@+id/TipoVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/poppins"
+            android:text="Tipo de vehículo"
+            android:textColor="#011855"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/EditTextNumeroPlaca" />
+        <Spinner
+            android:id="@+id/SpinerTipoVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="1dp"
+            android:backgroundTint="#8C8C8C"
+            android:outlineAmbientShadowColor="@color/white"
+            android:outlineSpotShadowColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TipoVehiculo" />
+        <TextView
+            android:id="@+id/ColorVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/poppins"
+            android:text="Color del Vehículo"
+            android:textColor="#011855"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SpinerTipoVehiculo" />
+        <Spinner
+            android:id="@+id/SpinerColorVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="1dp"
+            android:backgroundTint="#8C8C8C"
+            android:outlineAmbientShadowColor="@color/white"
+            android:outlineSpotShadowColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ColorVehiculo" />
+        <TextView
+            android:id="@+id/AñoVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/poppins"
+            android:text="Año del vehículo"
+            android:textColor="#011855"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SpinerColorVehiculo" />
+
+        <EditText
+            android:id="@+id/EditTextAñoVehiculo"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/poppins"
+            android:text="2022"
+            android:textColor="#7E000000"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AñoVehiculo" />
+
+        <Button
+            android:id="@+id/btn_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:backgroundTint="#01B1EA"
+
+            android:text="Guardar"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            app:cornerRadius="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/EditTextAñoVehiculo" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
