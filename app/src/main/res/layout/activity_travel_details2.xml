@@ -43,9 +43,9 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
             android:fontFamily="@font/poppins_light"
-            android:textSize="16dp"
+            android:text="Salida"
             android:textColor="#040415"
-            android:text="Salida"/>
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/fechaYhoraSalida"
