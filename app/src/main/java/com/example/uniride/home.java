@@ -3,6 +3,7 @@ package com.example.uniride;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +12,9 @@ import android.widget.Button;
 public class home extends AppCompatActivity {
 
     CardView btn_changeLocation;
-    Button details;
+    Button details, formcar;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +22,7 @@ public class home extends AppCompatActivity {
 
         btn_changeLocation = (CardView)findViewById(R.id.btn_changeLocation);
         details = (Button)findViewById(R.id.irDetails);
+        formcar = (Button)findViewById(R.id.botonformcar);
 
         btn_changeLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +37,13 @@ public class home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(home.this, travelDetails2.class);
+                startActivity(i);
+            }
+        });
+        formcar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(home.this, FormCar.class);
                 startActivity(i);
             }
         });

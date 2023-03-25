@@ -149,7 +149,7 @@
 
             <TextView
                 android:id="@+id/sobremi"
-                android:layout_width="wrap_content"
+                android:layout_width="228dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
@@ -157,7 +157,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="0dp"
-                android:layout_marginEnd="278dp"
+                android:layout_marginEnd="168dp"
                 android:text="Sobre mi"
                 android:textColor="#000000"
                 android:textSize="25sp"
@@ -181,7 +181,7 @@
 
                 <TextView
                     android:id="@+id/Escuela"
-                    android:layout_width="wrap_content"
+                    android:layout_width="190dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
@@ -189,7 +189,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="0dp"
-                    android:layout_marginEnd="289dp"
+                    android:layout_marginEnd="172dp"
                     android:text="Escuela"
                     android:textColor="#A9242426"
                     android:textSize="17sp" />
@@ -224,7 +224,7 @@
 
                 <TextView
                     android:id="@+id/Edad"
-                    android:layout_width="wrap_content"
+                    android:layout_width="210dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/line2"
                     android:layout_alignParentStart="true"
@@ -232,7 +232,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="289dp"
+                    android:layout_marginEnd="152dp"
                     android:text="Edad"
                     android:textColor="#A9242426"
                     android:textSize="17sp" />
@@ -267,7 +267,7 @@
 
                 <TextView
                     android:id="@+id/describir"
-                    android:layout_width="107dp"
+                    android:layout_width="159dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/line3"
                     android:layout_alignParentStart="true"
@@ -275,7 +275,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="255dp"
+                    android:layout_marginEnd="203dp"
                     android:text="Descripcion"
                     android:textColor="#A9242426"
                     android:textSize="17sp" />
@@ -319,7 +319,7 @@
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="42dp"
                     android:layout_marginEnd="225dp"
-                    android:text="Reportar usuario"
+                    android:text="Reportar user"
                     android:textColor="#CD0606"
                     android:textSize="17sp" />
 
