@@ -12,7 +12,7 @@ import android.widget.Button;
 public class home extends AppCompatActivity {
 
     CardView btn_changeLocation;
-    Button details, formcar , alertCar;
+    Button details, formcar , alertCar ,fragments;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -24,6 +24,7 @@ public class home extends AppCompatActivity {
         details = (Button)findViewById(R.id.irDetails);
         formcar = (Button)findViewById(R.id.botonformcar);
         alertCar = (Button)findViewById(R.id.botoncar);
+        fragments = (Button)findViewById(R.id.botonfragment);
 
         btn_changeLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +53,13 @@ public class home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(home.this, AlertAddCar.class);
+                startActivity(i);
+            }
+        });
+        fragments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(home.this, MainActivityFragment.class);
                 startActivity(i);
             }
         });
