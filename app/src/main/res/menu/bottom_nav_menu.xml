@@ -11,6 +11,6 @@
         android:icon="@drawable/baseline_directions_car_24"/>
     <item android:id="@+id/perfil"
         android:title="Perfil"
-        android:icon="@drawable/baseline_add_circle_outline_24"/>
+        android:icon="@drawable/person_2"/>
 
 </menu>

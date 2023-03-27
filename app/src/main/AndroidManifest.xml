@@ -19,6 +19,13 @@
             android:name=".AlertAddCar"
             android:exported="false" />
         <activity
+            android:name=".travel_sent"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".PerfilGeneral"
             android:exported="false" />
         <activity

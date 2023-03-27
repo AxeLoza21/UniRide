@@ -14,19 +14,19 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/ic_baseline_arrow_back_24"/>
+        android:src="@drawable/ic_baseline_arrow_back_24" />
 
     <TextView
         android:id="@+id/txtDetailsTravel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/poppins_semibold"
-        android:textSize="25dp"
+        android:text="Detalles del viaje"
         android:textColor="#040415"
-        android:text="Detalles del viaje"/>
+        android:textSize="25dp" />
 
 
     <RelativeLayout
@@ -56,9 +56,9 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="-5dp"
             android:fontFamily="@font/poppins_bold"
+            android:text="Lunes 13,Marzo - 6:20A.M"
             android:textColor="#040415"
-            android:textSize="19dp"
-            android:text="Lunes 13,Marzo - 6:20A.M"/>
+            android:textSize="19dp" />
 
         <!--Dibujo de los circulos de las ubicaciones-->
         <LinearLayout
@@ -74,15 +74,17 @@
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/circle2"/>
+                android:src="@drawable/circle2" />
+
             <View
                 android:layout_width="2dp"
                 android:layout_height="15dp"
-                android:background="#000000"/>
+                android:background="#000000" />
+
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/circle2"/>
+                android:src="@drawable/circle2" />
         </LinearLayout>
 
 
@@ -92,13 +94,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fechaYhoraSalida"
             android:layout_marginTop="15dp"
-            android:layout_toLeftOf="@+id/imgIconsLocation"
             android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/imgIconsLocation"
             android:fontFamily="@font/poppins_bold"
-            android:textSize="12dp"
-            android:textColor="#3E3E3E"
+            android:gravity="right"
             android:text="Barrio 5 Valle de las Garzas, Avenida Elias Zamora"
-            android:gravity="right"/>
+            android:textColor="#3E3E3E"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/destinationLocation"
@@ -106,28 +108,28 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/startingLocation"
             android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/imgIconsLocation"
             android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/imgIconsLocation"
             android:fontFamily="@font/poppins_bold"
-            android:textSize="12dp"
-            android:textColor="#3E3E3E"
+            android:gravity="right"
             android:text="Campues el naranjo"
-            android:gravity="right"/>
+            android:textColor="#3E3E3E"
+            android:textSize="12dp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/destinationLocation"
             android:layout_marginTop="20dp"
+            android:clickable="true"
             android:elevation="0dp"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true">
+            android:foreground="?attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_horizontal"
+                android:orientation="horizontal"
                 android:paddingLeft="15dp">
 
                 <TextView
@@ -135,19 +137,330 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:fontFamily="@font/poppins"
-                    android:textSize="14dp"
-                    android:textColor="#040415"
+                    android:gravity="center_vertical"
                     android:text="Ver ruta en el mapa"
-                    android:gravity="center_vertical"/>
+                    android:textColor="#040415"
+                    android:textSize="14dp" />
+
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="2dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"/>
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
     </RelativeLayout>
+
+    <!--Linea-->
+    <View
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/pDetailsTravel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        android:background="#E0E0E0" />
+
+    <RelativeLayout
+        android:id="@+id/cDetailsUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/imgUser"
+            android:layout_width="60dp"
+            android:layout_height="62dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/foto_2" />
+
+        <TextView
+            android:id="@+id/nameUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_toRightOf="@+id/imgUser"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Juan perez de la Cruz"
+            android:textColor="#3E3E3E"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/ageUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameUser"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="-2dp"
+            android:layout_toRightOf="@+id/imgUser"
+            android:fontFamily="@font/poppins"
+            android:text="21 años"
+            android:textColor="#040415"
+            android:textSize="12dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cDetailsVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cDetailsUser">
+
+        <TextView
+            android:id="@+id/txtVehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="Vehículo"
+            android:textColor="#040415"
+            android:textSize="16dp" />
+
+        <LinearLayout
+            android:id="@+id/cDataVehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtVehicle"
+            android:layout_marginTop="-8dp"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/brandCar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Suzuki Swift"
+                android:textColor="#3E3E3E"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/mline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="-"
+                android:textColor="#3E3E3E"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/yearCar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="2018"
+                android:textColor="#3E3E3E"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/mline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="-"
+                android:textColor="#3E3E3E"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/colorCar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Verde Oscuro"
+                android:textColor="#3E3E3E"
+                android:textSize="13dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cDetailsVehicle"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Descripcion del viaje"
+        android:textColor="#040415"
+        android:textSize="13dp" />
+
+    <RelativeLayout
+        android:id="@+id/cDescription"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@+id/txtDescripcion"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/background_description"
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins"
+            android:padding="10dp"
+            android:text="Salgo de mi casa a las 6:20 para llegar a la escuela a las 6:50. Voy por la Avenida Elias Samora y despues salgo al Blvd. Miguel de la Madrid hasta llegar a las escuela"
+            android:textColor="#040415"
+            android:textSize="11dp" />
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        app:cardBackgroundColor="#F8F4F4"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="150dp">
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtResumen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/poppins"
+                android:textColor="#3E3E3E"
+                android:textSize="12dp"
+                android:text="Resumen"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtResumen"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <!--Datos 1-->
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="80dp">
+                    <ImageView
+                        android:id="@+id/imgMoney"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_baseline_attach_money_24"/>
+                    <TextView
+                        android:id="@+id/txtCuota"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imgMoney"
+                        android:layout_marginTop="-5dp"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="#040415"
+                        android:textSize="20dp"
+                        android:text="Cuota"/>
+                    <TextView
+                        android:id="@+id/cuota"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtCuota"
+                        android:layout_marginTop="-12dp"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="#3E3E3E"
+                        android:textSize="18dp"
+                        android:text="$10"/>
+                </RelativeLayout>
+
+                <!--Datos 2-->
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_marginHorizontal="30dp">
+                    <ImageView
+                        android:id="@+id/imgTime"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/timer"
+                        app:tint="@color/black" />
+                    <TextView
+                        android:id="@+id/txtRSalida"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imgTime"
+                        android:layout_marginTop="-5dp"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="#040415"
+                        android:textSize="20dp"
+                        android:text="Salida"/>
+                    <TextView
+                        android:id="@+id/salida"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtRSalida"
+                        android:layout_marginTop="-12dp"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="#3E3E3E"
+                        android:textSize="18dp"
+                        android:text="6:20 A.M"/>
+                </RelativeLayout>
+
+                <!--Datos 3-->
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="80dp">
+                    <ImageView
+                        android:id="@+id/imgSeats"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/person_2"/>
+                    <TextView
+                        android:id="@+id/txtSeats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imgSeats"
+                        android:layout_marginTop="-5dp"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="#040415"
+                        android:textSize="20dp"
+                        android:text="Asientos"/>
+                    <TextView
+                        android:id="@+id/seats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtSeats"
+                        android:layout_marginTop="-12dp"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="#3E3E3E"
+                        android:textSize="18dp"
+                        android:text="2"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnPedirRaite"
+                android:layout_width="200dp"
+                android:layout_height="55dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                app:cornerRadius="99dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="15dp"
+                android:text="Pedir Raite"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>

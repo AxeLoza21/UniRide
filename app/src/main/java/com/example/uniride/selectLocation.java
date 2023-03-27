@@ -21,7 +21,7 @@ public class selectLocation extends AppCompatActivity {
         irAHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(selectLocation.this, home.class);
+                Intent i = new Intent(selectLocation.this, MainActivityFragment.class);
                 startActivity(i);
             }
         });

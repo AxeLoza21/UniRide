@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class travelDetails2 extends AppCompatActivity {
 
     ImageView btnBack;
+    Button btnPedirRaite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,11 +19,20 @@ public class travelDetails2 extends AppCompatActivity {
         setContentView(R.layout.activity_travel_details2);
 
         btnBack = (ImageView)findViewById(R.id.btn_back);
+        btnPedirRaite = (Button)findViewById(R.id.btnPedirRaite);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        btnPedirRaite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(travelDetails2.this, travel_sent.class);
+                startActivity(i);
             }
         });
     }

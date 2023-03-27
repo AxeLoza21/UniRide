@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cER"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:animateLayoutChanges="true"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_card">
+
+            <ImageView
+                android:id="@+id/cardPhotoUser"
+                android:layout_width="55dp"
+                android:layout_height="57.5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/foto_2"/>
+
+            <TextView
+                android:id="@+id/cardNameUser"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cardPhotoUser"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#575757"
+                android:textSize="15dp"
+                android:text="Juan Perez"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txtSaleDe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cardNameUser"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="#575757"
+                android:textSize="11dp"
+                android:text="Sale de:"/>
+
+            <TextView
+                android:id="@+id/cardMiniDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtSaleDe"
+                android:layout_marginTop="-5dp"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="#575757"
+                android:textSize="13dp"
+                android:text="Santiago"/>
+
+            <TextView
+                android:id="@+id/txtMasInformacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cardMiniDireccion"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="5dp"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="#01B1EA"
+                android:textSize="13dp"
+                android:text="Pulsa para ver mas informacion"/>
+
+            <!--__________________________________________________-->
+
+            <!--Datos 1-->
+            <RelativeLayout
+                android:layout_width="105dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:id="@+id/imgTime"
+                    android:layout_width="40dp"
+                    android:layout_height="44dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/timer"
+                    app:tint="#01B1EA" />
+                <TextView
+                    android:id="@+id/txtRSalida"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgTime"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="#040415"
+                    android:textSize="16dp"
+                    android:text="Salida"/>
+                <TextView
+                    android:id="@+id/cardSalida"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtRSalida"
+                    android:layout_marginTop="-5dp"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="#3E3E3E"
+                    android:textSize="19dp"
+                    android:text="6:20 A.M"/>
+            </RelativeLayout>
+
+            <!--Datos 2-->
+            <RelativeLayout
+                android:layout_width="105dp"
+                android:layout_height="100dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="25dp"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:id="@+id/imgPerson"
+                    android:layout_width="40dp"
+                    android:layout_height="44dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/person_2"
+                    app:tint="#01B1EA" />
+                <TextView
+                    android:id="@+id/txtAsientos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgPerson"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="#040415"
+                    android:textSize="16dp"
+                    android:text="Asientos"/>
+                <TextView
+                    android:id="@+id/cardAsientos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtAsientos"
+                    android:layout_marginTop="-5dp"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="#3E3E3E"
+                    android:textSize="19dp"
+                    android:text="2"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

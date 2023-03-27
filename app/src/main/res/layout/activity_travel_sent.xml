@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".travel_sent">
+
+    <ImageView
+        android:id="@+id/imgCheck"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="260dp"
+        android:src="@drawable/comprobar"/>
+
+    <TextView
+        android:layout_width="247dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgCheck"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="#040415"
+        android:textSize="30dp"
+        android:text="Solicitud de Raite Enviada"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/imgExclamacion"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_above="@+id/line"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="-10dp"
+        android:src="@drawable/exclamacion"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/line"
+        android:layout_marginBottom="-12dp"
+        android:layout_toRightOf="@+id/imgExclamacion"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="@font/poppins_light"
+        android:textColor="#575757"
+        android:textSize="9dp"
+        android:text="Se le avisara cuando el conductor acepte su solicitud para confirmar el viaje"/>
+
+    <!--Linea-->
+    <View
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_above="@+id/btnVolverHome"
+        android:layout_marginBottom="15dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="15dp"
+        android:background="#E0E0E0" />
+
+    <Button
+        android:id="@+id/btnVolverHome"
+        android:layout_width="210dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        app:cornerRadius="99dp"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="15dp"
+        android:text="Vovler a Home"/>
+
+</RelativeLayout>
