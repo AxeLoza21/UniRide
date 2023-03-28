@@ -40,6 +40,7 @@ public class HomeFragment extends Fragment {
         btn_changeLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(getActivity(), selectLocation.class);
                 startActivity(i);
 
