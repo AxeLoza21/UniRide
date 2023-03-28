@@ -1,0 +1,68 @@
+package com.example.uniride;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocation.ViewHolder>{
+    private List<locationElement> mData;
+    private LayoutInflater mInflater;
+    private Context context;
+    final ListAdapterLocation.OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(locationElement item);
+    }
+
+    public ListAdapterLocation(List<locationElement> itemList, Context context, ListAdapterLocation.OnItemClickListener listener) {
+        this.mInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.mData = itemList;
+        this.listener = listener;
+    }
+
+    @Override
+    public int getItemCount() {return mData.size(); }
+
+    @Override
+    public ListAdapterLocation.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.location_element, null);
+        return new ListAdapterLocation.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final ListAdapterLocation.ViewHolder holder, final int position) {
+        holder.bindData(mData.get(position));
+    }
+
+    public void setItems(List<locationElement> items) { mData = items; }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView nEscuela, nCampus;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            nEscuela = itemView.findViewById(R.id.card_L_escuela);
+            nCampus = itemView.findViewById(R.id.card_L_campus);
+        }
+
+        void bindData(final locationElement item) {
+            nEscuela.setText(item.getnEscuela());
+            nCampus.setText(item.getnCampus());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
+    }
+}

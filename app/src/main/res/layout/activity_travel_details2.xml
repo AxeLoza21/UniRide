@@ -116,13 +116,12 @@
             android:textColor="#3E3E3E"
             android:textSize="12dp" />
 
-        <androidx.cardview.widget.CardView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/destinationLocation"
             android:layout_marginTop="20dp"
             android:clickable="true"
-            android:elevation="0dp"
             android:foreground="?attr/selectableItemBackground">
 
             <LinearLayout
@@ -148,7 +147,7 @@
                     android:layout_marginLeft="2dp"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </RelativeLayout>
     </RelativeLayout>
 
     <!--Linea-->

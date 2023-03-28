@@ -1,6 +1,8 @@
 package com.example.uniride;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +24,17 @@ public class HomeFragment extends Fragment {
     View vista;
     List<raiteElement> elements;
     CardView btn_changeLocation;
+    TextView location;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         vista = inflater.inflate(R.layout.fragment_home, container, false);
         btn_changeLocation = (CardView)vista.findViewById(R.id.btn_changeLocation);
+        location = (TextView)vista.findViewById(R.id.location);
 
+        SharedPreferences datosUsuario = vista.getContext().getSharedPreferences("datosUsuario", Context.MODE_PRIVATE);
+        location.setText(datosUsuario.getString("campus", "???Campus???"));
         init();
 
         btn_changeLocation.setOnClickListener(new View.OnClickListener() {
