@@ -14,7 +14,7 @@ import android.widget.Button;
 public class CreateFragment extends Fragment {
 
     View vista;
-    Button formcar, alertCar;
+    Button formcar, alertCar, selectStudent, timer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -22,6 +22,8 @@ public class CreateFragment extends Fragment {
        vista = inflater.inflate(R.layout.fragment_create, container, false);
        formcar = (Button)vista.findViewById(R.id.botonformcar);
        alertCar = (Button)vista.findViewById(R.id.botoncar);
+       selectStudent = (Button)vista.findViewById(R.id.botonselectstudents);
+       timer = (Button)vista.findViewById(R.id.time);
 
         formcar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +36,20 @@ public class CreateFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), AlertAddCar.class);
+                startActivity(i);
+            }
+        });
+        selectStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), SelectStudents.class);
+                startActivity(i);
+            }
+        });
+        timer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), SelectTime.class);
                 startActivity(i);
             }
         });

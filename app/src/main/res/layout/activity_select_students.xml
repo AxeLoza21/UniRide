@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectStudents">
+
+    <ImageView
+        android:id="@+id/Exit"
+        android:layout_width="34dp"
+        android:layout_height="33dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/baseline_navigate_before_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/txtStudents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Exit"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="¿Cuantos estudiantes desea llevar?"
+        android:textColor="@color/black"
+        android:textSize="25dp" />
+
+    <RelativeLayout
+        android:id="@+id/relativeSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtStudents"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="162dp"
+        android:layout_marginEnd="47dp">
+
+
+        <ImageButton
+            android:id="@+id/btnAumentar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="6dp"
+            android:background="#00000000"
+            app:srcCompat="@drawable/aumentar" />
+
+        <TextView
+            android:id="@+id/txtCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="105dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="106dp"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="35dp" />
+
+        <ImageButton
+            android:id="@+id/btnDisminuir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="0dp"
+            android:background="#00000000"
+            app:srcCompat="@drawable/disminuir" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="wrap_content"
+        android:layout_height="65dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="70dp"
+        android:drawableRight="@drawable/baseline_east_24"
+        android:fontFamily="@font/poppins"
+        android:text="Seguir"
+        android:textAllCaps="false"
+        android:textSize="19dp"
+        app:cornerRadius="30dp" />
+
+
+</RelativeLayout>
