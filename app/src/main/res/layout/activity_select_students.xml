@@ -92,7 +92,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="20dp"
         android:drawableRight="@drawable/baseline_east_24"
         android:fontFamily="@font/poppins"
         android:text="Seguir"

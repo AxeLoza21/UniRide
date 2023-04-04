@@ -49,7 +49,7 @@ public class CreateFragment extends Fragment {
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), SelectTime.class);
+                Intent i = new Intent(getActivity(), SelectDate.class);
                 startActivity(i);
             }
         });

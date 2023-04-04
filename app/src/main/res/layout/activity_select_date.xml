@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectTime">
+    tools:context=".SelectDate">
 
     <ImageView
         android:id="@+id/Exit"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txtDescription"
+        android:id="@+id/txtfecha"
         android:layout_width="357dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Exit"
@@ -29,7 +29,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
-        android:text="¿A que horas sales?"
+        android:text="Escoge la fecha de salida"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,31 +39,32 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="393dp"
-        android:layout_height="374dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="357dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_height="475dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginRight="2dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDescription">
+        app:layout_constraintTop_toBottomOf="@+id/txtfecha">
 
         <TextView
-            android:id="@+id/selected_time_text"
+            android:id="@+id/selected_date_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select a time"
+            android:text="Select a date"
             android:textSize="24sp"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
-        <TimePicker
-            android:id="@+id/time_picker"
-            android:layout_width="297dp"
-            android:layout_height="239dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:theme="@android:style/Theme.Holo.Light" />
-
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@android:style/Theme.DeviceDefault.Light" />
 
     </LinearLayout>
 
