@@ -109,6 +109,18 @@
                 android:textSize="18dp"
                 app:cornerRadius="10dp" />
 
+            <TextView
+                android:id="@+id/Forgotpassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/password"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="11dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/black"
+                android:text="Recuperar contraseña" />
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
