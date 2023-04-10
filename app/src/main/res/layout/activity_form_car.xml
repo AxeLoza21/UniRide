@@ -217,6 +217,7 @@
             android:textColor="#000000"
             android:backgroundTint="#01B1EA"
             android:textSize="18dp"
+            android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
