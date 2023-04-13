@@ -3,6 +3,7 @@ package com.example.uniride;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -65,7 +66,8 @@ public class MainActivityFragment extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, createFragment).commit();
                         } else {
                             // El usuario no tiene un carro registrado, cargar el fragment "AlertaAddCarFragment"
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, alertAddCarFragment).commit();
+                            Intent i = new Intent(MainActivityFragment.this, AlertAddCar.class);
+                            startActivity(i);
                         }
                         break;
                     case R.id.travel:

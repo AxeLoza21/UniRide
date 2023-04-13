@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyPerfil">
+
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_baseline_arrow_back_24" />
+
+    <TextView
+        android:id="@+id/txtDetailsTravel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Mi Cuenta"
+        android:textColor="#040415"
+        android:textSize="25dp" />
+
+    <RelativeLayout
+        android:id="@+id/cInfoPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtDetailsTravel"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/cImgUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cimgUser"
+                android:layout_width="114dp"
+                android:layout_height="114dp"
+                android:layout_centerHorizontal="true"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="100dp">
+                <ImageView
+                    android:id="@+id/imgUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/foto_2"
+                    android:scaleType="centerCrop"/>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnUploadPhoto"
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:layout_toRightOf="@+id/cimgUser"
+                android:layout_marginTop="65dp"
+                android:layout_marginLeft="-40dp"
+                app:cardCornerRadius="50dp"
+                app:cardBackgroundColor="@color/purple_500"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="+"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="25dp"/>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/cImgUser"
+            android:fontFamily="@font/poppins"
+            android:textSize="14dp"
+            android:text="Nombre"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtNombre"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@+id/cImgUser"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14dp"
+            android:text="Fulanito Detal Debian Soto"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/txtEdad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nombre"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/cImgUser"
+            android:fontFamily="@font/poppins"
+            android:textSize="14dp"
+            android:text="Edad"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/edad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtEdad"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@+id/cImgUser"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14dp"
+            android:text="21 Años"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/editAge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/nombre"
+            android:layout_marginTop="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/editar"/>
+    </RelativeLayout>
+
+    <!--Linea-->
+    <View
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/cInfoPrincipal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        android:background="#E0E0E0" />
+
+    <RelativeLayout
+        android:id="@+id/cInfo1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/line"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/txtEscuelaALaQueAsistes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="14dp"
+            android:text="Facultad a la que Asistes" />
+
+        <TextView
+            android:id="@+id/nEscuela"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtEscuelaALaQueAsistes"
+            android:layout_marginTop="-5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="33dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14dp"
+            android:text="Facultad de Ingenieria Electromecanica"/>
+
+        <ImageView
+            android:id="@+id/editSchool"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/editar"/>
+
+        <!--Linea-->
+        <View
+            android:id="@+id/line2"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_below="@+id/nEscuela"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:background="#E0E0E0" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cInfo2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/cInfo1"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/txtTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="14dp"
+            android:text="Telefono" />
+
+        <TextView
+            android:id="@+id/telefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtTelefono"
+            android:layout_marginTop="-5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="33dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14dp"
+            android:text="314 345 5762"/>
+
+        <ImageView
+            android:id="@+id/editPhone"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/editar"/>
+
+        <!--Linea-->
+        <View
+            android:id="@+id/line3"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_below="@+id/telefono"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:background="#E0E0E0" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cInfo3"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/cInfo2"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/txtContrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="14dp"
+            android:text="Contraseña" />
+
+        <TextView
+            android:id="@+id/contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtContrasena"
+            android:layout_marginTop="-5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="33dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14dp"
+            android:text="***********************"/>
+
+        <ImageView
+            android:id="@+id/editPassword"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/editar"/>
+
+        <!--Linea-->
+        <View
+            android:id="@+id/line4"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_below="@+id/contrasena"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:background="#E0E0E0" />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

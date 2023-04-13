@@ -1,9 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreateFragment">
 
+    <TextView
+        android:id="@+id/txtCrearRaite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="#040415"
+        android:textSize="25dp"
+        android:text="Crear Raite"/>
+
+    <TextView
+        android:id="@+id/txtPlease"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtCrearRaite"
+        android:layout_marginTop="-5dp"
+        android:gravity="center"
+        android:fontFamily="@font/poppins"
+        android:textColor="#040415"
+        android:textSize="14dp"
+        android:text="Ayuda a los Estudiantes a llegar a sus campus"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:layout_below="@+id/txtPlease"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="#E0E0E0"/>
+
+    <TextView
+        android:id="@+id/txtDondeSales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="#040415"
+        android:textSize="20dp"
+        android:text="¿De donde sales?"/>
+
+    <EditText
+        android:id="@+id/et_location"
+        android:layout_width="350dp"
+        android:layout_height="52dp"
+        android:layout_below="@+id/txtDondeSales"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_input"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="12dp"
+        android:gravity="center"
+        android:hint="Ingresa la direccion de partida"
+        android:textColorHint="#A8AFB9"
+        android:drawableLeft="@drawable/ic_baseline_search_24"
+        android:paddingHorizontal="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/cLocationActual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_location"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/imgMap"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_baseline_location_on_24"
+            app:tint="#000000" />
+
+        <TextView
+            android:id="@+id/txtUMapa"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_toRightOf="@+id/imgMap"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="-2dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="#040415"
+            android:textSize="15dp"
+            android:text="Utilizar ubicacion actual"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+            app:tint="#01B1EA" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/txtUMapa"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp"
+            android:background="#E8E8E8"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cLocationMapa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cLocationActual"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/imgLocation"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_baseline_map_24"/>
+
+        <TextView
+            android:id="@+id/txtULocation"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_toRightOf="@+id/imgLocation"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="-2dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="#040415"
+            android:textSize="15dp"
+            android:text="Utilizar ubicacion del Mapa"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+            app:tint="#01B1EA" />
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/txtULocation"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp"
+            android:background="#E8E8E8"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtResultados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cLocationMapa"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="#575757"
+        android:textSize="11dp"
+        android:text="Recientes"/>
+
+    <!--Linea-->
+    <View
+        android:id="@+id/line4"
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_height="2dp"
+        android:layout_below="@+id/txtResultados"
+        android:layout_centerHorizontal="true"
+        android:background="#E0E0E0"/>
 
 </RelativeLayout>

@@ -3,23 +3,256 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".PerfilFragment">
 
+    <View
+        android:id="@+id/cuadro"
+        android:layout_width="match_parent"
+        android:layout_height="222dp"
+        android:background="@color/purple_500"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cprofileIMG"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:cardElevation="15dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="100dp">
+        <ImageView
+            android:id="@+id/profileIMG"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/foto_2"
+            android:scaleType="centerCrop"/>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/cInfomationUser"
+        android:layout_width="352dp"
+        android:layout_height="220dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/cprofileIMG"
+        android:layout_marginTop="-90dp"
+        android:background="@drawable/backgroundcardinfouser"
+        android:elevation="10dp">
+
+        <TextView
+            android:id="@+id/nameUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="#040415"
+            android:textSize="20dp"
+            android:text="Fulanito Detal Debian Soto"/>
+
+        <TextView
+            android:id="@+id/ageUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameUser"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins"
+            android:textColor="#040415"
+            android:textSize="14dp"
+            android:text="21 anos"/>
+
+        <TextView
+            android:id="@+id/schoolUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ageUser"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="#575757"
+            android:textSize="15dp"
+            android:text="Facultad de Ingenieria Electromecanica"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="1.5dp"
+        android:layout_below="@+id/cInfomationUser"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:background="#E8E8E8"/>
+
+
+    <RelativeLayout
+        android:id="@+id/cOpcion1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/imgMisViajes"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/baseline_directions_car_24"/>
+
+        <TextView
+            android:id="@+id/txtMisViajes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13.5dp"
+            android:layout_toRightOf="@+id/imgMisViajes"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="#575757"
+            android:textSize="16dp"
+            android:text="Mis viajes creados"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cOpcion2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cOpcion1"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/imgCuenta"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_baseline_settings_24"/>
+
+        <TextView
+            android:id="@+id/txtCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13.5dp"
+            android:layout_toRightOf="@+id/imgCuenta"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="#575757"
+            android:textSize="16dp"
+            android:text="Informacion de mi cuenta"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cOpcion3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cOpcion2"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/imgMyCar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_baseline_car_crash_24"/>
+
+        <TextView
+            android:id="@+id/txtMyCar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13.5dp"
+            android:layout_toRightOf="@+id/imgMyCar"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="#575757"
+            android:textSize="16dp"
+            android:text="Mi vehiculo Resgistrado"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cOpcion4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cOpcion3"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/imgHistorial"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_baseline_access_time_24"/>
+
+        <TextView
+            android:id="@+id/txtHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13.5dp"
+            android:layout_toRightOf="@+id/imgHistorial"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="#575757"
+            android:textSize="16dp"
+            android:text="Historial de viajes"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/logout"
+        android:layout_width="175dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/cOpcion4"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/jose"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_baseline_exit_to_app_24"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/jose"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="#CD0606"
+            android:textSize="16dp"
+            android:text="Cerrar Sesion"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="wrap_content"
+        android:layout_height="1.5dp"
+        android:layout_below="@+id/logout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="#E8E8E8"/>
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Perfil Fragment"
-        android:textSize="25dp"
-        android:layout_centerInParent="true"/>
-
-    <Button
-        android:id="@+id/btnsalir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="165dp"
-        android:layout_marginBottom="531dp"
-        android:text="Button" />
-
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="12dp"
+        android:text="Terminos y condiciones"
+        android:gravity="center"/>
 </RelativeLayout>

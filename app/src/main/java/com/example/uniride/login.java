@@ -1,6 +1,7 @@
 package com.example.uniride;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,14 +24,20 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class login extends AppCompatActivity {
+public class
+login extends AppCompatActivity {
     TextView registrarse, forgotpassword;
     Button login;
     TextInputEditText  ed_email, ed_password;
     FirebaseAuth fAuth;
     FirebaseUser user;
+    FirebaseFirestore fStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +49,9 @@ public class login extends AppCompatActivity {
         ed_email = (TextInputEditText)findViewById(R.id.et_usarname);
         ed_password = (TextInputEditText)findViewById(R.id.et_password);
         forgotpassword = (TextView)findViewById(R.id.Forgotpassword);
+
         fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
 
         registrarse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +99,22 @@ public class login extends AppCompatActivity {
                                 fAuth.signOut();
 
                             } else if (user.isEmailVerified()) {
-                                Intent i = new Intent(login.this, selectLocation.class);
-                                startActivity(i);
+                                DocumentReference documentReference = fStore.collection("users").document(user.getUid());
+                                documentReference.addSnapshotListener(com.example.uniride.login.this, new EventListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                        String school = value.getString("school");
+                                        String birthDay = value.getString("birthDay");
+
+                                        if(school.isEmpty() || birthDay.isEmpty()){
+                                            startActivity(new Intent(getApplicationContext(),Additional_Information.class));
+                                            finish();
+                                        }else{
+                                            startActivity(new Intent(getApplicationContext(),MainActivityFragment.class));
+                                            finish();
+                                        }
+                                    }
+                                });
                             }
                         }
 

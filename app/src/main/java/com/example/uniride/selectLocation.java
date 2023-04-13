@@ -40,6 +40,7 @@ public class selectLocation extends AppCompatActivity {
                 guardarDestino(item.getnCampus());
                 Intent i = new Intent(selectLocation.this, MainActivityFragment.class);
                 startActivity(i);
+                finish();
             }
         });
         RecyclerView recyclerView = findViewById(R.id.locationRecyclerView);
@@ -54,4 +55,5 @@ public class selectLocation extends AppCompatActivity {
         editor.putString("campus",campus);
         editor.commit();
     }
+
 }
