@@ -28,6 +28,12 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".MyVehicles"
+            android:exported="false" />
+        <activity
+            android:name=".CarDetails"
+            android:exported="false" />
+        <activity
             android:name=".SelectDate"
             android:exported="false" />
         <activity

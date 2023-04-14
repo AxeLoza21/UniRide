@@ -2,11 +2,14 @@ package com.example.uniride;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.android.material.snackbar.Snackbar;
+import android.graphics.Color;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,13 +31,12 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
 
     EditText etMarcaVehiculo, etModeloVehiculo, etNumeroPlaca, etAnioVehiculo;
     Spinner spTipoVehiculo, spColorVehiculo;
-    Button btnSaveCar;
 
     // Referencia a Firestore
     FirebaseFirestore db;
 
-    String [] opciones = {"-","Sedan","Suv","´PickUp","Compacto"};
-    String [] opciones2 = {"-","Rojo","Verde","´Azul","Blanco","Negro","Plateado","Amarillo","Rosa","Morado","Gris","Café"};
+    String [] opciones = {"-","Sedan","Suv","PickUp","Compacto"};
+    String [] opciones2 = {"-","Rojo","Verde","Azul","Blanco","Negro","Plateado","Amarillo","Rosa","Morado","Gris","Café"};
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -75,7 +77,8 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         String placa = etNumeroPlaca.getText().toString();
         String tipo = spTipoVehiculo.getSelectedItem().toString();
         String color = spColorVehiculo.getSelectedItem().toString();
-        int anio = Integer.parseInt(etAnioVehiculo.getText().toString());
+        String anio = etAnioVehiculo.getText().toString();
+        //int anio = Integer.parseInt(etAnioVehiculo.getText().toString());
 
         // Crear un mapa con los datos del carro
         Map<String, Object> carro = new HashMap<>();
@@ -92,9 +95,24 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         carsRef.set(carro).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Intent i = new Intent(FormCar.this, MainActivityFragment.class);
-                startActivity(i);
-                finish();
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Se agrego un vehículo", Snackbar.LENGTH_LONG);
+                View snackbarView = snackbar.getView();
+                snackbarView.setBackgroundColor(getResources().getColor(R.color.green)); // Establecer el color de fondo
+                snackbar.show();
+
+                // Esperar 3 segundos antes de desbloquear la pantalla y volver a la actividad principal
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Desbloquear la pantalla
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        Intent i = new Intent(FormCar.this, MainActivityFragment.class);
+                        startActivity(i);
+                        finish();
+                    }
+                }, 3000);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

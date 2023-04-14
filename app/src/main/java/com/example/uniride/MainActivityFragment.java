@@ -25,6 +25,7 @@ public class MainActivityFragment extends AppCompatActivity {
     CreateFragment createFragment = new CreateFragment();
     TravelFragment travelFragment = new TravelFragment();
     PerfilFragment perfilFragment = new PerfilFragment();
+
     AlertAddCarFragment alertAddCarFragment = new AlertAddCarFragment();
     boolean hasCar = false;
 
@@ -66,8 +67,7 @@ public class MainActivityFragment extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, createFragment).commit();
                         } else {
                             // El usuario no tiene un carro registrado, cargar el fragment "AlertaAddCarFragment"
-                            Intent i = new Intent(MainActivityFragment.this, AlertAddCar.class);
-                            startActivity(i);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, alertAddCarFragment).commit();
                         }
                         break;
                     case R.id.travel:

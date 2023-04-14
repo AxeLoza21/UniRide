@@ -77,7 +77,7 @@ public class PerfilFragment extends Fragment {
         opcion3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), AlertAddCar.class);
+                Intent i = new Intent(getActivity(), MyVehicles.class);
                 startActivity(i);
             }
         });
@@ -94,10 +94,18 @@ public class PerfilFragment extends Fragment {
             fStore.collection("users").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    nameUser.setText(value.getString("username"));
-                    schoolUser.setText(value.getString("school"));
-                    ageUser.setText(calcularEdad(value.getString("birthDay")));
-                    Picasso.get().load(value.getString("photo")).into(imgUser);
+                    if (value != null) {
+                        nameUser.setText(value.getString("username"));
+                        schoolUser.setText(value.getString("school"));
+                        ageUser.setText(calcularEdad(value.getString("birthDay")));
+                        if(value.getString("photo").isEmpty()){
+                            Picasso.get().load(R.drawable.person_2).into(imgUser);
+                        }else{
+                            Picasso.get().load(value.getString("photo")).into(imgUser);
+                        }
+                    } else {
+                        // El documento no existe
+                    }
                 }
             });
         }else {

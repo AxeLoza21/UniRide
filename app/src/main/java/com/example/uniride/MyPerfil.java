@@ -143,7 +143,11 @@ public class MyPerfil extends AppCompatActivity {
                 uBirthDay = value.getString("birthDay").replace("/", " / ");
                 uSchool.setText(value.getString("school"));
                 uPhone.setText(value.getString("phone"));
-                Picasso.get().load(value.getString("photo")).into(imgUser);
+                if(value.getString("photo").isEmpty()){
+                    Picasso.get().load(R.drawable.person_2).into(imgUser);
+                }else{
+                    Picasso.get().load(value.getString("photo")).into(imgUser);
+                }
             }
         });
     }
