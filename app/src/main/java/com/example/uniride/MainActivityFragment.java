@@ -1,10 +1,13 @@
 package com.example.uniride;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +51,9 @@ public class MainActivityFragment extends AppCompatActivity {
                     if (!task.getResult().isEmpty()) {
                         hasCar = true;
                     }
+
+                }else {
+                    Log.d(TAG, "Error obteniendo documentos: ", task.getException());
                 }
             }
         });

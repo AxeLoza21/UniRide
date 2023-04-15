@@ -108,9 +108,20 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
                     public void run() {
                         // Desbloquear la pantalla
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                        Intent i = new Intent(FormCar.this, MainActivityFragment.class);
-                        startActivity(i);
-                        finish();
+                        Intent intent = getIntent();
+                        String vehicles = intent.getStringExtra("Vehicles");
+                        if (vehicles != null && vehicles.equals("MyVehicles")) {
+                            // Devolver a MyVehicles.class
+                            Intent i = new Intent(FormCar.this, MyVehicles.class);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            // Devolver al MainActivityFragment.class
+                            Intent i = new Intent(FormCar.this, MainActivityFragment.class);
+                            startActivity(i);
+                            finish();
+                        }
+
                     }
                 }, 3000);
             }

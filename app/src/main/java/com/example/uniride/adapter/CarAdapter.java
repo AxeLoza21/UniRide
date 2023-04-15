@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uniride.CarDetails;
+import com.example.uniride.MyVehicles;
 import com.example.uniride.R;
 import com.example.uniride.model.Car;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -73,6 +74,11 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(activity, "Vehículo eliminado exitosamente ", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity, activity.getClass());
+                activity.startActivity(intent);
+                activity.finish();
+                activity.overridePendingTransition(0, 0);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
