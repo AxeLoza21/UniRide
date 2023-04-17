@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class CarDetails extends AppCompatActivity {
     Spinner spColorVehiculo, spTipoVehiculo;
     Button btnguardar;
     FirebaseFirestore db;
+    ImageView btnExit;
     FirebaseAuth mAuth;
     TextView marcaTextView, modeloTextView, placaTextView, añoTextView;
     String marca, modelo, placa, anioStr, color, tipo, newmarca, newmodelo, newplaca, newañoStr;
@@ -47,6 +49,7 @@ public class CarDetails extends AppCompatActivity {
         modeloTextView = (TextView)findViewById(R.id.EditTextModeloVehiculo);
         placaTextView = (TextView)findViewById(R.id.EditTextNumeroPlaca);
         añoTextView = (TextView)findViewById(R.id.EditTextAñoVehiculo);
+        btnExit = (ImageView)findViewById(R.id.Salir);
         String idCar = getIntent().getStringExtra("id_car");
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -253,6 +256,12 @@ public class CarDetails extends AppCompatActivity {
                 }
             }
         });
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         btnguardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -310,5 +319,10 @@ public class CarDetails extends AppCompatActivity {
                 });
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

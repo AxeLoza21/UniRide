@@ -12,9 +12,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.example.uniride.model.Car;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -33,7 +36,7 @@ public class MyVehicles extends AppCompatActivity {
     CarAdapter mAdapter;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
-    ImageView btnAddCar;
+    ImageView btnAddCar,btnExit;
     TextView limite;
 
     @Override
@@ -43,15 +46,46 @@ public class MyVehicles extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         btnAddCar = (ImageView) findViewById(R.id.btn_add);
         limite = (TextView) findViewById(R.id.txtLimite);
+        btnExit = (ImageView)findViewById(R.id.btnexit);
+
 
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Navegar hacia la actividad FormCar.class con el string
-                String myString = "MyVehicles";
-                Intent intent = new Intent(getApplicationContext(), FormCar.class);
-                intent.putExtra("Vehicles", myString);
-                startActivity(intent);
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                // Esperar
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Desbloquear la pantalla
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        // Navegar hacia la actividad FormCar.class con el string
+                        String myString = "MyVehicles";
+                        Intent intent = new Intent(getApplicationContext(), FormCar.class);
+                        intent.putExtra("Vehicles", myString);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }, 0);
+            }
+        });
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                // Esperar
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Desbloquear la pantalla
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        onBackPressed();
+
+                    }
+                }, 0);
             }
         });
 
@@ -129,5 +163,18 @@ public class MyVehicles extends AppCompatActivity {
                 Log.e("TAG", "meet a IOOBE in RecyclerView");
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        String refresh = "MyVehicles";
+        Intent intent = new Intent(getApplicationContext(), MainActivityFragment.class);
+        intent.putExtra("Vehicles", refresh);
+        startActivity(intent);
+        finish();
+        //Intent intent = new Intent(getApplicationContext(), FormCar.class);
+        //intent.putExtra("Vehicles", myString);
+        //startActivity(intent);
+        //finish();
     }
 }

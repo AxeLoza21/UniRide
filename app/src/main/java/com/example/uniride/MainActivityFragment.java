@@ -38,6 +38,8 @@ public class MainActivityFragment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_fragment);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        Intent intent = getIntent();
+        String vehicles = intent.getStringExtra("Vehicles");
         // Verificar si el usuario tiene un carro registrado
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -57,7 +59,13 @@ public class MainActivityFragment extends AppCompatActivity {
                 }
             }
         });
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+        if (vehicles != null && vehicles.equals("MyVehicles")) {
+            // Devolver a MyVehicles.class
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,perfilFragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+        }
+        //getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
