@@ -68,6 +68,7 @@ login extends AppCompatActivity {
                 String password = ed_password.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
                     ed_email.setError("Correo requerido");
+                    ed_email.requestFocus();
                     return;
                 } else if (!isValidEmail(email)) {
                     // Validar formato del correo

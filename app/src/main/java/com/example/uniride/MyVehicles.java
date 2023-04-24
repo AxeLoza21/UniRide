@@ -49,9 +49,14 @@ public class MyVehicles extends AppCompatActivity {
         btnExit = (ImageView)findViewById(R.id.btnexit);
 
 
+
+
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mRecycler.setEnabled(false);//Deshabilitar recycleview
+                btnAddCar.setEnabled(false);
+                btnExit.setEnabled(false);
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                 // Esperar
@@ -60,11 +65,14 @@ public class MyVehicles extends AppCompatActivity {
                     public void run() {
                         // Desbloquear la pantalla
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        mRecycler.setEnabled(true);//habilitar recycleview
                         // Navegar hacia la actividad FormCar.class con el string
                         String myString = "MyVehicles";
                         Intent intent = new Intent(getApplicationContext(), FormCar.class);
                         intent.putExtra("Vehicles", myString);
                         startActivity(intent);
+                        btnAddCar.setEnabled(true);
+                        btnExit.setEnabled(true);
                         finish();
 
                     }
@@ -74,6 +82,9 @@ public class MyVehicles extends AppCompatActivity {
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mRecycler.setEnabled(false);//Deshabilitar recycleview
+                btnAddCar.setEnabled(false);
+                btnExit.setEnabled(false);
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                 // Esperar
@@ -82,6 +93,9 @@ public class MyVehicles extends AppCompatActivity {
                     public void run() {
                         // Desbloquear la pantalla
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        mRecycler.setEnabled(true);//habilitar recycleview
+                        btnAddCar.setEnabled(true);
+                        btnExit.setEnabled(true);
                         onBackPressed();
 
                     }
@@ -167,14 +181,8 @@ public class MyVehicles extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        String refresh = "MyVehicles";
         Intent intent = new Intent(getApplicationContext(), MainActivityFragment.class);
-        intent.putExtra("Vehicles", refresh);
         startActivity(intent);
         finish();
-        //Intent intent = new Intent(getApplicationContext(), FormCar.class);
-        //intent.putExtra("Vehicles", myString);
-        //startActivity(intent);
-        //finish();
     }
 }

@@ -61,38 +61,49 @@ public class MainActivityFragment extends AppCompatActivity {
         });
         if (vehicles != null && vehicles.equals("MyVehicles")) {
             // Devolver a MyVehicles.class
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,perfilFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, perfilFragment).commit();
+            bottomNavigationView.setSelectedItemId(R.id.perfil); // Añade esta línea
         } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
         }
         //getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
-                        break;
-                    case R.id.create:
-                        if (hasCar) {
-                            // El usuario tiene al menos un carro registrado
-                            // Cargar el fragment "CreateFragment"
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, createFragment).commit();
-                        } else {
-                            // El usuario no tiene un carro registrado, cargar el fragment "AlertaAddCarFragment"
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, alertAddCarFragment).commit();
-                        }
-                        break;
-                    case R.id.travel:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,travelFragment).commit();
-                        break;
-                    case R.id.perfil:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,perfilFragment).commit();
-                        break;
-                }
-                return true;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.home:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+                    break;
+                case R.id.create:
+                    if (hasCar) {
+                        // El usuario tiene al menos un carro registrado
+                        // Cargar el fragment "CreateFragment"
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, createFragment).commit();
+                    } else {
+                        // El usuario no tiene un carro registrado, cargar el fragment "AlertaAddCarFragment"
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, alertAddCarFragment).commit();
+                    }
+                    break;
+                case R.id.travel:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,travelFragment).commit();
+                    break;
+                case R.id.perfil:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,perfilFragment).commit();
+                    break;
             }
+            return true;
         });
+
+        if (vehicles != null && vehicles.equals("MyVehicles")) {
+            // Devolver a MyVehicles.class
+            bottomNavigationView.setSelectedItemId(R.id.perfil);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+        finish();
     }
 }
+

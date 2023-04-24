@@ -2,6 +2,7 @@ package com.example.uniride.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,9 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Activity activity;
+    private boolean isEditButtonClicked = false;
+    private boolean isDeleteButtonClicked = false;
+    private ImageView btnExit, btnAddCar;
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -38,6 +42,8 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
     public CarAdapter(@NonNull FirestoreRecyclerOptions<Car> options, Activity activity) {
         super(options);
         this.activity = activity;
+        btnExit = activity.findViewById(R.id.btnexit);
+        btnAddCar = activity.findViewById(R.id.btn_add);
     }
 
     @Override
@@ -54,17 +60,47 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (isEditButtonClicked) {
+                    return; // do nothing if edit button is already clicked
+                }
+                isEditButtonClicked = true;
+                holder.btn_delete.setEnabled(false);
+                btnExit.setEnabled(false);
+                btnAddCar.setEnabled(false);
+
+
+                // Deshabilitar los botones btnExit y btnAddCar
+                btnExit.setEnabled(false);
+                btnAddCar.setEnabled(false);
+
                 //          SEND DATA ACTIVITY
                 Intent i = new Intent(activity, CarDetails.class);
                 i.putExtra("id_car", id);
                 activity.startActivity(i);
-
+                btnExit.setEnabled(true);
+                btnAddCar.setEnabled(true);
+                isEditButtonClicked = false;
             }
         });
+
+        // set click listener on delete button
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteCar(id);
+                if (isDeleteButtonClicked) {
+                    return; // do nothing if delete button is already clicked
+                }
+
+                isDeleteButtonClicked = true;
+                holder.btn_edit.setEnabled(false);
+
+                // Deshabilitar los botones btnExit y btnAddCar
+                btnExit.setEnabled(false);
+                btnAddCar.setEnabled(false);
+                deleteCar(id); // delete the selected car
+                btnExit.setEnabled(true);
+                btnAddCar.setEnabled(true);
             }
         });
     }
@@ -84,6 +120,7 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(activity, "Error al eliminar el vehículo", Toast.LENGTH_SHORT).show();
+
             }
         });
     }

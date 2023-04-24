@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +68,10 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         SaveCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SaveCar.setEnabled(false);
                 guardarCarro();
+
+
             }
         });
     }
@@ -78,7 +83,90 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         String tipo = spTipoVehiculo.getSelectedItem().toString();
         String color = spColorVehiculo.getSelectedItem().toString();
         String anio = etAnioVehiculo.getText().toString();
-        //int anio = Integer.parseInt(etAnioVehiculo.getText().toString());
+
+
+
+        if (marca.isEmpty()) {
+            etMarcaVehiculo.requestFocus();
+            etMarcaVehiculo.setError("Este campo es requerido");
+            SaveCar.setEnabled(true);
+            return;
+        }else if (!marca.matches("^[a-zA-Z]{1,12}$")) {
+            etMarcaVehiculo.requestFocus();
+            etMarcaVehiculo.setError("La marca debe tener máximo 12 caracteres y no debe contener números, espacios ni caracteres especiales");
+            SaveCar.setEnabled(true);
+            return;
+        }
+
+        if (modelo.isEmpty()) {
+            etModeloVehiculo.requestFocus();
+            etModeloVehiculo.setError("Este campo es requerido");
+            SaveCar.setEnabled(true);
+            return;
+        }if (modelo.length() > 10 || !modelo.matches("[a-zA-Z0-9 ]+")) {
+            etModeloVehiculo.requestFocus();
+            if (modelo.length() > 10) {
+                etModeloVehiculo.setError("El modelo no puede tener más de 10 caracteres");
+                SaveCar.setEnabled(true);
+            } else if (!modelo.matches("[a-zA-Z0-9 ]+")) {
+                etModeloVehiculo.setError("El modelo solo puede contener letras, números y espacios");
+                SaveCar.setEnabled(true);
+            }
+            return;
+        }
+
+        if (placa.isEmpty()) {
+            etNumeroPlaca.requestFocus();
+            etNumeroPlaca.setError("Este campo es requerido");
+            SaveCar.setEnabled(true);
+            return;
+        }else if (placa.length() > 7) {
+            etNumeroPlaca.requestFocus();
+            etNumeroPlaca.setError("La placa no puede tener más de 7 caracteres");
+            SaveCar.setEnabled(true);
+            return;
+        }else if (!placa.matches("[a-zA-Z0-9\\-]+")) {
+            etNumeroPlaca.requestFocus();
+            etNumeroPlaca.setError("La placa solo puede contener letras, números y guiones (-)");
+            SaveCar.setEnabled(true);
+            return;
+        }
+
+        if (tipo.equals("-")) {
+            ((TextView) spTipoVehiculo.getSelectedView()).setError("Este campo es requerido");
+            SaveCar.setEnabled(true);
+            return;
+        }
+
+        if (color.equals("-")) {
+            ((TextView) spColorVehiculo.getSelectedView()).setError("Este campo es requerido");
+            SaveCar.setEnabled(true);
+            return;
+        }
+
+        if (anio.isEmpty()) {
+            etAnioVehiculo.requestFocus();
+            etAnioVehiculo.setError("Este campo es requerido");
+            SaveCar.setEnabled(true);
+            return;
+        }
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+
+        // Validar el año del vehículo
+        int anioVehiculo = Integer.parseInt(etAnioVehiculo.getText().toString());
+        if (anioVehiculo < 1900 || anioVehiculo > year + 1) {
+            etAnioVehiculo.requestFocus();
+            etAnioVehiculo.setError("El año debe ser entre 1900 y " + (year + 1));
+            SaveCar.setEnabled(true);
+            return;
+        } else if (anio.length() != 4) {
+            etAnioVehiculo.requestFocus();
+            etAnioVehiculo.setError("El año debe de tener 4 dígitos");
+            SaveCar.setEnabled(true);
+            return;
+        }
+
 
         // Crear un mapa con los datos del carro
         Map<String, Object> carro = new HashMap<>();
@@ -114,11 +202,14 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
                             // Devolver a MyVehicles.class
                             Intent i = new Intent(FormCar.this, MyVehicles.class);
                             startActivity(i);
+                            SaveCar.setEnabled(true);
                             finish();
+
                         } else {
                             // Devolver al MainActivityFragment.class
                             Intent i = new Intent(FormCar.this, MainActivityFragment.class);
                             startActivity(i);
+                            SaveCar.setEnabled(true);
                             finish();
                         }
 
@@ -128,7 +219,8 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                SaveCar.setEnabled(true);
+                Toast.makeText(FormCar.this, "No se pudo guardar", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -146,6 +238,15 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        Intent intent = getIntent();
+        String vehicles = intent.getStringExtra("Vehicles");
+        if (vehicles != null && vehicles.equals("MyVehicles")) {
+            // Devolver a MyVehicles.class
+            Intent i = new Intent(FormCar.this, MyVehicles.class);
+            startActivity(i);
+            finish();
+        } else {
+            finish();
+        }
     }
 }
