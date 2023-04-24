@@ -38,35 +38,8 @@ public class MainActivityFragment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_fragment);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        Intent intent = getIntent();
-        String vehicles = intent.getStringExtra("Vehicles");
-        // Verificar si el usuario tiene un carro registrado
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        CollectionReference carsCollectionRef = db.collection("users").document(userId).collection("cars");
 
-        carsCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    // Verificar si hay documentos en la colección "cars"
-                    if (!task.getResult().isEmpty()) {
-                        hasCar = true;
-                    }
-
-                }else {
-                    Log.d(TAG, "Error obteniendo documentos: ", task.getException());
-                }
-            }
-        });
-        if (vehicles != null && vehicles.equals("MyVehicles")) {
-            // Devolver a MyVehicles.class
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, perfilFragment).commit();
-            bottomNavigationView.setSelectedItemId(R.id.perfil); // Añade esta línea
-        } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-        }
-        //getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()){
@@ -75,11 +48,8 @@ public class MainActivityFragment extends AppCompatActivity {
                     break;
                 case R.id.create:
                     if (hasCar) {
-                        // El usuario tiene al menos un carro registrado
-                        // Cargar el fragment "CreateFragment"
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, createFragment).commit();
                     } else {
-                        // El usuario no tiene un carro registrado, cargar el fragment "AlertaAddCarFragment"
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, alertAddCarFragment).commit();
                     }
                     break;
@@ -92,11 +62,33 @@ public class MainActivityFragment extends AppCompatActivity {
             }
             return true;
         });
+    }
 
-        if (vehicles != null && vehicles.equals("MyVehicles")) {
-            // Devolver a MyVehicles.class
-            bottomNavigationView.setSelectedItemId(R.id.perfil);
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkIfUserHasCar();
+    }
+
+    private void checkIfUserHasCar() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        CollectionReference carsCollectionRef = db.collection("users").document(userId).collection("cars");
+
+        carsCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) {
+                        hasCar = true;
+                    } else {
+                        hasCar = false;
+                    }
+                } else {
+                    Log.d(TAG, "Error obteniendo documentos: ", task.getException());
+                }
+            }
+        });
     }
 
     @Override
@@ -106,4 +98,3 @@ public class MainActivityFragment extends AppCompatActivity {
         finish();
     }
 }
-

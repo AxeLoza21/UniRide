@@ -181,8 +181,6 @@ public class MyVehicles extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(getApplicationContext(), MainActivityFragment.class);
-        startActivity(intent);
         finish();
     }
 }
