@@ -54,17 +54,16 @@ public class MyVehicles extends AppCompatActivity {
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 mRecycler.setEnabled(false);//Deshabilitar recycleview
                 btnAddCar.setEnabled(false);
                 btnExit.setEnabled(false);
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                 // Esperar
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         // Desbloquear la pantalla
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         mRecycler.setEnabled(true);//habilitar recycleview
                         // Navegar hacia la actividad FormCar.class con el string
                         String myString = "MyVehicles";
@@ -73,6 +72,7 @@ public class MyVehicles extends AppCompatActivity {
                         startActivity(intent);
                         btnAddCar.setEnabled(true);
                         btnExit.setEnabled(true);
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         finish();
 
                     }
@@ -82,22 +82,21 @@ public class MyVehicles extends AppCompatActivity {
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 mRecycler.setEnabled(false);//Deshabilitar recycleview
                 btnAddCar.setEnabled(false);
                 btnExit.setEnabled(false);
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                 // Esperar
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         // Desbloquear la pantalla
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         mRecycler.setEnabled(true);//habilitar recycleview
                         btnAddCar.setEnabled(true);
                         btnExit.setEnabled(true);
                         onBackPressed();
-
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     }
                 }, 0);
             }

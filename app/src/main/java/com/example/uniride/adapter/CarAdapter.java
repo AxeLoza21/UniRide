@@ -1,11 +1,13 @@
 package com.example.uniride.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
     private boolean isEditButtonClicked = false;
     private boolean isDeleteButtonClicked = false;
     private ImageView btnExit, btnAddCar;
+    private Context context;
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -60,9 +63,11 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Bloquear pantalla
+                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                 if (isEditButtonClicked) {
-                    return; // do nothing if edit button is already clicked
+                    return; // no hacer nada si el boton esta presionado en un recycleview
                 }
                 isEditButtonClicked = true;
                 holder.btn_delete.setEnabled(false);
@@ -81,6 +86,7 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
                 btnExit.setEnabled(true);
                 btnAddCar.setEnabled(true);
                 isEditButtonClicked = false;
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         });
 
@@ -88,8 +94,11 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Bloquear pantalla
+                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                 if (isDeleteButtonClicked) {
-                    return; // do nothing if delete button is already clicked
+                    return; // no hacer nada si el boton esta presionado en un recycleview
                 }
 
                 isDeleteButtonClicked = true;
@@ -101,6 +110,8 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
                 deleteCar(id); // delete the selected car
                 btnExit.setEnabled(true);
                 btnAddCar.setEnabled(true);
+                // Desbloquear pantalla
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         });
     }

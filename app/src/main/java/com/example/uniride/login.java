@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -64,16 +65,19 @@ login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 String email = ed_email.getText().toString().trim();
                 String password = ed_password.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
                     ed_email.setError("Correo requerido");
                     ed_email.requestFocus();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     return;
                 } else if (!isValidEmail(email)) {
                     // Validar formato del correo
                     ed_email.setError("Correo inválido. El correo debe tener el formato 'ejemplo@ucol.mx' y contener solo letras y números.");
                     ed_email.requestFocus();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     return;
                 }
 
@@ -81,10 +85,12 @@ login extends AppCompatActivity {
                 if (TextUtils.isEmpty(password)) {
                     ed_password.setError("Contraseña requerida", null);
                     ed_password.requestFocus();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     return;
                 } else if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=\\S+$).{8,}$")) {
-                    ed_password.setError("", null);
+                    ed_password.setError("La contraseña debe tener al menos una letra mayúscula, dos números, un carácter especial y ser mayor a 8 caracteres", null);
                     ed_password.requestFocus();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     return;
                 }
                 //Se cumplio las acciones
@@ -97,6 +103,7 @@ login extends AppCompatActivity {
                             user = fAuth.getCurrentUser();
                             if (!user.isEmailVerified()) {
                                 Toast.makeText(login.this, "Debes de verificar el correo", Toast.LENGTH_SHORT).show();
+                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 fAuth.signOut();
 
                             } else if (user.isEmailVerified()) {
@@ -124,6 +131,7 @@ login extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(login.this, "Error al iniciar sesión. Verifica tu correo y contraseña", Toast.LENGTH_SHORT).show();
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     }
                 });
             }
