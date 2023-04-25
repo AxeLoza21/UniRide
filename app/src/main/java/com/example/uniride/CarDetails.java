@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -33,6 +35,7 @@ public class CarDetails extends AppCompatActivity {
     Spinner spColorVehiculo, spTipoVehiculo;
     Button btnguardar;
     FirebaseFirestore db;
+    Dialog d_edit;
     ImageView btnExit;
     FirebaseAuth mAuth;
     TextView marcaTextView, modeloTextView, placaTextView, añoTextView;
@@ -50,6 +53,7 @@ public class CarDetails extends AppCompatActivity {
         placaTextView = (TextView)findViewById(R.id.EditTextNumeroPlaca);
         añoTextView = (TextView)findViewById(R.id.EditTextAñoVehiculo);
         btnExit = (ImageView)findViewById(R.id.Salir);
+        d_edit = new Dialog(this);
         String idCar = getIntent().getStringExtra("id_car");
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -65,6 +69,7 @@ public class CarDetails extends AppCompatActivity {
                     //anioStr = Long.toString(anio); // convertir a String
                     color = documentSnapshot.getString("color");
                     tipo = documentSnapshot.getString("type");
+
                     ArrayList<String> colores = new ArrayList<>(Arrays.asList("Rojo","Verde","Azul","Blanco","Negro","Plateado","Amarillo","Rosa","Morado","Gris","Café"));
                     ColorSpinnerAdapter colorAdapter = new ColorSpinnerAdapter(CarDetails.this, colores);
                     spColorVehiculo.setAdapter(colorAdapter);
@@ -73,54 +78,18 @@ public class CarDetails extends AppCompatActivity {
                     TypeSpinnerAdapter typeAdapter = new TypeSpinnerAdapter(CarDetails.this, tipos);
                     spTipoVehiculo.setAdapter(typeAdapter);
 
+
+                    //----------Asignar los valores a los TextView correspondientes----------
                     int position = colores.indexOf(color);
                     int position2 = tipos.indexOf(tipo);
                     spColorVehiculo.setSelection(position);
                     spTipoVehiculo.setSelection(position2);
 
-                    // Asignar los valores a los TextView correspondientes
                     marcaTextView.setText(marca);
                     marcaTextView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            // Crear el diálogo personalizado
-                            Dialog dialog = new Dialog(CarDetails.this);
-                            dialog.setContentView(R.layout.dialog_edit_text);
-
-                            // Obtener referencias a los elementos de la interfaz de usuario en el diálogo
-                            EditText editText = dialog.findViewById(R.id.edit_text);
-                            Button buttonOk = dialog.findViewById(R.id.button_ok);
-                            Button buttonCancel = dialog.findViewById(R.id.button_cancel);
-
-                            // Establecer el texto actual del TextView en el EditText
-                            editText.setText(marcaTextView.getText().toString());
-
-                            // Configurar los botones del diálogo
-                            buttonOk.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Obtener el nuevo texto del EditText
-                                    String newText = editText.getText().toString();
-
-                                    // Actualizar el TextView con el nuevo texto
-                                    marcaTextView.setText(newText);
-
-                                    // Cerrar el diálogo
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            buttonCancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Cerrar el diálogo
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            // Mostrar el diálogo
-                            dialog.show();
-
+                            openDialog("Marca");
                         }
                     });
 
@@ -128,42 +97,7 @@ public class CarDetails extends AppCompatActivity {
                     modeloTextView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Dialog dialog = new Dialog(CarDetails.this);
-                            dialog.setContentView(R.layout.dialog_edit_text);
-
-                            // Obtener referencias a los elementos de la interfaz de usuario en el diálogo
-                            EditText editText = dialog.findViewById(R.id.edit_text);
-                            Button buttonOk = dialog.findViewById(R.id.button_ok);
-                            Button buttonCancel = dialog.findViewById(R.id.button_cancel);
-
-                            // Establecer el texto actual del TextView en el EditText
-                            editText.setText(modeloTextView.getText().toString());
-
-                            // Configurar los botones del diálogo
-                            buttonOk.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Obtener el nuevo texto del EditText
-                                    String newText = editText.getText().toString();
-
-                                    // Actualizar el TextView con el nuevo texto
-                                    modeloTextView.setText(newText);
-
-                                    // Cerrar el diálogo
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            buttonCancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Cerrar el diálogo
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            // Mostrar el diálogo
-                            dialog.show();
+                            openDialog("Modelo");
                         }
                     });
 
@@ -171,42 +105,7 @@ public class CarDetails extends AppCompatActivity {
                     placaTextView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Dialog dialog = new Dialog(CarDetails.this);
-                            dialog.setContentView(R.layout.dialog_edit_text);
-
-                            // Obtener referencias a los elementos de la interfaz de usuario en el diálogo
-                            EditText editText = dialog.findViewById(R.id.edit_text);
-                            Button buttonOk = dialog.findViewById(R.id.button_ok);
-                            Button buttonCancel = dialog.findViewById(R.id.button_cancel);
-
-                            // Establecer el texto actual del TextView en el EditText
-                            editText.setText(placaTextView.getText().toString());
-
-                            // Configurar los botones del diálogo
-                            buttonOk.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Obtener el nuevo texto del EditText
-                                    String newText = editText.getText().toString();
-
-                                    // Actualizar el TextView con el nuevo texto
-                                    placaTextView.setText(newText);
-
-                                    // Cerrar el diálogo
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            buttonCancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Cerrar el diálogo
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            // Mostrar el diálogo
-                            dialog.show();
+                            openDialog("Placa");
                         }
                     });
 
@@ -214,54 +113,23 @@ public class CarDetails extends AppCompatActivity {
                     añoTextView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Dialog dialog = new Dialog(CarDetails.this);
-                            dialog.setContentView(R.layout.dialog_edit_text);
-
-                            // Obtener referencias a los elementos de la interfaz de usuario en el diálogo
-                            EditText editText = dialog.findViewById(R.id.edit_text);
-                            Button buttonOk = dialog.findViewById(R.id.button_ok);
-                            Button buttonCancel = dialog.findViewById(R.id.button_cancel);
-
-                            // Establecer el texto actual del TextView en el EditText
-                            editText.setText(añoTextView.getText().toString());
-
-                            // Configurar los botones del diálogo
-                            buttonOk.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Obtener el nuevo texto del EditText
-                                    String newText = editText.getText().toString();
-
-                                    // Actualizar el TextView con el nuevo texto
-                                    añoTextView.setText(newText);
-
-                                    // Cerrar el diálogo
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            buttonCancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Cerrar el diálogo
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            // Mostrar el diálogo
-                            dialog.show();
+                            openDialog("Ano");
                         }
                     });
 
                 }
             }
         });
+
+
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+
         btnguardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -275,10 +143,9 @@ public class CarDetails extends AppCompatActivity {
                 String colorSeleccionado = spColorVehiculo.getSelectedItem().toString();
                 String tipoSeleccionado = spTipoVehiculo.getSelectedItem().toString();
 
+
                 // Actualizar los datos en Firebase
-
                 DocumentReference carRef = db.collection("users").document(mAuth.getUid()).collection("cars").document(idCar);
-
                 carRef.update(
                         "color", colorSeleccionado,
                         "make", newmarca,
@@ -324,5 +191,116 @@ public class CarDetails extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+
+    //-----------Metodo para mostrar el Dialog---------
+    private void openDialog(String tDato){
+        // Crear el diálogo personalizado
+        d_edit.setContentView(R.layout.edit_user_dialog);
+        d_edit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        d_edit.setCanceledOnTouchOutside(false);
+        d_edit.show();
+
+        //Obtener referencias a los elementos de la interfaz de usuario en el diálogo
+        TextView txtEditar = d_edit.findViewById(R.id.datoEdit);
+        EditText editText = d_edit.findViewById(R.id.et_dato);
+        Button btnGuardar = d_edit.findViewById(R.id.btnGuardar);
+        ImageView btnClose = d_edit.findViewById(R.id.btn_close);
+
+        switch(tDato){
+            case "Marca":
+                //Texto que muestra el valor del que se esta actualizando.
+                txtEditar.setText("Marca");
+
+                // Establecer el texto actual del TextView en el EditText
+                editText.setText(marcaTextView.getText().toString());
+
+                btnGuardar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Obtener el nuevo texto del EditText
+                        String newText = editText.getText().toString();
+
+                        // Actualizar el TextView con el nuevo texto
+                        marcaTextView.setText(newText);
+
+                        // Cerrar el diálogo
+                        d_edit.dismiss();
+                    }
+                });
+                break;
+            case "Modelo":
+                //Texto que muestra el valor del que se esta actualizando.
+                txtEditar.setText("Modelo");
+
+                // Establecer el texto actual del TextView en el EditText
+                editText.setText(modeloTextView.getText().toString());
+
+                btnGuardar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Obtener el nuevo texto del EditText
+                        String newText = editText.getText().toString();
+
+                        // Actualizar el TextView con el nuevo texto
+                        modeloTextView.setText(newText);
+
+                        // Cerrar el diálogo
+                        d_edit.dismiss();
+                    }
+                });
+                break;
+            case "Placa":
+                //Texto que muestra el valor del que se esta actualizando.
+                txtEditar.setText("Placa");
+
+                // Establecer el texto actual del TextView en el EditText
+                editText.setText(placaTextView.getText().toString());
+
+                btnGuardar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Obtener el nuevo texto del EditText
+                        String newText = editText.getText().toString();
+
+                        // Actualizar el TextView con el nuevo texto
+                        placaTextView.setText(newText);
+
+                        // Cerrar el diálogo
+                        d_edit.dismiss();
+                    }
+                });
+                break;
+            case "Ano":
+                //Texto que muestra el valor del que se esta actualizando.
+                txtEditar.setText("Año");
+
+                // Establecer el texto actual del TextView en el EditText
+                editText.setText(añoTextView.getText().toString());
+
+                btnGuardar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Obtener el nuevo texto del EditText
+                        String newText = editText.getText().toString();
+
+                        // Actualizar el TextView con el nuevo texto
+                        añoTextView.setText(newText);
+
+                        // Cerrar el diálogo
+                        d_edit.dismiss();
+                    }
+                });
+                break;
+        }
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cerrar el diálogo
+                d_edit.dismiss();
+            }
+        });
     }
 }
