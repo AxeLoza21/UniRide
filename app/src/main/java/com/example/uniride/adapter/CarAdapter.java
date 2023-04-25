@@ -63,30 +63,11 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Bloquear pantalla
-                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                if (isEditButtonClicked) {
-                    return; // no hacer nada si el boton esta presionado en un recycleview
-                }
-                isEditButtonClicked = true;
+                disableButtons();
                 holder.btn_delete.setEnabled(false);
-                btnExit.setEnabled(false);
-                btnAddCar.setEnabled(false);
-
-
-                // Deshabilitar los botones btnExit y btnAddCar
-                btnExit.setEnabled(false);
-                btnAddCar.setEnabled(false);
-
-                //          SEND DATA ACTIVITY
                 Intent i = new Intent(activity, CarDetails.class);
                 i.putExtra("id_car", id);
                 activity.startActivity(i);
-                btnExit.setEnabled(true);
-                btnAddCar.setEnabled(true);
-                isEditButtonClicked = false;
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         });
 
@@ -94,26 +75,22 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Bloquear pantalla
-                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                if (isDeleteButtonClicked) {
-                    return; // no hacer nada si el boton esta presionado en un recycleview
-                }
-
-                isDeleteButtonClicked = true;
+                disableButtons();
                 holder.btn_edit.setEnabled(false);
-
-                // Deshabilitar los botones btnExit y btnAddCar
-                btnExit.setEnabled(false);
-                btnAddCar.setEnabled(false);
                 deleteCar(id); // delete the selected car
-                btnExit.setEnabled(true);
-                btnAddCar.setEnabled(true);
-                // Desbloquear pantalla
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                enableButtons();
             }
         });
+    }
+
+    private void disableButtons() {
+        btnAddCar.setEnabled(false);
+        btnExit.setEnabled(false);
+    }
+    private void enableButtons() {
+
+        btnAddCar.setEnabled(true);
+        btnExit.setEnabled(true);
     }
 
     private void deleteCar(String id) {

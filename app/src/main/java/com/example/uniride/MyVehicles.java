@@ -54,51 +54,20 @@ public class MyVehicles extends AppCompatActivity {
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                mRecycler.setEnabled(false);//Deshabilitar recycleview
-                btnAddCar.setEnabled(false);
-                btnExit.setEnabled(false);
+                disableButtons();
+                String myString = "MyVehicles";
+                Intent intent = new Intent(getApplicationContext(), FormCar.class);
+                intent.putExtra("Vehicles", myString);
+                startActivity(intent);
+                finish();
 
-                // Esperar
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Desbloquear la pantalla
-                        mRecycler.setEnabled(true);//habilitar recycleview
-                        // Navegar hacia la actividad FormCar.class con el string
-                        String myString = "MyVehicles";
-                        Intent intent = new Intent(getApplicationContext(), FormCar.class);
-                        intent.putExtra("Vehicles", myString);
-                        startActivity(intent);
-                        btnAddCar.setEnabled(true);
-                        btnExit.setEnabled(true);
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                        finish();
-
-                    }
-                }, 0);
             }
         });
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                mRecycler.setEnabled(false);//Deshabilitar recycleview
-                btnAddCar.setEnabled(false);
-                btnExit.setEnabled(false);
-
-                // Esperar
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Desbloquear la pantalla
-                        mRecycler.setEnabled(true);//habilitar recycleview
-                        btnAddCar.setEnabled(true);
-                        btnExit.setEnabled(true);
-                        onBackPressed();
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    }
-                }, 0);
+                disableButtons();
+                onBackPressed();
             }
         });
 
@@ -141,6 +110,21 @@ public class MyVehicles extends AppCompatActivity {
         mAdapter = new CarAdapter(firestoreRecyclerOptions, this);
         mAdapter.notifyDataSetChanged();
         mRecycler.setAdapter(mAdapter);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enableButtons();
+    }
+    private void disableButtons() {
+        mRecycler.setEnabled(false);//Deshabilitar recycleview
+        btnAddCar.setEnabled(false);
+        btnExit.setEnabled(false);
+    }
+    private void enableButtons() {
+        mRecycler.setEnabled(true);//habilitar recycleview
+        btnAddCar.setEnabled(true);
+        btnExit.setEnabled(true);
     }
 
     @Override
