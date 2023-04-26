@@ -105,8 +105,7 @@ public class MyVehicles extends AppCompatActivity {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Query query = db.collection("users").document(userId).collection("cars");
 
-        FirestoreRecyclerOptions<Car> firestoreRecyclerOptions =
-                new FirestoreRecyclerOptions.Builder<Car>().setQuery(query, Car.class).build();
+        FirestoreRecyclerOptions<Car> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<Car>().setQuery(query, Car.class).build();
         mAdapter = new CarAdapter(firestoreRecyclerOptions, this);
         mAdapter.notifyDataSetChanged();
         mRecycler.setAdapter(mAdapter);

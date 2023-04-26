@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,6 +29,7 @@ import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -89,6 +91,7 @@ public class MyPerfil extends AppCompatActivity {
         btnEditAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 openDialogFecha();
             }
         });
@@ -96,6 +99,7 @@ public class MyPerfil extends AppCompatActivity {
         btnEditSchool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 openDialogSchool_and_Phone("Facultad a la que Asistes", 1);
             }
         });
@@ -103,6 +107,7 @@ public class MyPerfil extends AppCompatActivity {
         btnEditPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 openDialogSchool_and_Phone("Telefono", 2);
             }
         });
@@ -110,6 +115,7 @@ public class MyPerfil extends AppCompatActivity {
         btnEditPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 openDialogContasena();
             }
         });
@@ -119,6 +125,7 @@ public class MyPerfil extends AppCompatActivity {
         btnAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 onBackPressed();
             }
         });
@@ -126,13 +133,20 @@ public class MyPerfil extends AppCompatActivity {
         btnFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 uploadPhoto();
+
             }
         });
 
         setInformation();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enableButtons();
+    }
 
     private void setInformation() {
         fStore.collection("users").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -268,10 +282,26 @@ public class MyPerfil extends AppCompatActivity {
             public void onClick(View v) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("birthDay", et_dato.getText().toString().replace(" / ", "/"));
-                fStore.collection("users").document(mAuth.getUid()).update(map);
-                uAge.setText(calcularEdad(et_dato.getText().toString().replace(" / ", "/")));
-                Toast.makeText(MyPerfil.this, "Edad Actualizada Correctamente", Toast.LENGTH_SHORT).show();
-                d_edit.dismiss();
+                fStore.collection("users").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        uAge.setText(calcularEdad(et_dato.getText().toString().replace(" / ", "/")));
+                        enableButtons();
+                        d_edit.dismiss();
+                        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Edad Actualizada Correctamente", Snackbar.LENGTH_LONG);
+                        View snackbarView = snackbar.getView();
+                        snackbarView.setBackgroundColor(getResources().getColor(R.color.purple_500)); // Establecer el color de fondo
+                        snackbar.show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar la edad", Snackbar.LENGTH_LONG);
+                        View snackbarView = snackbar.getView();
+                        snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
+                        snackbar.show();
+                    }
+                });
             }
         });
 
@@ -279,6 +309,7 @@ public class MyPerfil extends AppCompatActivity {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enableButtons();
                 d_edit.dismiss();
             }
         });
@@ -301,6 +332,7 @@ public class MyPerfil extends AppCompatActivity {
         switch(opcion){
             case 1:
                 et_dato.setText(uSchool.getText());
+                et_dato.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
                 et_dato.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -320,15 +352,33 @@ public class MyPerfil extends AppCompatActivity {
                     public void onClick(View v) {
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("school", et_dato.getText().toString());
-                        fStore.collection("users").document(mAuth.getUid()).update(map);
-                        uSchool.setText(et_dato.getText().toString());
-                        Toast.makeText(MyPerfil.this, "Escuela Actualizada Correctamente", Toast.LENGTH_SHORT).show();
-                        d_edit.dismiss();
+                        fStore.collection("users").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                uSchool.setText(et_dato.getText().toString());
+                                d_edit.dismiss();
+                                enableButtons();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Escuela Actualizada Correctamente", Snackbar.LENGTH_LONG);
+                                View snackbarView = snackbar.getView();
+                                snackbarView.setBackgroundColor(getResources().getColor(R.color.purple_500)); // Establecer el color de fondo
+                                snackbar.show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar la edad", Snackbar.LENGTH_LONG);
+                                View snackbarView = snackbar.getView();
+                                snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
+                                snackbar.show();
+                            }
+                        });
+
                     }
                 });
                 break;
             case 2:
-                et_dato.setInputType(InputType.TYPE_CLASS_PHONE);
+                et_dato.setInputType(InputType.TYPE_CLASS_NUMBER);
+                et_dato.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
                 et_dato.setText(uPhone.getText());
                 et_dato.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -349,10 +399,26 @@ public class MyPerfil extends AppCompatActivity {
                     public void onClick(View v) {
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("phone", et_dato.getText().toString());
-                        fStore.collection("users").document(mAuth.getUid()).update(map);
-                        uSchool.setText(et_dato.getText().toString());
-                        Toast.makeText(MyPerfil.this, "Telefono Actualizado Correctamente", Toast.LENGTH_SHORT).show();
-                        d_edit.dismiss();
+                        fStore.collection("users").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                uSchool.setText(et_dato.getText().toString());
+                                d_edit.dismiss();
+                                enableButtons();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Telefono Actualizado Correctamente", Snackbar.LENGTH_LONG);
+                                View snackbarView = snackbar.getView();
+                                snackbarView.setBackgroundColor(getResources().getColor(R.color.purple_500)); // Establecer el color de fondo
+                                snackbar.show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar la edad", Snackbar.LENGTH_LONG);
+                                View snackbarView = snackbar.getView();
+                                snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
+                                snackbar.show();
+                            }
+                        });
                     }
                 });
                 break;
@@ -362,6 +428,7 @@ public class MyPerfil extends AppCompatActivity {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enableButtons();
                 d_edit.dismiss();
             }
         });
@@ -410,10 +477,37 @@ public class MyPerfil extends AppCompatActivity {
                 mAuth.getCurrentUser().updatePassword(pwd);
                 Toast.makeText(MyPerfil.this, "Contraseña cambiada exitosamente", Toast.LENGTH_SHORT).show();
                 d_edit.dismiss();
+                enableButtons();
 
             }
         });
 
+        ImageView btnClose = d_edit.findViewById(R.id.btn_close);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enableButtons();
+                d_edit.dismiss();
+            }
+        });
+
+    }
+
+    private void disableButtons() {
+        btnFoto.setEnabled(false);//Deshabilitar recycleview
+        btnAtras.setEnabled(false);
+        btnEditPassword.setEnabled(false);
+        btnEditPhone.setEnabled(false);
+        btnEditAge.setEnabled(false);
+        btnEditSchool.setEnabled(false);
+    }
+    private void enableButtons() {
+        btnFoto.setEnabled(true);//Deshabilitar recycleview
+        btnAtras.setEnabled(true);
+        btnEditPassword.setEnabled(true);
+        btnEditPhone.setEnabled(true);
+        btnEditAge.setEnabled(true);
+        btnEditSchool.setEnabled(true);
     }
 
     @Override

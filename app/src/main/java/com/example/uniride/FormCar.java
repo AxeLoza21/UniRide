@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import java.util.Map;
 
 public class FormCar extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Button SaveCar;
+    ImageView btnSalir;
 
     EditText etMarcaVehiculo, etModeloVehiculo, etNumeroPlaca, etAnioVehiculo;
     Spinner spTipoVehiculo, spColorVehiculo;
@@ -48,6 +51,7 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         spTipoVehiculo = (Spinner)findViewById(R.id.SpinerTipoVehiculo);
         spColorVehiculo = (Spinner)findViewById(R.id.SpinerColorVehiculo);
         SaveCar = (Button)findViewById(R.id.btn_image);
+        btnSalir = (ImageView)findViewById(R.id.salir);
         etMarcaVehiculo = (EditText)findViewById(R.id.EditTextMarcaVehiculo);
         etModeloVehiculo = (EditText)findViewById(R.id.EditTextModeloVehiculo);
         etNumeroPlaca = (EditText)findViewById(R.id.EditTextNumeroPlaca);
@@ -72,6 +76,13 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
                 guardarCarro();
 
 
+            }
+        });
+
+        btnSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -238,15 +249,6 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = getIntent();
-        String vehicles = intent.getStringExtra("Vehicles");
-        if (vehicles != null && vehicles.equals("MyVehicles")) {
-            // Devolver a MyVehicles.class
-            Intent i = new Intent(FormCar.this, MyVehicles.class);
-            startActivity(i);
-            finish();
-        } else {
-            finish();
-        }
+        finish();
     }
 }

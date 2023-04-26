@@ -35,8 +35,9 @@ public class PerfilFragment extends Fragment {
     TextView nameUser, ageUser, schoolUser;
     ImageView imgUser;
 
-     FirebaseAuth mAuth;
-     FirebaseFirestore fStore;
+    FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    boolean hasCar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +60,7 @@ public class PerfilFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 mAuth.signOut();
                 Intent i = new Intent(getActivity(), login.class);
                 startActivity(i);
@@ -69,6 +71,7 @@ public class PerfilFragment extends Fragment {
         opcion2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 Intent i = new Intent(getActivity(), MyPerfil.class);
                 startActivity(i);
             }
@@ -77,9 +80,19 @@ public class PerfilFragment extends Fragment {
         opcion3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), MyVehicles.class);
-                startActivity(i);
-                //getActivity().finish();
+                disableButtons();
+                if(getArguments() != null){
+                    hasCar = getArguments().getBoolean("hasCar");
+                    if(hasCar){
+                        Intent i = new Intent(getActivity(), MyVehicles.class);
+                        startActivity(i);
+                        //getActivity().finish();
+                    }else {
+                        Intent i = new Intent(getActivity(), AlertAddCar.class);
+                        startActivity(i);
+                        //getActivity().finish();
+                    }
+                }
             }
         });
 
@@ -88,7 +101,11 @@ public class PerfilFragment extends Fragment {
         return vista;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        enableButtons();
+    }
 
     private void setInformation() {
         if(mAuth.getCurrentUser() != null){
@@ -130,5 +147,20 @@ public class PerfilFragment extends Fragment {
 
         }
         return edad;
+    }
+
+    private void disableButtons() {
+        //opcion1.setEnabled(false);//Deshabilitar recycleview
+        opcion2.setEnabled(false);
+        opcion3.setEnabled(false);
+        //opcion4.setEnabled(false);
+        logout.setEnabled(false);
+    }
+    private void enableButtons() {
+        //opcion1.setEnabled(true);//Habilitar recycleview
+        opcion2.setEnabled(true);
+        opcion3.setEnabled(true);
+        //opcion4.setEnabled(true);
+        logout.setEnabled(true);
     }
 }

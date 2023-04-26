@@ -32,10 +32,7 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Activity activity;
-    private boolean isEditButtonClicked = false;
-    private boolean isDeleteButtonClicked = false;
     private ImageView btnExit, btnAddCar;
-    private Context context;
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.

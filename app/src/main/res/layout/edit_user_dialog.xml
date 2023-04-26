@@ -47,7 +47,8 @@
                 android:textSize="15dp"
                 android:hint="Campus / Facultad / Carrera"
                 android:textColorHint="#A8AFB9"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:inputType="text"/>
 
 
             <Button

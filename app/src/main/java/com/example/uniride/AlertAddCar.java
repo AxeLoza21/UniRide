@@ -31,8 +31,10 @@ public class AlertAddCar extends AppCompatActivity {
         btnComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(AlertAddCar.this, FormCar.class);
-                startActivity(i);
+                String myString = "MyVehicles";
+                Intent intent = new Intent(getApplicationContext(), FormCar.class);
+                intent.putExtra("Vehicles", myString);
+                startActivity(intent);
                 finish();
             }
         });

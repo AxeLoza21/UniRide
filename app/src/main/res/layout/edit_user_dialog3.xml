@@ -47,7 +47,8 @@
                 android:textSize="15dp"
                 android:hint="Contraseña actual"
                 android:textColorHint="#A8AFB9"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:inputType="textPassword"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passNew"

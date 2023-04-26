@@ -79,11 +79,14 @@ public class MainActivityFragment extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    Bundle args = new Bundle();
                     if (!task.getResult().isEmpty()) {
                         hasCar = true;
                     } else {
                         hasCar = false;
                     }
+                    args.putBoolean("hasCar", hasCar);
+                    perfilFragment.setArguments(args);
                 } else {
                     Log.d(TAG, "Error obteniendo documentos: ", task.getException());
                 }
