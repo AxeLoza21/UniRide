@@ -17,8 +17,8 @@
         android:textColor="@color/black"
         android:textSize="25dp" />
     
-    <EditText
-        android:id="@+id/et_location"
+    <SearchView
+        android:id="@+id/searchView"
         android:layout_width="350dp"
         android:layout_height="52dp"
         android:layout_below="@+id/txtAdonde"
@@ -36,7 +36,7 @@
         android:id="@+id/txtResultados"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/et_location"
+        android:layout_below="@+id/searchView"
         android:layout_marginTop="33dp"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_marginHorizontal="15dp"
         android:layout_height="2dp"
-        android:layout_below="@+id/et_location"
+        android:layout_below="@+id/searchView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:background="#E0E0E0"/>
@@ -64,6 +64,7 @@
         android:layout_below="@+id/line"
         android:layout_marginTop="15dp">
     </androidx.recyclerview.widget.RecyclerView>
+
 
 
 </RelativeLayout>

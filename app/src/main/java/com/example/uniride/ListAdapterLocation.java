@@ -4,19 +4,56 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocation.ViewHolder>{
+public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocation.ViewHolder> implements Filterable {
     private List<locationElement> mData;
     private LayoutInflater mInflater;
     private Context context;
     final ListAdapterLocation.OnItemClickListener listener;
+    private List<locationElement> filteredElements;
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String query = constraint.toString().toLowerCase().trim();
+                List<locationElement> filteredList = new ArrayList<>();
+
+                if (query.isEmpty()) {
+                    filteredList.addAll(mData);
+                } else {
+                    for (locationElement element : mData) {
+                        if (element.getnCampus().toLowerCase().contains(query) ||
+                                element.getnEscuela().toLowerCase().contains(query) ||
+                                element.getCategorias().toLowerCase().contains(query)) {
+                            filteredList.add(element);
+                        }
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredElements = (List<locationElement>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 
     public interface OnItemClickListener {
         void onItemClick(locationElement item);
@@ -27,10 +64,13 @@ public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocatio
         this.context = context;
         this.mData = itemList;
         this.listener = listener;
+        this.filteredElements = itemList;
     }
 
     @Override
-    public int getItemCount() {return mData.size(); }
+    public int getItemCount() {
+        return filteredElements.size();
+    }
 
     @Override
     public ListAdapterLocation.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,9 +80,8 @@ public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocatio
 
     @Override
     public void onBindViewHolder(final ListAdapterLocation.ViewHolder holder, final int position) {
-        holder.bindData(mData.get(position));
+        holder.bindData(filteredElements.get(position));
     }
-
     public void setItems(List<locationElement> items) { mData = items; }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,152 +14,166 @@
         android:src="@drawable/fondo_login"
         android:tint="#80000000" />
 
-    <TextView
-        android:id="@+id/txtSesion"
+    <RelativeLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Iniciar Sesion"
-        android:textSize="30dp"
-        android:textColor="@color/white"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtSesion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Iniciar Sesion"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true" />
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardInputs"
-        android:layout_below="@id/txtSesion"
-        android:layout_width="350dp"
-        android:layout_height="500dp"
-        android:layout_centerHorizontal="true"
-        app:cardCornerRadius="44dp"
-        app:cardElevation="4dp">
-        
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/cardinputs">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardInputs"
+            android:layout_below="@id/txtSesion"
+            android:layout_width="wrap_content"
+            android:layout_height="500dp"
+            android:layout_centerHorizontal="true"
+            app:cardCornerRadius="44dp"
+            app:cardElevation="4dp">
 
-            <TextView
-                android:id="@+id/txtBienvenida"
-                android:layout_width="235dp"
-                android:layout_height="60dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="62dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="50dp"
-                android:text="¡Hola! Ingresa tu e-mail y contraseña"
-                android:textSize="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center_horizontal|center_vertical"
-                android:textColor="@color/black"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/cardinputs">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/username"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtBienvenida"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="70dp"
-                android:hint="Email"
-                app:counterEnabled="true"
-                app:counterMaxLength="25"
-                app:startIconDrawable="@drawable/ic_baseline_person_24"
-                app:endIconMode="custom">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_usarname"
-                    android:layout_width="300dp"
-                    android:background="@drawable/custom_input"
-                    android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/txtBienvenida"
+                    android:layout_width="235dp"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="62dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="50dp"
+                    android:text="¡Hola! Ingresa tu e-mail y contraseña"
+                    android:textSize="20dp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:inputType="textPersonName" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_horizontal|center_vertical"
+                    android:textColor="@color/black"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/password"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/username"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:hint="Password"
-                app:startIconDrawable="@drawable/ic_baseline_lock_24"
-                app:endIconMode="password_toggle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_password"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/username"
                     android:layout_width="300dp"
-                    android:background="@drawable/custom_input"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtBienvenida"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="70dp"
+                    android:hint="Email"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="25"
+                    app:startIconDrawable="@drawable/ic_baseline_person_24"
+                    app:endIconMode="custom">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_usarname"
+                        android:layout_width="300dp"
+                        android:background="@drawable/custom_input"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/username"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:hint="Password"
+                    app:startIconDrawable="@drawable/ic_baseline_lock_24"
+                    app:endIconMode="password_toggle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password"
+                        android:layout_width="300dp"
+                        android:background="@drawable/custom_input"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="270dp"
+                    android:layout_height="62dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="35dp"
+                    android:layout_centerHorizontal="true"
+                    android:backgroundTint="#01B1EA"
                     android:fontFamily="@font/poppins_semibold"
-                    android:inputType="textPersonName" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:text="iniciar Sesion"
+                    android:textSize="18dp"
+                    app:cornerRadius="10dp" />
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="270dp"
-                android:layout_height="62dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="35dp"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="#01B1EA"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="iniciar Sesion"
-                android:textSize="18dp"
-                app:cornerRadius="10dp" />
+                <TextView
+                    android:id="@+id/Forgotpassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/password"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="11dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"
+                    android:text="Recuperar contraseña" />
 
-            <TextView
-                android:id="@+id/Forgotpassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/password"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="11dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/black"
-                android:text="Recuperar contraseña" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardRegister"
+            android:layout_width="270dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/cardInputs"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-35dp"
+            app:cardCornerRadius="20dp"
+            android:elevation="10dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardRegister"
-        android:layout_width="270dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/cardInputs"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-35dp"
-        app:cardCornerRadius="20dp"
-        android:elevation="10dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txtNoCuenta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="42dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:text="¿No tienes cuenta?"/>
 
-            <TextView
-                android:id="@+id/txtNoCuenta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="42dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/black"
-                android:textSize="15dp"
-                android:text="¿No tienes cuenta?"/>
+                <TextView
+                    android:id="@+id/btnRegistro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtNoCuenta"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="#1D82F8"
+                    android:textSize="13dp"
+                    android:text="Registrate aqui"/>
 
-            <TextView
-                android:id="@+id/btnRegistro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtNoCuenta"
-                android:layout_centerHorizontal="true"
-                android:fontFamily="@font/poppins_semibold"
-                android:textColor="#1D82F8"
-                android:textSize="13dp"
-                android:text="Registrate aqui"/>
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
