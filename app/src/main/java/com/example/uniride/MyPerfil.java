@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -152,16 +153,21 @@ public class MyPerfil extends AppCompatActivity {
         fStore.collection("users").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                uName.setText(value.getString("username"));
-                uAge.setText(calcularEdad(value.getString("birthDay")));
-                uBirthDay = value.getString("birthDay").replace("/", " / ");
-                uSchool.setText(value.getString("school"));
-                uPhone.setText(value.getString("phone"));
-                if(value.getString("photo").isEmpty()){
-                    Picasso.get().load(R.drawable.person_2).into(imgUser);
+                if (value != null) {
+                    uName.setText(value.getString("username"));
+                    uAge.setText(calcularEdad(value.getString("birthDay")));
+                    uBirthDay = value.getString("birthDay").replace("/", " / ");
+                    uSchool.setText(value.getString("school"));
+                    uPhone.setText(value.getString("phone"));
+                    if(value.getString("photo").isEmpty()){
+                        Picasso.get().load(R.drawable.person_2).into(imgUser);
+                    }else{
+                        Picasso.get().load(value.getString("photo")).into(imgUser);
+                    }
                 }else{
-                    Picasso.get().load(value.getString("photo")).into(imgUser);
+                    // El documento no existe
                 }
+
             }
         });
     }
@@ -352,7 +358,27 @@ public class MyPerfil extends AppCompatActivity {
                     public void onClick(View v) {
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("school", et_dato.getText().toString());
-                        fStore.collection("users").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        fStore.collection("users").document(mAuth.getUid()).update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                uSchool.setText(et_dato.getText().toString());
+                                d_edit.dismiss();
+                                enableButtons();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Escuela Actualizada Correctamente", Snackbar.LENGTH_LONG);
+                                View snackbarView = snackbar.getView();
+                                snackbarView.setBackgroundColor(getResources().getColor(R.color.purple_500)); // Establecer el color de fondo
+                                snackbar.show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                d_edit.dismiss();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar el campo", Snackbar.LENGTH_LONG);
+                                View snackbarView = snackbar.getView();
+                                snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
+                                snackbar.show();
+                            }
+                        });/*.addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 uSchool.setText(et_dato.getText().toString());
@@ -366,12 +392,13 @@ public class MyPerfil extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar la edad", Snackbar.LENGTH_LONG);
+                                d_edit.dismiss();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar el campo", Snackbar.LENGTH_LONG);
                                 View snackbarView = snackbar.getView();
                                 snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
                                 snackbar.show();
                             }
-                        });
+                        });*/
 
                     }
                 });

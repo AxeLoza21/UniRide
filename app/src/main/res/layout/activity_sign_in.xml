@@ -205,8 +205,8 @@
 
                     <Button
                         android:id="@+id/btn_interested"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="270dp"
+                        android:layout_height="62dp"
                         android:layout_below="@+id/phone"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"

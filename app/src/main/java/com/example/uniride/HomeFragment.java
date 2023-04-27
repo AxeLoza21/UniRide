@@ -25,12 +25,14 @@ public class HomeFragment extends Fragment {
     List<raiteElement> elements;
     CardView btn_changeLocation;
     TextView location;
+    RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         vista = inflater.inflate(R.layout.fragment_home, container, false);
         btn_changeLocation = (CardView)vista.findViewById(R.id.btn_changeLocation);
+        recyclerView = vista.findViewById(R.id.raitesRecyclerView);
         location = (TextView)vista.findViewById(R.id.location);
 
         SharedPreferences datosUsuario = vista.getContext().getSharedPreferences("datosUsuario", Context.MODE_PRIVATE);
@@ -40,7 +42,7 @@ public class HomeFragment extends Fragment {
         btn_changeLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                disableButtons();
                 Intent i = new Intent(getActivity(), selectLocation.class);
                 startActivity(i);
                 getActivity().finish();
@@ -49,6 +51,12 @@ public class HomeFragment extends Fragment {
         });
 
         return vista;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        enableButtons();
     }
 
     public void init() {
@@ -62,13 +70,25 @@ public class HomeFragment extends Fragment {
         ListAdapter listAdapter = new ListAdapter(elements, getActivity(), new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(raiteElement item) {
+                disableButtons();
                 Intent i = new Intent(getActivity(), travelDetails2.class);
                 startActivity(i);
             }
         });
-        RecyclerView recyclerView = vista.findViewById(R.id.raitesRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(listAdapter);
+    }
+
+    private void disableButtons() {
+        //Deshabilitar recycleview
+        btn_changeLocation.setEnabled(false);
+        recyclerView.setEnabled(false);
+
+    }
+    private void enableButtons() {
+       //Habilitar recycleview
+        btn_changeLocation.setEnabled(true);
+        recyclerView.setEnabled(true);
     }
 }
