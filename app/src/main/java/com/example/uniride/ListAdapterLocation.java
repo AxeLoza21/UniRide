@@ -22,6 +22,15 @@ public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocatio
     final ListAdapterLocation.OnItemClickListener listener;
     private List<locationElement> filteredElements;
 
+    //-----Metodo Constructor-----
+    public ListAdapterLocation(List<locationElement> itemList, Context context, ListAdapterLocation.OnItemClickListener listener) {
+        this.mInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.mData = itemList;
+        this.listener = listener;
+        this.filteredElements = itemList;
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -57,14 +66,6 @@ public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocatio
 
     public interface OnItemClickListener {
         void onItemClick(locationElement item);
-    }
-
-    public ListAdapterLocation(List<locationElement> itemList, Context context, ListAdapterLocation.OnItemClickListener listener) {
-        this.mInflater = LayoutInflater.from(context);
-        this.context = context;
-        this.mData = itemList;
-        this.listener = listener;
-        this.filteredElements = itemList;
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.example.uniride;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -34,10 +37,12 @@ public class PerfilFragment extends Fragment {
     RelativeLayout opcion1, opcion2, opcion3, opcion4, logout;
     TextView nameUser, ageUser, schoolUser;
     ImageView imgUser;
+    Dialog d_photo;
 
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
     boolean hasCar;
+    String URL_PHOTO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,10 +57,18 @@ public class PerfilFragment extends Fragment {
         ageUser = (TextView)vista.findViewById(R.id.ageUser);
         schoolUser = (TextView)vista.findViewById(R.id.schoolUser);
         imgUser = (ImageView)vista.findViewById(R.id.profileIMG);
+        d_photo = new Dialog(getActivity());
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
+        imgUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disableButtons();
+                openDialogPhoto();
+            }
+        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +129,9 @@ public class PerfilFragment extends Fragment {
                         nameUser.setText(value.getString("username"));
                         schoolUser.setText(value.getString("school"));
                         ageUser.setText(calcularEdad(value.getString("birthDay")));
+
+                        URL_PHOTO = value.getString("photo");
+
                         if(value.getString("photo").isEmpty()){
                             Picasso.get().load(R.drawable.person_2).into(imgUser);
                         }else{
@@ -151,6 +167,7 @@ public class PerfilFragment extends Fragment {
 
     private void disableButtons() {
         //opcion1.setEnabled(false);//Deshabilitar recycleview
+        imgUser.setEnabled(false);
         opcion2.setEnabled(false);
         opcion3.setEnabled(false);
         //opcion4.setEnabled(false);
@@ -158,9 +175,27 @@ public class PerfilFragment extends Fragment {
     }
     private void enableButtons() {
         //opcion1.setEnabled(true);//Habilitar recycleview
+        imgUser.setEnabled(true);
         opcion2.setEnabled(true);
         opcion3.setEnabled(true);
         //opcion4.setEnabled(true);
         logout.setEnabled(true);
+    }
+
+    private void openDialogPhoto(){
+        d_photo.setContentView(R.layout.image_user_dialog);
+        d_photo.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        d_photo.setCanceledOnTouchOutside(true);
+        d_photo.show();
+
+        ImageView photoUser = d_photo.findViewById(R.id.imgUserComplete);
+        if(URL_PHOTO.isEmpty()){
+            Picasso.get().load(R.drawable.person_2).into(photoUser);
+        }else{
+            Picasso.get().load(URL_PHOTO).into(photoUser);
+        }
+
+        enableButtons();
+
     }
 }
