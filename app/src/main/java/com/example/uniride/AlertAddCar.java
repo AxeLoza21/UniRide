@@ -24,6 +24,8 @@ public class AlertAddCar extends AppCompatActivity {
         btnRegresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnComenzar.setEnabled(false);
+                btnRegresar.setEnabled(false);
                 onBackPressed();
             }
         });
@@ -31,6 +33,8 @@ public class AlertAddCar extends AppCompatActivity {
         btnComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnComenzar.setEnabled(false);
+                btnRegresar.setEnabled(false);
                 String myString = "MyVehicles";
                 Intent intent = new Intent(getApplicationContext(), FormCar.class);
                 intent.putExtra("Vehicles", myString);

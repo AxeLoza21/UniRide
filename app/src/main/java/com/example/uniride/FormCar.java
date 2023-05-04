@@ -33,13 +33,10 @@ import java.util.Map;
 public class FormCar extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Button SaveCar;
     ImageView btnSalir;
-
     EditText etMarcaVehiculo, etModeloVehiculo, etNumeroPlaca, etAnioVehiculo;
     Spinner spTipoVehiculo, spColorVehiculo;
-
     // Referencia a Firestore
     FirebaseFirestore db;
-
     String [] opciones = {"-","Sedan","Suv","PickUp","Compacto"};
     String [] opciones2 = {"-","Rojo","Verde","Azul","Blanco","Negro","Plateado","Amarillo","Rosa","Morado","Gris","Café"};
 
@@ -74,8 +71,6 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
             public void onClick(View v) {
                 SaveCar.setEnabled(false);
                 guardarCarro();
-
-
             }
         });
 
@@ -94,8 +89,6 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         String tipo = spTipoVehiculo.getSelectedItem().toString();
         String color = spColorVehiculo.getSelectedItem().toString();
         String anio = etAnioVehiculo.getText().toString();
-
-
 
         if (marca.isEmpty()) {
             etMarcaVehiculo.requestFocus();

@@ -78,7 +78,6 @@ public class CarDetails extends AppCompatActivity {
                     TypeSpinnerAdapter typeAdapter = new TypeSpinnerAdapter(CarDetails.this, tipos);
                     spTipoVehiculo.setAdapter(typeAdapter);
 
-
                     //----------Asignar los valores a los TextView correspondientes----------
                     int position = colores.indexOf(color);
                     int position2 = tipos.indexOf(tipo);
@@ -120,19 +119,19 @@ public class CarDetails extends AppCompatActivity {
                 }
             }
         });
-
-
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnExit.setEnabled(false);
+                btnguardar.setEnabled(false);
                 onBackPressed();
             }
         });
-
-
         btnguardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnguardar.setEnabled(false);
+                btnExit.setEnabled(false);
 
                 // Leer los nuevos valores
                 newmarca = marcaTextView.getText().toString();
@@ -175,11 +174,12 @@ public class CarDetails extends AppCompatActivity {
                                 //finish();
                             }
                         }, 3000);
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        btnguardar.setEnabled(true);
+                        btnExit.setEnabled(true);
                         // Mostrar un mensaje de error
                         Toast.makeText(CarDetails.this, "Error al guardar los datos: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -192,8 +192,6 @@ public class CarDetails extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
-
-
     //-----------Metodo para mostrar el Dialog---------
     private void openDialog(String tDato){
         // Crear el diálogo personalizado
@@ -294,7 +292,6 @@ public class CarDetails extends AppCompatActivity {
                 });
                 break;
         }
-
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
