@@ -16,10 +16,14 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,12 +39,14 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Additional_Information extends AppCompatActivity {
+public class Additional_Information extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
 
     Button btnContinue;
     ImageView abrirCalendario, imgUser;
     EditText etNacimiento, etEscuela;
     CardView btnFoto;
+    Spinner Cargo;
+    String [] opciones = {"-","Trabajador institucional","Estudiante"};
 
     private Uri image_url;
     private static final int COD_SEL_IMAGE = 300;
@@ -62,11 +68,16 @@ public class Additional_Information extends AppCompatActivity {
         etNacimiento = (EditText)findViewById(R.id.et_fechaNacimiento);
         etNacimiento.setFocusable(false);
         etEscuela = (EditText)findViewById(R.id.et_Asistes);
+        Cargo = (Spinner)findViewById(R.id.SpinerCargo);
         etEscuela.setFilters(new InputFilter[]{new InputFilter.LengthFilter(40)});
         abrirCalendario = (ImageView)findViewById(R.id.btnAbrirCalendario);
         btnFoto = (CardView)findViewById(R.id.btnUploadPhoto);
         imgUser = (ImageView)findViewById(R.id.imgUser);
         btnContinue = (Button)findViewById(R.id.btnContinue);
+        // Configurar spinner de tipo de vehículo
+        ArrayAdapter<String> aa = new ArrayAdapter<String>(Additional_Information.this,R.layout.listviewresours, opciones);
+        Cargo.setAdapter(aa);
+        Cargo.setOnItemSelectedListener(this);
 
 
         estadoInpust();
@@ -128,8 +139,6 @@ public class Additional_Information extends AppCompatActivity {
 
     }
 
-
-
     private void abrirCalendario() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(Additional_Information.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -144,9 +153,12 @@ public class Additional_Information extends AppCompatActivity {
     }
 
     private void estadoInpust() {
-        if(!etNacimiento.getText().toString().isEmpty() && etEscuela.length() > 5){
+        String cargo = Cargo.getSelectedItem().toString();
+
+        if(!etNacimiento.getText().toString().isEmpty() && etEscuela.length() > 5 && (cargo.equals("Estudiante") || cargo.equals("Trabajador institucional"))){
             btnContinue.setEnabled(true);
-        }else{
+            return;
+        }else {
             btnContinue.setEnabled(false);
         }
     }
@@ -201,4 +213,27 @@ public class Additional_Information extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String selectedOption = (String) adapterView.getItemAtPosition(i);
+
+        switch (selectedOption) {
+            case "Trabajador institucional":
+                // Aquí puedes realizar la acción que necesitas para "Trabajador institucional".
+                estadoInpust();
+                break;
+            case "Estudiante":
+                // Aquí puedes realizar la acción que necesitas para "Estudiante".
+                estadoInpust();
+                break;
+            case "-":
+                btnContinue.setEnabled(false);
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

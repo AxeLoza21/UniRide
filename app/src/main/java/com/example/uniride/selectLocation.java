@@ -1,5 +1,8 @@
 package com.example.uniride;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,23 +13,37 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class selectLocation extends AppCompatActivity {
 
     List<locationElement> elements;
     ListAdapterLocation listAdapter;
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location);
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
 
         init();
         setupSearchView();
@@ -43,9 +60,23 @@ public class selectLocation extends AppCompatActivity {
             @Override
             public void onItemClick(locationElement item) {
                 guardarDestino(item.getnCampus());
-                Intent i = new Intent(selectLocation.this, MainActivityFragment.class);
-                startActivity(i);
-                finish();
+                String campus = item.getnCampus();
+                DocumentReference documentReference = fStore.collection("users").document(fAuth.getUid());
+                Map<String, Object> user = new HashMap<>();
+                user.put("destinationLocation", campus);
+                documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Intent i = new Intent(selectLocation.this, MainActivityFragment.class);
+                        startActivity(i);
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: " + e.toString());
+                    }
+                });
             }
         });
         RecyclerView recyclerView = findViewById(R.id.locationRecyclerView);

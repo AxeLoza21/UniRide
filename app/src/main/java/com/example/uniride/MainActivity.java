@@ -69,9 +69,13 @@ public class MainActivity extends AppCompatActivity {
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         String school = value.getString("school");
                         String birthDay = value.getString("birthDay");
+                        String location = value.getString("destinationLocation");
 
                         if(school.isEmpty() || birthDay.isEmpty()){
                             startActivity(new Intent(getApplicationContext(),Additional_Information.class));
+                            finish();
+                        }else if (location.isEmpty()){
+                            startActivity(new Intent(getApplicationContext(),selectLocation.class));
                             finish();
                         }else{
                             startActivity(new Intent(getApplicationContext(),MainActivityFragment.class));
