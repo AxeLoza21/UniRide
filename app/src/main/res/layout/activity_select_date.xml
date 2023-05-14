@@ -7,12 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".SelectDate">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <ImageView
         android:id="@+id/Exit"
         android:layout_width="34dp"
         android:layout_height="33dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_marginTop="18dp"
         android:src="@drawable/baseline_navigate_before_24"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,18 +27,13 @@
         android:id="@+id/txtfecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/Exit"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:text="Escoge la fecha de salida"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Exit" />
 
@@ -41,29 +41,28 @@
         android:id="@+id/selected_date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Select a date"
         android:textSize="24sp"
-        android:visibility="invisible"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/txtfecha" />
 
     <CalendarView
         android:id="@+id/date_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="0dp"
         android:layout_marginBottom="10dp"
+        android:theme="@android:style/Theme.DeviceDefault.Light"
+        app:layout_constraintBottom_toTopOf="@id/btnContinue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtfecha"
-        app:layout_constraintBottom_toTopOf="@id/btnContinue"
-        android:theme="@android:style/Theme.DeviceDefault.Light" />
+        app:layout_constraintTop_toBottomOf="@+id/selected_date_text" />
 
     <Button
         android:id="@+id/btnContinue"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="20dp"
         android:drawableRight="@drawable/baseline_east_24"
