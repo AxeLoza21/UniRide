@@ -162,7 +162,7 @@ public class sign_in extends AppCompatActivity {
                     user.put("school", "");
                     user.put("birthDay", "");
                     user.put("photo", "");
-                    user.put("destinationLocation", "");
+                    user.put("campusPreferences", "");
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

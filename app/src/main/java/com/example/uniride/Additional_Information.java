@@ -23,9 +23,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.uniride.functions.UploadPhoto;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -50,7 +50,7 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
 
     private Uri image_url;
     private static final int COD_SEL_IMAGE = 300;
-    private static final int COD_SEL_STORAGE = 200;
+    UploadPhoto foto;
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -65,6 +65,8 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
+        foto = new UploadPhoto(this);
+
         etNacimiento = (EditText)findViewById(R.id.et_fechaNacimiento);
         etNacimiento.setFocusable(false);
         etEscuela = (EditText)findViewById(R.id.et_Asistes);
@@ -74,7 +76,7 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
         btnFoto = (CardView)findViewById(R.id.btnUploadPhoto);
         imgUser = (ImageView)findViewById(R.id.imgUser);
         btnContinue = (Button)findViewById(R.id.btnContinue);
-        // Configurar spinner de tipo de vehículo
+
         ArrayAdapter<String> aa = new ArrayAdapter<String>(Additional_Information.this,R.layout.listviewresours, opciones);
         Cargo.setAdapter(aa);
         Cargo.setOnItemSelectedListener(this);
@@ -110,7 +112,7 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
         btnFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadPhoto();
+                foto.uploadPhoto();
             }
         });
 
@@ -139,6 +141,7 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
 
     }
 
+
     private void abrirCalendario() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(Additional_Information.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -150,67 +153,6 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
         ,2000,1,1);
         datePickerDialog.show();
 
-    }
-
-    private void estadoInpust() {
-        String cargo = Cargo.getSelectedItem().toString();
-
-        if(!etNacimiento.getText().toString().isEmpty() && etEscuela.length() > 5 && (cargo.equals("Estudiante") || cargo.equals("Trabajador institucional"))){
-            btnContinue.setEnabled(true);
-            return;
-        }else {
-            btnContinue.setEnabled(false);
-        }
-    }
-
-
-    private void uploadPhoto() {
-        Intent i = new Intent(Intent.ACTION_PICK);
-        i.setType("image/*");
-        startActivityForResult(i, COD_SEL_IMAGE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        if(resultCode == RESULT_OK){
-            if(requestCode == COD_SEL_IMAGE){
-                image_url = data.getData();
-                imgUser.setImageURI(image_url);
-                subirPhoto(image_url);
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    private void subirPhoto(Uri image_url) {
-        String rute_storage_photo = "photoUserProfile/" + fAuth.getUid();
-        storageReference.child(rute_storage_photo).putFile(image_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while(!uriTask.isSuccessful());
-                    if(uriTask.isSuccessful()){
-                        uriTask.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String url_photo = uri.toString();
-                                HashMap<String, Object> map = new HashMap<>();
-                                map.put("photo", url_photo);
-                                fStore.collection("users").document(fAuth.getUid()).update(map);
-                                Toast.makeText(Additional_Information.this, "Foto cargada Correctamente", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Additional_Information.this, "Error al cargar la Foto", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -236,4 +178,31 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    private void estadoInpust() {
+        String cargo = Cargo.getSelectedItem().toString();
+
+        if(!etNacimiento.getText().toString().isEmpty() && etEscuela.length() > 5  && (cargo.equals("Estudiante") || cargo.equals("Trabajador institucional"))){
+            btnContinue.setEnabled(true);
+        }else{
+            btnContinue.setEnabled(false);
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(resultCode == RESULT_OK){
+            if(requestCode == COD_SEL_IMAGE){
+                image_url = data.getData();
+                imgUser.setImageURI(image_url);
+                foto.subirPhoto(image_url);
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }

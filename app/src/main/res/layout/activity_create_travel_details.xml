@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateTravelDetails">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/Salir"
+            android:layout_width="34dp"
+            android:layout_height="33dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/baseline_close_24"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/lineBlue"
+            android:layout_width="240dp"
+            android:layout_height="90dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-30dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#01B1EA">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="45dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:text="Resumen del Viaje"
+                    android:gravity="center"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
+
+        <!--Elemento 1-->
+        <RelativeLayout
+            android:id="@+id/cFechaSalida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lineBlue"
+            android:layout_marginTop="40dp">
+
+            <TextView
+                android:id="@+id/txtFechaSalida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="#040415"
+                android:textSize="16dp"
+                android:text="Fecha de Salida"/>
+
+            <TextView
+                android:id="@+id/fechaSalida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtFechaSalida"
+                android:layout_marginTop="-5dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="#3E3E3E"
+                android:textSize="19dp"
+                android:text="Lunes 13 de Marzo del 2023"
+                android:gravity="center"/>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/fechaSalida"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0" />
+
+            <RelativeLayout
+                android:id="@+id/cPulsaEditar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/line"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/txtPulsaEditar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="#040415"
+                    android:textSize="10dp"
+                    android:text="Pulsa para editar"/>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_toRightOf="@+id/txtPulsaEditar"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/baseline_edit_24_white"
+                    app:tint="@color/black" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/lineG"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/cPulsaEditar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:background="#717171"/>
+        </RelativeLayout>
+
+        <!--Elemento 2-->
+        <RelativeLayout
+            android:id="@+id/cHoraSalida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cFechaSalida"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/txtHoraSalida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="#040415"
+                android:textSize="16dp"
+                android:text="Hora de Salida"/>
+
+            <TextView
+                android:id="@+id/horaSalida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtHoraSalida"
+                android:layout_marginTop="-5dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="#3E3E3E"
+                android:textSize="19dp"
+                android:text="6:20 A.M"
+                android:gravity="center"/>
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/horaSalida"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0" />
+
+            <RelativeLayout
+                android:id="@+id/cPulsaEditar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/line2"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/txtPulsaEditar2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="#040415"
+                    android:textSize="10dp"
+                    android:text="Pulsa para editar"/>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_toRightOf="@+id/txtPulsaEditar2"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/baseline_edit_24_white"
+                    app:tint="@color/black" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/lineG2"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/cPulsaEditar2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:background="#717171"/>
+        </RelativeLayout>
+
+        <!--Elemento 3-->
+        <RelativeLayout
+            android:id="@+id/cCampusDestino"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cHoraSalida"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/txtCampusDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="#040415"
+                android:textSize="16dp"
+                android:text="Campus Destino"/>
+
+            <TextView
+                android:id="@+id/campusDestino"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtCampusDestino"
+                android:layout_marginTop="-5dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="#3E3E3E"
+                android:textSize="19dp"
+                android:text="Campus el Naranjo"
+                android:gravity="center"/>
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/campusDestino"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0" />
+
+            <RelativeLayout
+                android:id="@+id/cPulsaEditar3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/line3"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/txtPulsaEditar3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="#040415"
+                    android:textSize="10dp"
+                    android:text="Pulsa para editar"/>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_toRightOf="@+id/txtPulsaEditar3"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/baseline_edit_24_white"
+                    app:tint="@color/black" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/lineG3"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/cPulsaEditar3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:background="#717171"/>
+        </RelativeLayout>
+
+        <!--Elemento 4-->
+        <RelativeLayout
+            android:id="@+id/cAsientos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cCampusDestino"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/txtAsientos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="#040415"
+                android:textSize="16dp"
+                android:text="Asientos"/>
+
+            <TextView
+                android:id="@+id/asientos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtAsientos"
+                android:layout_marginTop="-5dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="#3E3E3E"
+                android:textSize="19dp"
+                android:text="2"
+                android:gravity="center"/>
+
+            <View
+                android:id="@+id/line4"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/asientos"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0" />
+
+            <RelativeLayout
+                android:id="@+id/cPulsaEditar4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/line4"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/txtPulsaEditar4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="#040415"
+                    android:textSize="10dp"
+                    android:text="Pulsa para editar"/>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_toRightOf="@+id/txtPulsaEditar4"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/baseline_edit_24_white"
+                    app:tint="@color/black" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/lineG4"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/cPulsaEditar4"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:background="#717171"/>
+        </RelativeLayout>
+
+        <!--Elemento 5-->
+        <RelativeLayout
+            android:id="@+id/cCuota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cAsientos"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/txtCuota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="#040415"
+                android:textSize="16dp"
+                android:text="Cuota"/>
+
+            <TextView
+                android:id="@+id/cuota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtCuota"
+                android:layout_marginTop="-5dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="#3E3E3E"
+                android:textSize="19dp"
+                android:text="$10"
+                android:gravity="center"/>
+
+            <View
+                android:id="@+id/line5"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/cuota"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0" />
+
+            <RelativeLayout
+                android:id="@+id/cPulsaEditar5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/line5"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/txtPulsaEditar5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="#040415"
+                    android:textSize="10dp"
+                    android:text="Pulsa para editar"/>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_toRightOf="@+id/txtPulsaEditar5"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/baseline_edit_24_white"
+                    app:tint="@color/black" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/lineG5"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/cPulsaEditar5"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:background="#717171"/>
+        </RelativeLayout>
+
+
+        <!--Elemento 6-->
+        <RelativeLayout
+            android:id="@+id/cDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cCuota"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="#040415"
+                android:textSize="16dp"
+                android:text="Descripcion del Viaje"/>
+
+            <RelativeLayout
+                android:id="@+id/cDescription"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_below="@+id/txtDescripcion"
+                android:layout_marginHorizontal="15dp"
+                android:background="@drawable/background_description"
+                android:elevation="4dp">
+
+                <TextView
+                    android:id="@+id/descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins"
+                    android:padding="10dp"
+                    android:text="Salgo de mi casa a las 6:20 para llegar a la escuela a las 6:50. Voy por la Avenida Elias Samora y despues salgo al Blvd. Miguel de la Madrid hasta llegar a las escuela"
+                    android:textColor="#040415"
+                    android:textSize="11dp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line6"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/cDescription"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0" />
+
+            <RelativeLayout
+                android:id="@+id/cPulsaEditar6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/line6"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/txtPulsaEditar6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="#040415"
+                    android:textSize="10dp"
+                    android:text="Pulsa para editar"/>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_toRightOf="@+id/txtPulsaEditar6"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/baseline_edit_24_white"
+                    app:tint="@color/black" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/lineG6"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_height="1.5dp"
+                android:layout_below="@+id/cPulsaEditar6"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:background="#717171"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnCrearRaite"
+            android:layout_width="300dp"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/cDescripcion"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            app:cornerRadius="30dp"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="15dp"
+            android:text="Crear Raite"/>
+    </RelativeLayout>
+
+</ScrollView>

@@ -41,14 +41,21 @@ public class CreateFragment extends Fragment {
         locationActual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), SelectDate.class);
+                Bundle createTravel = new Bundle();
+                createTravel.putBoolean("create", true);
+                Intent i = new Intent(getActivity(), selectLocation.class);
+                i.putExtras(createTravel);
                 startActivity(i);
             }
+
         });
         locationMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), SelectDate.class);
+                Bundle createTravel = new Bundle();
+                createTravel.putBoolean("create", true);
+                Intent i = new Intent(getActivity(), selectLocation.class);
+                i.putExtras(createTravel);
                 startActivity(i);
             }
         });

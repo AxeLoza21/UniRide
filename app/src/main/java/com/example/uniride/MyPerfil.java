@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -25,7 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.images.ImageManager;
+import com.example.uniride.components.DialogElement;
+import com.example.uniride.components.SnackBarElement;
+import com.example.uniride.functions.CalculateAge;
+import com.example.uniride.functions.UploadPhoto;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,8 +55,11 @@ public class MyPerfil extends AppCompatActivity {
     ImageView btnAtras, imgUser, btnEditAge, btnEditSchool, btnEditPhone, btnEditPassword;
     TextView uName, uAge, uSchool, uPhone, uPassword;
     CardView btnFoto;
-    Dialog d_edit;
     String uBirthDay;
+
+    DialogElement d_edit;
+    CalculateAge edad;
+    UploadPhoto foto;
 
     private Uri image_url;
     private static final int COD_SEL_IMAGE = 300;
@@ -71,6 +78,11 @@ public class MyPerfil extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
+
+        d_edit = new DialogElement(this);
+        foto = new UploadPhoto(this);
+        edad = new CalculateAge();
+
         uName = (TextView)findViewById(R.id.nombre);
         uAge = (TextView)findViewById(R.id.edad);
         uSchool = (TextView)findViewById(R.id.nEscuela);
@@ -86,14 +98,21 @@ public class MyPerfil extends AppCompatActivity {
         btnFoto = (CardView)findViewById(R.id.btnUploadPhoto);
         btnAtras = (ImageView)findViewById(R.id.btn_back);
 
-        //----Botones de Editar----
-        d_edit = new Dialog(this);
+        //Colocar la informacion del usuario de la base de datos en sus respectivos campos.
+        setInformation();
 
+        //--------------------Botones de Editar-----------------------
         btnEditAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 disableButtons();
-                openDialogFecha();
+                d_edit.showDialogAge(uBirthDay);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        enableButtons();
+                    }
+                }, 500);
             }
         });
 
@@ -101,7 +120,13 @@ public class MyPerfil extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 disableButtons();
-                openDialogSchool_and_Phone("Facultad a la que Asistes", 1);
+                d_edit.showDialogSchoolYPhone("Facultad a la que Asistes", 1);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        enableButtons();
+                    }
+                }, 500);
             }
         });
 
@@ -109,19 +134,41 @@ public class MyPerfil extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 disableButtons();
-                openDialogSchool_and_Phone("Telefono", 2);
+                d_edit.showDialogSchoolYPhone("Telefono", 2);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        enableButtons();
+                    }
+                }, 500);
+
+
             }
         });
 
         btnEditPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableButtons();
-                openDialogContasena();
+                //disableButtons();
+                //openDialogContasena();
             }
         });
 
+        btnFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disableButtons();
+                foto.uploadPhoto();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        enableButtons();
+                    }
+                }, 500);
 
+            }
+        });
+        //---------------------------------------------------------------
 
         btnAtras.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,16 +178,6 @@ public class MyPerfil extends AppCompatActivity {
             }
         });
 
-        btnFoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                disableButtons();
-                uploadPhoto();
-
-            }
-        });
-
-        setInformation();
     }
 
     @Override
@@ -155,7 +192,7 @@ public class MyPerfil extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null) {
                     uName.setText(value.getString("username"));
-                    uAge.setText(calcularEdad(value.getString("birthDay")));
+                    uAge.setText(edad.calcularEdad(value.getString("birthDay")));
                     uBirthDay = value.getString("birthDay").replace("/", " / ");
                     uSchool.setText(value.getString("school"));
                     uPhone.setText(value.getString("phone"));
@@ -172,30 +209,6 @@ public class MyPerfil extends AppCompatActivity {
         });
     }
 
-    private String calcularEdad(String fecha) {
-        String edad = "";
-        String[] parts = fecha.split("/");
-        int dia = Integer.parseInt(parts[0]); // dia
-        int mes = Integer.parseInt(parts[1]); // mes
-        int ano = Integer.parseInt(parts[2]); // año
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            LocalDate today = LocalDate.now();
-            LocalDate birthdate = LocalDate.of(ano, mes, dia);
-            Period p = Period.between(birthdate, today);
-            edad = p.getYears() + " años";
-
-        }
-
-        return edad;
-    }
-
-    private void uploadPhoto() {
-        Intent i = new Intent(Intent.ACTION_PICK);
-        i.setType("image/*");
-        startActivityForResult(i, COD_SEL_IMAGE);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -203,265 +216,14 @@ public class MyPerfil extends AppCompatActivity {
             if(requestCode == COD_SEL_IMAGE){
                 image_url = data.getData();
                 imgUser.setImageURI(image_url);
-                subirPhoto(image_url);
+                foto.subirPhoto(image_url);
             }
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
 
-    private void subirPhoto(Uri image_url) {
-        String rute_storage_photo = "photoUserProfile/" + mAuth.getUid();
-        storageReference.child(rute_storage_photo).putFile(image_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while(!uriTask.isSuccessful());
-                if(uriTask.isSuccessful()){
-                    uriTask.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String url_photo = uri.toString();
-                            HashMap<String, Object> map = new HashMap<>();
-                            map.put("photo", url_photo);
-                            fStore.collection("users").document(mAuth.getUid()).update(map);
-                            Toast.makeText(MyPerfil.this, "Foto Actualizada Correctamente", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MyPerfil.this, "Error al cargar la Foto", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void openDialogFecha(){
-        d_edit.setContentView(R.layout.edit_user_dialog2);
-        d_edit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        d_edit.setCanceledOnTouchOutside(false);
-        d_edit.show();
-
-        EditText et_dato = d_edit.findViewById(R.id.et_dato);
-        Button btnGuardar = d_edit.findViewById(R.id.btnGuardar);
-        ImageView btnCalendar = d_edit.findViewById(R.id.btnAbrirCalendario);
-
-        btnCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] parts = uBirthDay.split(" / ");
-                int dia = Integer.parseInt(parts[0]);
-                int mes = Integer.parseInt(parts[1]);
-                int ano = Integer.parseInt(parts[2]);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(MyPerfil.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        et_dato.setText(dayOfMonth+" / "+(month+1)+" / "+year);
-                    }
-                },ano,mes-1,dia);
-                datePickerDialog.show();
-            }
-        });
-
-        btnGuardar.setEnabled(false);
-        et_dato.setFocusable(false);
-        et_dato.setText(uBirthDay);
-        et_dato.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(et_dato.getText().toString().equals(uBirthDay)){
-                    btnGuardar.setEnabled(false);
-                }else{
-                    btnGuardar.setEnabled(true);
-                }
-            }
-        });
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("birthDay", et_dato.getText().toString().replace(" / ", "/"));
-                fStore.collection("users").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        uAge.setText(calcularEdad(et_dato.getText().toString().replace(" / ", "/")));
-                        enableButtons();
-                        d_edit.dismiss();
-                        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Edad Actualizada Correctamente", Snackbar.LENGTH_LONG);
-                        View snackbarView = snackbar.getView();
-                        snackbarView.setBackgroundColor(getResources().getColor(R.color.purple_500)); // Establecer el color de fondo
-                        snackbar.show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar la edad", Snackbar.LENGTH_LONG);
-                        View snackbarView = snackbar.getView();
-                        snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
-                        snackbar.show();
-                    }
-                });
-            }
-        });
-
-        ImageView btnClose = d_edit.findViewById(R.id.btn_close);
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enableButtons();
-                d_edit.dismiss();
-            }
-        });
-    }
-
-
-    private void openDialogSchool_and_Phone(String tDato, int opcion) {
-        d_edit.setContentView(R.layout.edit_user_dialog);
-        d_edit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        d_edit.setCanceledOnTouchOutside(false);
-        d_edit.show();
-
-        TextView datoText = d_edit.findViewById(R.id.datoEdit);
-        EditText et_dato = d_edit.findViewById(R.id.et_dato);
-        Button btnGuardar = d_edit.findViewById(R.id.btnGuardar);
-
-        btnGuardar.setEnabled(false);
-        datoText.setText(tDato);
-
-        switch(opcion){
-            case 1:
-                et_dato.setText(uSchool.getText());
-                et_dato.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
-                et_dato.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        if(et_dato.getText().toString().equals(uSchool.getText().toString())){
-                            btnGuardar.setEnabled(false);
-                        }else{
-                            btnGuardar.setEnabled(true);
-                        }
-                    }
-                });
-                btnGuardar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("school", et_dato.getText().toString());
-                        fStore.collection("users").document(mAuth.getUid()).update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                uSchool.setText(et_dato.getText().toString());
-                                d_edit.dismiss();
-                                enableButtons();
-                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Escuela Actualizada Correctamente", Snackbar.LENGTH_LONG);
-                                View snackbarView = snackbar.getView();
-                                snackbarView.setBackgroundColor(getResources().getColor(R.color.purple_500)); // Establecer el color de fondo
-                                snackbar.show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                d_edit.dismiss();
-                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar el campo", Snackbar.LENGTH_LONG);
-                                View snackbarView = snackbar.getView();
-                                snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
-                                snackbar.show();
-                            }
-                        });/*.addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                uSchool.setText(et_dato.getText().toString());
-                                d_edit.dismiss();
-                                enableButtons();
-                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Escuela Actualizada Correctamente", Snackbar.LENGTH_LONG);
-                                View snackbarView = snackbar.getView();
-                                snackbarView.setBackgroundColor(getResources().getColor(R.color.purple_500)); // Establecer el color de fondo
-                                snackbar.show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                d_edit.dismiss();
-                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar el campo", Snackbar.LENGTH_LONG);
-                                View snackbarView = snackbar.getView();
-                                snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
-                                snackbar.show();
-                            }
-                        });*/
-
-                    }
-                });
-                break;
-            case 2:
-                et_dato.setInputType(InputType.TYPE_CLASS_NUMBER);
-                et_dato.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-                et_dato.setText(uPhone.getText());
-                et_dato.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        if(et_dato.getText().toString().equals(uPhone.getText().toString())){
-                            btnGuardar.setEnabled(false);
-                        }else{
-                            btnGuardar.setEnabled(true);
-                        }
-                    }
-                });
-                btnGuardar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("phone", et_dato.getText().toString());
-                        fStore.collection("users").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                uSchool.setText(et_dato.getText().toString());
-                                d_edit.dismiss();
-                                enableButtons();
-                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Telefono Actualizado Correctamente", Snackbar.LENGTH_LONG);
-                                View snackbarView = snackbar.getView();
-                                snackbarView.setBackgroundColor(getResources().getColor(R.color.purple_500)); // Establecer el color de fondo
-                                snackbar.show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Error al actualizar la edad", Snackbar.LENGTH_LONG);
-                                View snackbarView = snackbar.getView();
-                                snackbarView.setBackgroundColor(getResources().getColor(R.color.red)); // Establecer el color de fondo
-                                snackbar.show();
-                            }
-                        });
-                    }
-                });
-                break;
-        }
-
-        ImageView btnClose = d_edit.findViewById(R.id.btn_close);
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enableButtons();
-                d_edit.dismiss();
-            }
-        });
-
-    }
-
+    /*
     private void openDialogContasena(){
         d_edit.setContentView(R.layout.edit_user_dialog3);
         d_edit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -518,9 +280,9 @@ public class MyPerfil extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
-    private void disableButtons() {
+    public void disableButtons() {
         btnFoto.setEnabled(false);//Deshabilitar recycleview
         btnAtras.setEnabled(false);
         btnEditPassword.setEnabled(false);
@@ -528,7 +290,7 @@ public class MyPerfil extends AppCompatActivity {
         btnEditAge.setEnabled(false);
         btnEditSchool.setEnabled(false);
     }
-    private void enableButtons() {
+    public void enableButtons() {
         btnFoto.setEnabled(true);//Deshabilitar recycleview
         btnAtras.setEnabled(true);
         btnEditPassword.setEnabled(true);

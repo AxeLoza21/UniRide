@@ -2,6 +2,8 @@ package com.example.uniride;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.uniride.components.SnackBarElement;
 import com.google.android.material.snackbar.Snackbar;
 import android.graphics.Color;
 import android.annotation.SuppressLint;
@@ -33,10 +35,14 @@ import java.util.Map;
 public class FormCar extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Button SaveCar;
     ImageView btnSalir;
+    SnackBarElement snakBar;
+
     EditText etMarcaVehiculo, etModeloVehiculo, etNumeroPlaca, etAnioVehiculo;
     Spinner spTipoVehiculo, spColorVehiculo;
+
     // Referencia a Firestore
     FirebaseFirestore db;
+
     String [] opciones = {"-","Sedan","Suv","PickUp","Compacto"};
     String [] opciones2 = {"-","Rojo","Verde","Azul","Blanco","Negro","Plateado","Amarillo","Rosa","Morado","Gris","Café"};
 
@@ -54,6 +60,7 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         etNumeroPlaca = (EditText)findViewById(R.id.EditTextNumeroPlaca);
         etAnioVehiculo = (EditText)findViewById(R.id.EditTextAñoVehiculo);
         db = FirebaseFirestore.getInstance();
+        snakBar = new SnackBarElement(this);
 
         // Configurar spinner de tipo de vehículo
         ArrayAdapter<String> aa = new ArrayAdapter<String>(FormCar.this,
@@ -71,6 +78,8 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
             public void onClick(View v) {
                 SaveCar.setEnabled(false);
                 guardarCarro();
+
+
             }
         });
 
@@ -89,6 +98,8 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         String tipo = spTipoVehiculo.getSelectedItem().toString();
         String color = spColorVehiculo.getSelectedItem().toString();
         String anio = etAnioVehiculo.getText().toString();
+
+
 
         if (marca.isEmpty()) {
             etMarcaVehiculo.requestFocus();
@@ -188,11 +199,7 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
             @Override
             public void onSuccess(Void unused) {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Se agrego un vehículo", Snackbar.LENGTH_LONG);
-                View snackbarView = snackbar.getView();
-                snackbarView.setBackgroundColor(getResources().getColor(R.color.green)); // Establecer el color de fondo
-                snackbar.show();
+                snakBar.showSnackBar(getResources().getColor(R.color.green),"Se agrego un vehículo");
 
                 // Esperar 3 segundos antes de desbloquear la pantalla y volver a la actividad principal
                 new Handler().postDelayed(new Runnable() {

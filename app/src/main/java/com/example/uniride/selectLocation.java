@@ -32,6 +32,7 @@ import java.util.Map;
 
 public class selectLocation extends AppCompatActivity {
 
+    HashMap<String, Object> datos = new HashMap<>();
     List<locationElement> elements;
     ListAdapterLocation listAdapter;
     FirebaseAuth fAuth;
@@ -59,24 +60,54 @@ public class selectLocation extends AppCompatActivity {
         listAdapter = new ListAdapterLocation(elements, this, new ListAdapterLocation.OnItemClickListener() {
             @Override
             public void onItemClick(locationElement item) {
-                guardarDestino(item.getnCampus());
-                String campus = item.getnCampus();
-                DocumentReference documentReference = fStore.collection("users").document(fAuth.getUid());
-                Map<String, Object> user = new HashMap<>();
-                user.put("destinationLocation", campus);
-                documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Intent i = new Intent(selectLocation.this, MainActivityFragment.class);
-                        startActivity(i);
+                boolean crear = getIntent().getBooleanExtra("create", false);
+                if(!crear){
+                    guardarDestino(item.getnCampus());
+                    String campus = item.getnCampus();
+                    DocumentReference documentReference = fStore.collection("users").document(fAuth.getUid());
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("destinationLocation", campus);
+                    documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Intent i = new Intent(selectLocation.this, MainActivityFragment.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "onFailure: " + e.toString());
+                        }
+                    });
+
+                }else{
+                    if(getIntent().getBooleanExtra("editar", false)){
+                        //----Recibir los datos anteriores----
+                        Bundle c = getIntent().getExtras();
+                        datos = (HashMap<String, Object>) c.getSerializable("datos");
+
+                        Bundle cDatos = new Bundle();
+                        datos.put("campusDestination", item.getnCampus());
+                        cDatos.putSerializable("datos",datos);
+
+                        Intent d = new Intent(selectLocation.this, CreateTravelDetails.class);
+                        d.putExtras(cDatos);
+                        startActivity(d);
                         finish();
+                    }else{
+                        Bundle cDatos = new Bundle();
+                        datos.put("campusDestination", item.getnCampus());
+                        cDatos.putSerializable("datos",datos);
+
+                        Intent d = new Intent(selectLocation.this, SelectDate.class);
+                        d.putExtras(cDatos);
+                        startActivity(d);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: " + e.toString());
-                    }
-                });
+
+
+                }
+
             }
         });
         RecyclerView recyclerView = findViewById(R.id.locationRecyclerView);

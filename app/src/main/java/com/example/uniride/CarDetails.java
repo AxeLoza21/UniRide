@@ -209,7 +209,7 @@ public class CarDetails extends AppCompatActivity {
         switch(tDato){
             case "Marca":
                 //Texto que muestra el valor del que se esta actualizando.
-                txtEditar.setText("Marca");
+                txtEditar.setText("Marca del Vehiculo");
 
                 // Establecer el texto actual del TextView en el EditText
                 editText.setText(marcaTextView.getText().toString());
@@ -230,7 +230,7 @@ public class CarDetails extends AppCompatActivity {
                 break;
             case "Modelo":
                 //Texto que muestra el valor del que se esta actualizando.
-                txtEditar.setText("Modelo");
+                txtEditar.setText("Modelo del Vehiculo");
 
                 // Establecer el texto actual del TextView en el EditText
                 editText.setText(modeloTextView.getText().toString());
@@ -251,7 +251,7 @@ public class CarDetails extends AppCompatActivity {
                 break;
             case "Placa":
                 //Texto que muestra el valor del que se esta actualizando.
-                txtEditar.setText("Placa");
+                txtEditar.setText("Numero de Placa");
 
                 // Establecer el texto actual del TextView en el EditText
                 editText.setText(placaTextView.getText().toString());
@@ -272,7 +272,7 @@ public class CarDetails extends AppCompatActivity {
                 break;
             case "Ano":
                 //Texto que muestra el valor del que se esta actualizando.
-                txtEditar.setText("Año");
+                txtEditar.setText("Año del Vehiculo");
 
                 // Establecer el texto actual del TextView en el EditText
                 editText.setText(añoTextView.getText().toString());

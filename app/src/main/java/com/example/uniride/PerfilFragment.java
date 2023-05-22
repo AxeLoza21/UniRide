@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.uniride.functions.CalculateAge;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -39,6 +40,8 @@ public class PerfilFragment extends Fragment {
     ImageView imgUser;
     Dialog d_photo;
 
+    CalculateAge edad;
+
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
     boolean hasCar;
@@ -50,6 +53,7 @@ public class PerfilFragment extends Fragment {
 
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_perfil, container, false);
+        opcion1 = (RelativeLayout)vista.findViewById(R.id.cOpcion1);
         opcion2 = (RelativeLayout)vista.findViewById(R.id.cOpcion2);
         opcion3 = (RelativeLayout)vista.findViewById(R.id.cOpcion3);
         logout = (RelativeLayout)vista.findViewById(R.id.logout);
@@ -57,7 +61,9 @@ public class PerfilFragment extends Fragment {
         ageUser = (TextView)vista.findViewById(R.id.ageUser);
         schoolUser = (TextView)vista.findViewById(R.id.schoolUser);
         imgUser = (ImageView)vista.findViewById(R.id.profileIMG);
+
         d_photo = new Dialog(getActivity());
+        edad = new CalculateAge();
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -78,6 +84,15 @@ public class PerfilFragment extends Fragment {
                 Intent i = new Intent(getActivity(), login.class);
                 startActivity(i);
                 getActivity().finish();
+            }
+        });
+
+        opcion1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disableButtons();
+                Intent i = new Intent(getActivity(), MyTravels.class);
+                startActivity(i);
             }
         });
 
@@ -128,7 +143,7 @@ public class PerfilFragment extends Fragment {
                     if (value != null) {
                         nameUser.setText(value.getString("username"));
                         schoolUser.setText(value.getString("school"));
-                        ageUser.setText(calcularEdad(value.getString("birthDay")));
+                        ageUser.setText(edad.calcularEdad(value.getString("birthDay")));
 
                         URL_PHOTO = value.getString("photo");
 
@@ -148,22 +163,6 @@ public class PerfilFragment extends Fragment {
 
     }
 
-    private String calcularEdad(String fecha) {
-        String edad = "";
-        String[] parts = fecha.split("/");
-        int dia = Integer.parseInt(parts[0]); // dia
-        int mes = Integer.parseInt(parts[1]); // mes
-        int ano = Integer.parseInt(parts[2]); // año
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            LocalDate today = LocalDate.now();
-            LocalDate birthdate = LocalDate.of(ano, mes, dia);
-            Period p = Period.between(birthdate, today);
-            edad = p.getYears() + " años";
-
-        }
-        return edad;
-    }
 
     private void disableButtons() {
         //opcion1.setEnabled(false);//Deshabilitar recycleview

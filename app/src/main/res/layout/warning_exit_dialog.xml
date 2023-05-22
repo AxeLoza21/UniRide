@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/txtSeguro"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:text="¿Seguro que desea salir?"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txtNo"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtSeguro"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:text="!No se guardaran los cambios¡¡"
+                android:gravity="center"/>
+
+            <Button
+                android:id="@+id/btnSalir"
+                android:layout_width="150dp"
+                android:layout_height="55dp"
+                android:layout_below="@+id/txtNo"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                app:cornerRadius="15dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="15dp"
+                android:text="Salir"
+                android:backgroundTint="#D6D6D6"/>
+
+            <Button
+                android:id="@+id/btnCancelar"
+                android:layout_width="150dp"
+                android:layout_height="55dp"
+                android:layout_below="@+id/txtNo"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                app:cornerRadius="15dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="15dp"
+                android:text="Cancelar"
+                android:backgroundTint="#BD0707"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
