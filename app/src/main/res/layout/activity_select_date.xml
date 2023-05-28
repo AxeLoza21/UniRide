@@ -33,7 +33,6 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:text="Escoge la fecha de salida"
@@ -49,15 +48,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/poppins"
         android:text="--     --     --"
         android:textSize="24sp"
         tools:ignore="MissingConstraints"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical"
         app:layout_constraintStart_toStartOf="@id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/txtfecha" />
-        />
 
     <CalendarView
         android:id="@+id/date_picker"
@@ -67,9 +63,9 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtfecha"
         app:layout_constraintBottom_toTopOf="@id/btnContinue"
-        android:theme="@android:style/Theme.DeviceDefault.Light" />
+        android:theme="@android:style/Theme.DeviceDefault.Light"
+        app:layout_constraintTop_toBottomOf="@+id/selected_date_text" />
 
     <Button
         android:id="@+id/btnContinue"
@@ -77,16 +73,14 @@
         android:layout_height="65dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:paddingLeft="23dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="20dp"
         android:drawableRight="@drawable/baseline_east_24"
         android:fontFamily="@font/poppins_bold"
         android:text="Seguir"
         android:textAllCaps="false"
-        android:textSize="17dp"
+        android:textSize="19dp"
         app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

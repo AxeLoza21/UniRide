@@ -13,8 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.uniride.adapter.PublicationAdapter;
+import com.example.uniride.model.Publications;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +27,14 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     View vista;
-    List<raiteElement> elements;
+    List<Publications> elements;
     CardView btn_changeLocation;
     TextView location;
     RecyclerView recyclerView;
+    PublicationAdapter publicationAdapter;
+    SharedPreferences datosUsuario;
+
+    FirebaseFirestore fStore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,11 +42,15 @@ public class HomeFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_home, container, false);
         btn_changeLocation = (CardView)vista.findViewById(R.id.btn_changeLocation);
         recyclerView = vista.findViewById(R.id.raitesRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
         location = (TextView)vista.findViewById(R.id.location);
 
-        SharedPreferences datosUsuario = vista.getContext().getSharedPreferences("datosUsuario", Context.MODE_PRIVATE);
+        fStore = FirebaseFirestore.getInstance();
+
+
+        datosUsuario = vista.getContext().getSharedPreferences("datosUsuario", Context.MODE_PRIVATE);
         location.setText(datosUsuario.getString("campus", "???Campus???"));
-        init();
 
         btn_changeLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,34 +63,31 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        init();
         return vista;
+    }
+
+    private void init() {
+        Query query = fStore.collection("publications").whereEqualTo("campusDestination", datosUsuario.getString("campus", "???Campus???"));
+
+        FirestoreRecyclerOptions<Publications> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<Publications>().setQuery(query, Publications.class).build();
+
+        publicationAdapter = new PublicationAdapter(firestoreRecyclerOptions, getActivity());
+        publicationAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(publicationAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         enableButtons();
+        publicationAdapter.startListening();
     }
 
-    public void init() {
-        elements = new ArrayList<>();
-        elements.add(new raiteElement("Ernesto Manuel Jimenez Pineda", "LapizLazuli", "6:40 A.M", "3"));
-        elements.add(new raiteElement("Oscar Axel ", "Santiago", "6:20 A.M", "2"));
-        elements.add(new raiteElement("Andrei Trejo ", "Barrio 5", "6:30 A.M", "4"));
-        elements.add(new raiteElement("Edson Manzano ", "Barrio 3", "6:50 A.M", "3"));
-        elements.add(new raiteElement("Pancho ", "Colomos", "5:40 A.M", "1"));
-
-        ListAdapter listAdapter = new ListAdapter(elements, getActivity(), new ListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(raiteElement item) {
-                disableButtons();
-                Intent i = new Intent(getActivity(), travelDetails2.class);
-                startActivity(i);
-            }
-        });
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(listAdapter);
+    @Override
+    public void onStop() {
+        super.onStop();
+        publicationAdapter.startListening();
     }
 
     private void disableButtons() {
@@ -91,4 +101,29 @@ public class HomeFragment extends Fragment {
         btn_changeLocation.setEnabled(true);
         recyclerView.setEnabled(true);
     }
+
+
+
+
+    //RecyclerView Anterior
+    /*public void init() {
+        elements = new ArrayList<>();
+        elements.add(new Publications("Ernesto Manuel Jimenez Pineda", "LapizLazuli", "6:40 A.M", "3"));
+        elements.add(new Publications("Oscar Axel ", "Santiago", "6:20 A.M", "2"));
+        elements.add(new Publications("Andrei Trejo ", "Barrio 5", "6:30 A.M", "4"));
+        elements.add(new Publications("Edson Manzano ", "Barrio 3", "6:50 A.M", "3"));
+        elements.add(new Publications("Pancho ", "Colomos", "5:40 A.M", "1"));
+
+        PublicationAdapter publicationAdapter = new PublicationAdapter(elements, getActivity(), new PublicationAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Publications item) {
+                disableButtons();
+                Intent i = new Intent(getActivity(), travelDetails2.class);
+                startActivity(i);
+            }
+        });
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(publicationAdapter);
+    }*/
 }

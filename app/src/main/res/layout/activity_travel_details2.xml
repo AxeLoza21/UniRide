@@ -175,13 +175,22 @@
                 android:layout_below="@id/line"
                 android:layout_marginTop="10dp">
 
-                <ImageView
-                    android:id="@+id/imgUser"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardPhotoUser"
                     android:layout_width="60dp"
                     android:layout_height="62dp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="15dp"
-                    android:src="@drawable/foto_2" />
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardCornerRadius="100dp">
+                    <ImageView
+                        android:id="@+id/imgUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/foto_2"
+                        android:scaleType="centerCrop"/>
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:id="@+id/nameUser"
@@ -189,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="12dp"
-                    android:layout_toRightOf="@+id/imgUser"
+                    android:layout_toRightOf="@+id/cardPhotoUser"
                     android:fontFamily="@font/poppins_bold"
                     android:text="Juan perez de la Cruz"
                     android:textColor="#3E3E3E"
@@ -202,7 +211,7 @@
                     android:layout_below="@+id/nameUser"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="-2dp"
-                    android:layout_toRightOf="@+id/imgUser"
+                    android:layout_toRightOf="@+id/cardPhotoUser"
                     android:fontFamily="@font/poppins"
                     android:text="21 años"
                     android:textColor="#040415"

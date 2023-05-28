@@ -59,6 +59,8 @@ public class SelectDate extends AppCompatActivity {
         Calendar calendar = new GregorianCalendar();
         if(getIntent().getBooleanExtra("editar", false)){
             try {
+                calendar = Calendar.getInstance();
+                datePicker.setMinDate(calendar.getTimeInMillis());
                 Date fechaAnt = formateador.parse(fecha);
                 calendar.setTime(fechaAnt);
                 fecha = formateador.format(calendar.getTime());
