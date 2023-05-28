@@ -35,7 +35,7 @@ import java.time.format.DateTimeFormatter;
 
 public class PerfilFragment extends Fragment {
     View vista;
-    RelativeLayout opcion1, opcion2, opcion3, opcion4, logout;
+    RelativeLayout opcion2, opcion3, opcion4, logout;
     TextView nameUser, ageUser, schoolUser;
     ImageView imgUser;
     Dialog d_photo;
@@ -53,7 +53,7 @@ public class PerfilFragment extends Fragment {
 
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_perfil, container, false);
-        opcion1 = (RelativeLayout)vista.findViewById(R.id.cOpcion1);
+
         opcion2 = (RelativeLayout)vista.findViewById(R.id.cOpcion2);
         opcion3 = (RelativeLayout)vista.findViewById(R.id.cOpcion3);
         logout = (RelativeLayout)vista.findViewById(R.id.logout);
@@ -87,14 +87,7 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        opcion1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                disableButtons();
-                Intent i = new Intent(getActivity(), MyTravels.class);
-                startActivity(i);
-            }
-        });
+
 
         opcion2.setOnClickListener(new View.OnClickListener() {
             @Override
