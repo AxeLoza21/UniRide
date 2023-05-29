@@ -15,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uniride.CarDetails;
+import com.example.uniride.CreateTravelDetails;
 import com.example.uniride.R;
 import com.example.uniride.model.Car;
 import com.example.uniride.model.Travel;
+import com.example.uniride.travelDetails2;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,7 +34,9 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
     private FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Activity activity;
-    boolean isCompletedFragment;
+    boolean isCompletedFragment, isMyHistoryTravels;
+
+
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -40,10 +44,12 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
      *
      * @param options
      */
-    public TravelAdapter(@NonNull FirestoreRecyclerOptions<Travel> options, Activity activity, boolean isCompletedFragment) {
+    public TravelAdapter(@NonNull FirestoreRecyclerOptions<Travel> options, Activity activity, boolean isCompletedFragment, boolean isMyHistoryTravels) {
         super(options);
         this.activity = activity;
         this.isCompletedFragment = isCompletedFragment;
+        this.isMyHistoryTravels = isMyHistoryTravels;
+
 
 
     }
@@ -61,16 +67,30 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
         if (isCompletedFragment) {
             // Cambiar el fondo del CardView para el CompletedFragment
             holder.borde.setBackgroundResource(R.drawable.cardview_completed);
+        } else if (isMyHistoryTravels) {
+            holder.borde.setBackgroundResource(R.drawable.cardview_history);
         }
-
 
 
         holder.visualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(activity, CarDetails.class);
-                i.putExtra("id_car", id);
-                activity.startActivity(i);
+                if (isMyHistoryTravels){
+                    Intent e = new Intent(activity, travelDetails2.class);
+                    e.putExtra("idItem", id);
+                    e.putExtra("originActivity", "TravelAdapter");
+                    activity.startActivity(e);
+                } else if (isCompletedFragment) {
+                    Intent e = new Intent(activity, travelDetails2.class);
+                    e.putExtra("idItem", id);
+                    e.putExtra("originActivity", "TravelAdapter");
+                    activity.startActivity(e);
+                } else {
+                    Intent e = new Intent(activity, travelDetails2.class);
+                    e.putExtra("idItem", id);
+                    e.putExtra("originActivity", "TravelAdapter");
+                    activity.startActivity(e);
+                }
             }
         });
 

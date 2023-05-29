@@ -69,6 +69,7 @@ public class PublicationAdapter extends FirestoreRecyclerAdapter<Publications, P
             public void onClick(View v) {
                 Intent i = new Intent(activity, travelDetails2.class);
                 i.putExtra("idItem", idItem);
+                i.putExtra("originActivity", "PublicationAdapter");
                 activity.startActivity(i);
 
             }

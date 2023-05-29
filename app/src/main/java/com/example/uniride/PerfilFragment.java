@@ -61,6 +61,7 @@ public class PerfilFragment extends Fragment {
         ageUser = (TextView)vista.findViewById(R.id.ageUser);
         schoolUser = (TextView)vista.findViewById(R.id.schoolUser);
         imgUser = (ImageView)vista.findViewById(R.id.profileIMG);
+        opcion4 = (RelativeLayout)vista.findViewById(R.id.cOpcion4);
 
         d_photo = new Dialog(getActivity());
         edad = new CalculateAge();
@@ -116,6 +117,16 @@ public class PerfilFragment extends Fragment {
                 }
             }
         });
+        opcion4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                disableButtons();
+                Intent i = new Intent(getActivity(), MyHistoryTravels.class);
+                startActivity(i);
+
+            }
+        });
+
 
         setInformation();
 
@@ -162,7 +173,7 @@ public class PerfilFragment extends Fragment {
         imgUser.setEnabled(false);
         opcion2.setEnabled(false);
         opcion3.setEnabled(false);
-        //opcion4.setEnabled(false);
+        opcion4.setEnabled(false);
         logout.setEnabled(false);
     }
     private void enableButtons() {
@@ -170,7 +181,7 @@ public class PerfilFragment extends Fragment {
         imgUser.setEnabled(true);
         opcion2.setEnabled(true);
         opcion3.setEnabled(true);
-        //opcion4.setEnabled(true);
+        opcion4.setEnabled(true);
         logout.setEnabled(true);
     }
 

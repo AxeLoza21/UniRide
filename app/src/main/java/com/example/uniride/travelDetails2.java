@@ -40,6 +40,7 @@ public class travelDetails2 extends AppCompatActivity {
         cE = new CalculateAge();
         cf = new FormatDateName();
 
+
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
@@ -55,6 +56,10 @@ public class travelDetails2 extends AppCompatActivity {
         imgCreator = (ImageView) findViewById(R.id.imgUser);
         btnBack = (ImageView)findViewById(R.id.btn_back);
         btnPedirRaite = (Button)findViewById(R.id.btnPedirRaite);
+        final String originActivity = getIntent().getStringExtra("originActivity");
+        if ("TravelAdapter".equals(originActivity)) {
+            btnPedirRaite.setVisibility(View.GONE);
+        }
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -94,8 +94,7 @@
                 android:id="@+id/cOpcion2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/line"
-                android:layout_marginTop="15dp"
+                android:layout_below="@+id/cOpcion4"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground">
 
@@ -126,7 +125,8 @@
                 android:id="@+id/cOpcion3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cOpcion2"
+                android:layout_below="@+id/line"
+                android:layout_marginTop="15dp"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground">
 
@@ -188,7 +188,7 @@
                 android:id="@+id/logout"
                 android:layout_width="175dp"
                 android:layout_height="50dp"
-                android:layout_below="@+id/cOpcion4"
+                android:layout_below="@+id/cOpcion2"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
                 android:clickable="true"
