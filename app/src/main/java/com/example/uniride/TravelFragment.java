@@ -39,6 +39,7 @@ public class TravelFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_travel, container, false);
         viewPager = root.findViewById(R.id.viewPager);
         tabLayout = root.findViewById(R.id.tabLayout);
+        viewPager.setSaveEnabled(false);// Arreglar crasheo de fragments
 
 
         setUpViewPagerAndTabs();
@@ -53,7 +54,7 @@ public class TravelFragment extends Fragment {
         if (fragmentActivity != null) {
             viewPager.setAdapter(new TravelPagerAdapter(fragmentActivity));
             new TabLayoutMediator(tabLayout, viewPager,
-                    (tab, position) -> tab.setText(position == 0 ? "Viajes en progreso" : "Viajes completados"))
+                    (tab, position) -> tab.setText(position == 0 ? "Viajes Solicitados" : "Viajes Creados"))
                     .attach();
         }
     }

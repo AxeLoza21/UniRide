@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class travelDetails2 extends AppCompatActivity {
     TextView dateAndTime, startingLocation, destinationLocation, nameCreator, ageCreator, description, time, price, seating;
     ImageView btnBack, imgCreator;
     Button btnPedirRaite;
+    LinearLayout cTxtYourPublication;
 
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
@@ -44,6 +46,7 @@ public class travelDetails2 extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
+        cTxtYourPublication = (LinearLayout)findViewById(R.id.cTexto);
         dateAndTime = (TextView)findViewById(R.id.fechaYhoraSalida);
         startingLocation = (TextView)findViewById(R.id.startingLocation);
         destinationLocation = (TextView)findViewById(R.id.destinationLocation);
@@ -110,6 +113,13 @@ public class travelDetails2 extends AppCompatActivity {
                 time.setText(timee);
                 price.setText("$"+value.getString("travelPrice"));
                 seating.setText(value.getString("travelSeating"));
+
+                //----------------La publicacion es tuya----------------
+                if(value.getString("IdCreator").equals(mAuth.getUid())){
+                    btnPedirRaite.setVisibility(View.GONE);
+                    cTxtYourPublication.setVisibility(View.VISIBLE);
+
+                }
             }
         });
     }

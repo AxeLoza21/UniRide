@@ -14,16 +14,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.uniride.adapter.TravelAdapter;
 import com.example.uniride.model.Travel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class InProgressFragment extends Fragment {
+    LinearLayout cTexto;
     RecyclerView mRecycler;
     TravelAdapter mAdapter;
     FirebaseFirestore mFirestore;
@@ -43,14 +49,27 @@ public class InProgressFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        cTexto = view.findViewById(R.id.cTexto);
         mRecycler = view.findViewById(R.id.recyclerInProgress);
 
         mFirestore = FirebaseFirestore.getInstance();
         mRecycler.setLayoutManager(new WrapContentLinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL,false));
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //--------Obtener la cantidad de elementos que va haber en el RecyclerView-------
+        mFirestore.collection("publications").whereEqualTo("IdCreator", "nadaPorElMomento").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value.size() > 0){
+                    cTexto.setVisibility(View.INVISIBLE);
+                }else{
+                    cTexto.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        //---------------------------------------------------------------------------------
 
-        query = mFirestore.collection("publications").whereEqualTo("IdCreator", userId);
+        query = mFirestore.collection("publications").whereEqualTo("IdCreator", "nadaPorElMomento");
         FirestoreRecyclerOptions<Travel> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<Travel>().setQuery(query, Travel.class).build();
 
         mAdapter = new TravelAdapter(firestoreRecyclerOptions, this.getActivity(), false, false);

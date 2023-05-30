@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,13 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.uniride.adapter.PublicationAdapter;
 import com.example.uniride.model.Publications;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +36,7 @@ public class HomeFragment extends Fragment {
     View vista;
     List<Publications> elements;
     CardView btn_changeLocation;
+    LinearLayout cTexto;
     TextView location;
     RecyclerView recyclerView;
     PublicationAdapter publicationAdapter;
@@ -36,18 +44,19 @@ public class HomeFragment extends Fragment {
 
     FirebaseFirestore fStore;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         vista = inflater.inflate(R.layout.fragment_home, container, false);
         btn_changeLocation = (CardView)vista.findViewById(R.id.btn_changeLocation);
+        cTexto = vista.findViewById(R.id.cTexto);
         recyclerView = vista.findViewById(R.id.raitesRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         location = (TextView)vista.findViewById(R.id.location);
 
         fStore = FirebaseFirestore.getInstance();
-
 
         datosUsuario = vista.getContext().getSharedPreferences("datosUsuario", Context.MODE_PRIVATE);
         location.setText(datosUsuario.getString("campus", "???Campus???"));
@@ -62,6 +71,19 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+        //--------Obtener la cantidad de elementos que va haber en el RecyclerView-------
+        fStore.collection("publications").whereEqualTo("campusDestination", datosUsuario.getString("campus", "???Campus???")).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value.size() > 0){
+                    cTexto.setVisibility(View.INVISIBLE);
+                }else{
+                    cTexto.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        //---------------------------------------------------------------------------------
 
         init();
         return vista;

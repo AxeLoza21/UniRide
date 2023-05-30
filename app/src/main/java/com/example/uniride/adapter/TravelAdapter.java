@@ -98,8 +98,6 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
     }
 
 
-
-
     @NonNull
     @Override
     public TravelAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

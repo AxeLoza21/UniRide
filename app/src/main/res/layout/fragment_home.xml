@@ -85,4 +85,28 @@
         android:layout_marginHorizontal="15dp">
     </androidx.recyclerview.widget.RecyclerView>
 
+    <LinearLayout
+        android:id="@+id/cTexto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="invisible">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/triste"
+            app:tint="#878787" />
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Aun no hay Raites hacia este Campus"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="25dp"
+            android:gravity="center"/>
+    </LinearLayout>
+
 </RelativeLayout>

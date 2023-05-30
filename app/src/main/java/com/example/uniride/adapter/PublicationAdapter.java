@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,9 +57,13 @@ public class PublicationAdapter extends FirestoreRecyclerAdapter<Publications, P
         fStore.collection("users").document(publication.getIdCreator()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                holder.userName = value.getString("username");
-                holder.nameUser.setText(holder.userName);
-                Picasso.get().load(value.getString("photo")).into(holder.imgUser);
+                if (value != null) {
+                    holder.userName = value.getString("username");
+                    holder.nameUser.setText(holder.userName);
+                    Picasso.get().load(value.getString("photo")).into(holder.imgUser);
+                }else{
+                    //El Documento no existe
+                }
             }
         });
 
