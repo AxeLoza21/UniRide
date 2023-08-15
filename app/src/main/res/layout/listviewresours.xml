@@ -5,10 +5,8 @@
     android:id="@+id/textLista"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F5F5F5"
-    android:padding="10dp"
-    android:text="Ejemplo"
-    android:textColor="@color/black"
-    android:fontFamily="@font/poppins"
-    android:textSize="20sp"
-    android:textStyle="normal"></TextView>
+    android:padding="16dp"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+</TextView>

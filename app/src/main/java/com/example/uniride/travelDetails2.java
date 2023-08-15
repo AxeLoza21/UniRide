@@ -79,6 +79,13 @@ public class travelDetails2 extends AppCompatActivity {
             }
         });
 
+        cTxtYourPublication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(travelDetails2.this, MyTravelsCreated.class));
+            }
+        });
+
         final String idPublication = getIntent().getStringExtra("idItem");
         setInformation(idPublication);
     }

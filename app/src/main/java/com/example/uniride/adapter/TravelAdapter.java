@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uniride.CarDetails;
 import com.example.uniride.CreateTravelDetails;
+import com.example.uniride.MyTravelsCreated;
 import com.example.uniride.R;
 import com.example.uniride.model.Car;
 import com.example.uniride.model.Travel;
@@ -61,34 +62,35 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
         DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
         final String id = documentSnapshot.getId();
 
-        holder.Initiation.setText(Travel.getCampusDestination());
+        holder.Initiation.setText(Travel.getLatInitation());
         holder.fecha.setText(Travel.getDatePublication());
-        holder.Destination.setText(Travel.getLatInitation());
+        holder.hora.setText(Travel.getTimePublication());
+        holder.Destination.setText(Travel.getCampusDestination());
         if (isCompletedFragment) {
             // Cambiar el fondo del CardView para el CompletedFragment
-            holder.borde.setBackgroundResource(R.drawable.cardview_completed);
+            holder.borde.setBackgroundResource(R.drawable.cardview_border);
         } else if (isMyHistoryTravels) {
             holder.borde.setBackgroundResource(R.drawable.cardview_history);
         }
 
 
-        holder.visualizar.setOnClickListener(new View.OnClickListener() {
+        holder.borde.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isMyHistoryTravels){
-                    Intent e = new Intent(activity, travelDetails2.class);
+                    Intent e = new Intent(activity, MyTravelsCreated.class);
                     e.putExtra("idItem", id);
-                    e.putExtra("originActivity", "TravelAdapter");
+                    e.putExtra("state", Travel.getState());
                     activity.startActivity(e);
                 } else if (isCompletedFragment) {
-                    Intent e = new Intent(activity, travelDetails2.class);
+                    Intent e = new Intent(activity, MyTravelsCreated.class);
                     e.putExtra("idItem", id);
-                    e.putExtra("originActivity", "TravelAdapter");
+                    e.putExtra("state", Travel.getState());
                     activity.startActivity(e);
                 } else {
-                    Intent e = new Intent(activity, travelDetails2.class);
+                    Intent e = new Intent(activity, MyTravelsCreated.class);
                     e.putExtra("idItem", id);
-                    e.putExtra("originActivity", "TravelAdapter");
+                    e.putExtra("state", Travel.getState());
                     activity.startActivity(e);
                 }
             }
@@ -106,8 +108,7 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView Initiation, Destination, fecha;
-        ImageView visualizar;
+        TextView Initiation, Destination, fecha, hora;
         LinearLayout borde;
 
         public ViewHolder(@NonNull View itemView) {
@@ -116,7 +117,7 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
             Initiation = itemView.findViewById(R.id.txtinitiation);
             Destination = itemView.findViewById(R.id.txtDestination);
             fecha = itemView.findViewById(R.id.txtCalendar);
-            visualizar = itemView.findViewById(R.id.arrow);
+            hora = itemView.findViewById(R.id.txtHour);
             borde = itemView.findViewById(R.id.primero);
 
         }

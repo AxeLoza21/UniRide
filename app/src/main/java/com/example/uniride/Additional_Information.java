@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -39,14 +40,14 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Additional_Information extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
+public class Additional_Information extends AppCompatActivity {
 
     Button btnContinue;
     ImageView abrirCalendario, imgUser;
     EditText etNacimiento, etEscuela;
     CardView btnFoto;
-    Spinner Cargo;
-    String [] opciones = {"-","Trabajador institucional","Estudiante"};
+    AutoCompleteTextView Cargo;
+    String [] opciones = {"Trabajador institucional","Estudiante"};
 
     private Uri image_url;
     private static final int COD_SEL_IMAGE = 300;
@@ -70,7 +71,7 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
         etNacimiento = (EditText)findViewById(R.id.et_fechaNacimiento);
         etNacimiento.setFocusable(false);
         etEscuela = (EditText)findViewById(R.id.et_Asistes);
-        Cargo = (Spinner)findViewById(R.id.SpinerCargo);
+        Cargo = (AutoCompleteTextView) findViewById(R.id.SpinerCargo);
         etEscuela.setFilters(new InputFilter[]{new InputFilter.LengthFilter(40)});
         abrirCalendario = (ImageView)findViewById(R.id.btnAbrirCalendario);
         btnFoto = (CardView)findViewById(R.id.btnUploadPhoto);
@@ -79,7 +80,12 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
 
         ArrayAdapter<String> aa = new ArrayAdapter<String>(Additional_Information.this,R.layout.listviewresours, opciones);
         Cargo.setAdapter(aa);
-        Cargo.setOnItemSelectedListener(this);
+        Cargo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                estadoInpust();
+            }
+        });
 
 
         estadoInpust();
@@ -155,32 +161,8 @@ public class Additional_Information extends AppCompatActivity  implements Adapte
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selectedOption = (String) adapterView.getItemAtPosition(i);
-
-        switch (selectedOption) {
-            case "Trabajador institucional":
-                // Aquí puedes realizar la acción que necesitas para "Trabajador institucional".
-                estadoInpust();
-                break;
-            case "Estudiante":
-                // Aquí puedes realizar la acción que necesitas para "Estudiante".
-                estadoInpust();
-                break;
-            case "-":
-                btnContinue.setEnabled(false);
-                break;
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
     private void estadoInpust() {
-        String cargo = Cargo.getSelectedItem().toString();
+        String cargo = Cargo.getText().toString();
 
         if(!etNacimiento.getText().toString().isEmpty() && etEscuela.length() > 5  && (cargo.equals("Estudiante") || cargo.equals("Trabajador institucional"))){
             btnContinue.setEnabled(true);

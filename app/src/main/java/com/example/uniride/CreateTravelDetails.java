@@ -3,6 +3,7 @@ package com.example.uniride;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.uniride.components.DialogElement;
 import com.example.uniride.components.SnackBarElement;
@@ -24,7 +26,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,17 +78,38 @@ public class CreateTravelDetails extends AppCompatActivity {
 
         //-----------Setear la informacion---------
 
-        //Recibir la informacion de las vistas anteriores
-        Bundle c = getIntent().getExtras();
-        datos = (HashMap<String, Object>) c.getSerializable("datos");
-        String fecha = datos.get("datePublication").toString();
+        if(getIntent().getStringExtra("idItem") != null){
+            fStore.collection("publications").document(getIntent().getStringExtra("idItem")).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    datos = (HashMap<String, Object>) value.getData();
+                    Log.e("Map", datos.toString());
 
-        fechaSalida.setText(cf.getDiaSemana(fecha)+" "+fecha.substring(0,2)+" de "+cf.getNombreMes(fecha)+" del "+fecha.substring(6));
-        horaSalida.setText(datos.get("timePublication").toString());
-        campusDestino.setText(datos.get("campusDestination").toString());
-        asientos.setText(datos.get("travelSeating").toString());
-        cuota.setText("$"+datos.get("travelPrice").toString());
-        descripcion.setText(datos.get("travelDescription").toString());
+                    String fecha = datos.get("datePublication").toString();
+
+                    fechaSalida.setText(cf.getDiaSemana(fecha)+" "+fecha.substring(0,2)+" de "+cf.getNombreMes(fecha)+" del "+fecha.substring(6));
+                    horaSalida.setText(datos.get("timePublication").toString());
+                    campusDestino.setText(datos.get("campusDestination").toString());
+                    asientos.setText(datos.get("travelSeating").toString());
+                    cuota.setText("$"+datos.get("travelPrice").toString());
+                    descripcion.setText(datos.get("travelDescription").toString());
+                }
+            });
+        }else{
+            //Recibir la informacion de las vistas anteriores
+            Bundle c = getIntent().getExtras();
+            datos = (HashMap<String, Object>) c.getSerializable("datos");
+
+            String fecha = datos.get("datePublication").toString();
+
+            fechaSalida.setText(cf.getDiaSemana(fecha)+" "+fecha.substring(0,2)+" de "+cf.getNombreMes(fecha)+" del "+fecha.substring(6));
+            horaSalida.setText(datos.get("timePublication").toString());
+            campusDestino.setText(datos.get("campusDestination").toString());
+            asientos.setText(datos.get("travelSeating").toString());
+            cuota.setText("$"+datos.get("travelPrice").toString());
+            descripcion.setText(datos.get("travelDescription").toString());
+        }
+
 
         //-------------------------------------------
 
@@ -216,6 +242,7 @@ public class CreateTravelDetails extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         dialog.showDialogWarningExit();
+        //new DialogElement(this).showDialogWarningExit();
 
     }
 
