@@ -2,11 +2,16 @@ package com.example.uniride;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -39,11 +44,14 @@ login extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseUser user;
     FirebaseFirestore fStore;
+    int REQUEST_CODE = 200;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         registrarse = (TextView)findViewById(R.id.btnRegistro);
         login = (Button)findViewById(R.id.btn_login);
@@ -101,33 +109,42 @@ login extends AppCompatActivity {
 
                             fAuth = FirebaseAuth.getInstance();
                             user = fAuth.getCurrentUser();
-                            if (!user.isEmailVerified()) {
-                                Toast.makeText(login.this, "Debes de verificar el correo", Toast.LENGTH_SHORT).show();
-                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                fAuth.signOut();
+                            int permiso_location_precisa = ContextCompat.checkSelfPermission(login.this, Manifest.permission.ACCESS_FINE_LOCATION);
+                            if (permiso_location_precisa == PackageManager.PERMISSION_GRANTED) {
+                                // Permiso concedido, continuar con la lógica después de la autenticación
+                                // ...
+                                if (!user.isEmailVerified()) {
+                                    Toast.makeText(login.this, "Debes de verificar el correo", Toast.LENGTH_SHORT).show();
+                                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    fAuth.signOut();
 
-                            } else if (user.isEmailVerified()) {
-                                DocumentReference documentReference = fStore.collection("users").document(user.getUid());
-                                documentReference.addSnapshotListener(com.example.uniride.login.this, new EventListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                        String school = value.getString("school");
-                                        String birthDay = value.getString("birthDay");
-                                        String location = value.getString("destinationLocation");
+                                } else if (user.isEmailVerified()) {
+                                    DocumentReference documentReference = fStore.collection("users").document(user.getUid());
+                                    documentReference.addSnapshotListener(com.example.uniride.login.this, new EventListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            String school = value.getString("school");
+                                            String birthDay = value.getString("birthDay");
+                                            String location = value.getString("destinationLocation");
 
-                                        if(school.isEmpty() || birthDay.isEmpty()){
-                                            startActivity(new Intent(getApplicationContext(),Additional_Information.class));
-                                            finish();
-                                        }else if (location.isEmpty()){
-                                            startActivity(new Intent(getApplicationContext(),selectLocation.class));
-                                            finish();
-                                        }else{
-                                            startActivity(new Intent(getApplicationContext(),MainActivityFragment.class));
-                                            finish();
+                                            if(school.isEmpty() || birthDay.isEmpty()){
+                                                startActivity(new Intent(getApplicationContext(),Additional_Information.class));
+                                                finish();
+                                            }else if (location.isEmpty()){
+                                                startActivity(new Intent(getApplicationContext(),selectLocation.class));
+                                                finish();
+                                            }else{
+                                                startActivity(new Intent(getApplicationContext(),MainActivityFragment.class));
+                                                finish();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
+                            } else {
+                                // Permiso no concedido, mostrar diálogo para solicitar permisos
+                                mostrarDialogoSolicitudPermisos();
                             }
+
                         }
 
                     }
@@ -196,6 +213,47 @@ login extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+    }
+    // apartado para verificar permisos y pedirlos
+    private AlertDialog alertDialog;
+    private void mostrarDialogoSolicitudPermisos() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permiso de Ubicación");
+        builder.setMessage("Esta aplicación necesita acceso a la ubicación para brindarte una mejor experiencia. ¿Conceder permiso ahora?");
+
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Solicitar permisos nuevamente
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+                }
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // El usuario rechazó los permisos, tomar la acción adecuada
+                Toast.makeText(login.this, "No se puede iniciar sesion, por favor habilite el acceso a la ubicación", Toast.LENGTH_SHORT).show();
+                fAuth.signOut();
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    @Override
+    public void onBackPressed() {
+        // Verificar si el AlertDialog está mostrándose y, si es así, no permitir cerrar la actividad
+        if (alertDialog != null && alertDialog.isShowing()) {
+            // No permitir que se cierre el diálogo
+            return;
+        }
+
+        // Si el diálogo no está mostrándose, permite que se cierre la actividad
+        super.onBackPressed();
     }
 
 }

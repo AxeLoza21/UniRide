@@ -76,16 +76,15 @@ public class HomeFragment extends Fragment {
         fStore.collection("publications").whereEqualTo("campusDestination", datosUsuario.getString("campus", "???Campus???")).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value != null) {
-                    if (value.size() > 0){
-                        cTexto.setVisibility(View.INVISIBLE);
-                    }else{
-                        cTexto.setVisibility(View.VISIBLE);
-                    }
-                }else {
-                    //el documnegrshd
+                if (error != null) {
+                    // Manejar el error si es necesario
+                    return;
                 }
-
+                if (value != null && !value.isEmpty()) {//se modifico para que cuando se cierre cesion ya que si ponemos value.size() > 0 y no llegan valores nulos nos dara error
+                    cTexto.setVisibility(View.INVISIBLE);
+                } else {
+                    cTexto.setVisibility(View.VISIBLE);
+                }
             }
         });
         //---------------------------------------------------------------------------------
