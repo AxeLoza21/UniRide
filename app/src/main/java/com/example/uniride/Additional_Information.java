@@ -129,6 +129,7 @@ public class Additional_Information extends AppCompatActivity {
                 DocumentReference documentReference = fStore.collection("users").document(fAuth.getUid());
                 Map<String, Object> user = new HashMap<>();
                 user.put("school", etEscuela.getText().toString());
+
                 user.put("birthDay", etNacimiento.getText().toString().replace(" ",""));
                 documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

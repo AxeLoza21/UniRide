@@ -207,6 +207,7 @@ public class CreateTravelDetails extends AppCompatActivity {
                 publication.put("longCampus", "");
                 publication.put("latInitation", "");
                 publication.put("longInitation", "");
+                publication.put("State", "Activo");
 
                 documentReference.set(publication).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

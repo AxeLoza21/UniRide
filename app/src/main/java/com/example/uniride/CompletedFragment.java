@@ -67,7 +67,7 @@ public class CompletedFragment extends Fragment {
         });
         //---------------------------------------------------------------------------------
 
-        query = mFirestore.collection("publications").whereEqualTo("IdCreator", userId);
+        query = mFirestore.collection("publications").whereEqualTo("IdCreator", userId).whereEqualTo("State", "Activo");
         FirestoreRecyclerOptions<Travel> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<Travel>().setQuery(query, Travel.class).build();
 
         mAdapter = new TravelAdapter(firestoreRecyclerOptions, this.getActivity(), true, false);

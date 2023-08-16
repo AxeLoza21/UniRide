@@ -76,11 +76,16 @@ public class HomeFragment extends Fragment {
         fStore.collection("publications").whereEqualTo("campusDestination", datosUsuario.getString("campus", "???Campus???")).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value.size() > 0){
-                    cTexto.setVisibility(View.INVISIBLE);
-                }else{
-                    cTexto.setVisibility(View.VISIBLE);
+                if (value != null) {
+                    if (value.size() > 0){
+                        cTexto.setVisibility(View.INVISIBLE);
+                    }else{
+                        cTexto.setVisibility(View.VISIBLE);
+                    }
+                }else {
+                    //el documnegrshd
                 }
+
             }
         });
         //---------------------------------------------------------------------------------

@@ -70,14 +70,16 @@ public class MainActivity extends AppCompatActivity {
                         String school = value.getString("school");
                         String birthDay = value.getString("birthDay");
                         String location = value.getString("destinationLocation");
+                        String cargo = value.getString("Rol");
 
-                        if(school.isEmpty() || birthDay.isEmpty()){
+                        if(school.equals("") || birthDay.equals("") || cargo.equals("")){
                             startActivity(new Intent(getApplicationContext(),Additional_Information.class));
                             finish();
                         }else if (location.isEmpty()){
                             startActivity(new Intent(getApplicationContext(),selectLocation.class));
                             finish();
-                        }else{
+                        }
+                        else{
                             startActivity(new Intent(getApplicationContext(),MainActivityFragment.class));
                             finish();
                         }

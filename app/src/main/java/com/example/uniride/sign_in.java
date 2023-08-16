@@ -79,6 +79,7 @@ public class sign_in extends AppCompatActivity {
         String repitpassword = ed_repitpassword.getText().toString().trim();
         String phone = ed_telef.getText().toString().trim();
 
+
         // Validar el campo de usuario
         if (TextUtils.isEmpty(username)) {
             ed_user.setError("Nombre de usuario requerido");
@@ -163,6 +164,7 @@ public class sign_in extends AppCompatActivity {
                     user.put("birthDay", "");
                     user.put("photo", "");
                     user.put("campusPreferences", "");
+                    user.put("Rol", "");
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
