@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                    Intent i = new Intent(MainActivity.this, login.class);//modificar esto para que te mande al iniciar, predeterminado: login
+                    Intent i = new Intent(MainActivity.this, MapsActivity.class);//modificar esto para que te mande al iniciar, predeterminado: login
                     startActivity(i);
                     finish();
                 }

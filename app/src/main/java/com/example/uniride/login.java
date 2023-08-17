@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -44,7 +45,7 @@ login extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseUser user;
     FirebaseFirestore fStore;
-    int REQUEST_CODE = 200;
+    int LOCATION_REQUEST_CODE = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -73,88 +74,8 @@ login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                String email = ed_email.getText().toString().trim();
-                String password = ed_password.getText().toString().trim();
-                if (TextUtils.isEmpty(email)) {
-                    ed_email.setError("Correo requerido");
-                    ed_email.requestFocus();
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    return;
-                } else if (!isValidEmail(email)) {
-                    // Validar formato del correo
-                    ed_email.setError("Correo inválido. El correo debe tener el formato 'ejemplo@ucol.mx' y contener solo letras y números.");
-                    ed_email.requestFocus();
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    return;
-                }
+                performLogin();
 
-                // Validar el campo de contraseña
-                if (TextUtils.isEmpty(password)) {
-                    ed_password.setError("Contraseña requerida", null);
-                    ed_password.requestFocus();
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    return;
-                } else if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=\\S+$).{8,}$")) {
-                    ed_password.setError("La contraseña debe tener al menos una letra mayúscula, dos números, un carácter especial y ser mayor a 8 caracteres", null);
-                    ed_password.requestFocus();
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    return;
-                }
-                //Se cumplio las acciones
-                fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            fAuth = FirebaseAuth.getInstance();
-                            user = fAuth.getCurrentUser();
-                            int permiso_location_precisa = ContextCompat.checkSelfPermission(login.this, Manifest.permission.ACCESS_FINE_LOCATION);
-                            if (permiso_location_precisa == PackageManager.PERMISSION_GRANTED) {
-                                // Permiso concedido, continuar con la lógica después de la autenticación
-                                // ...
-                                if (!user.isEmailVerified()) {
-                                    Toast.makeText(login.this, "Debes de verificar el correo", Toast.LENGTH_SHORT).show();
-                                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                    fAuth.signOut();
-
-                                } else if (user.isEmailVerified()) {
-                                    DocumentReference documentReference = fStore.collection("users").document(user.getUid());
-                                    documentReference.addSnapshotListener(com.example.uniride.login.this, new EventListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            String school = value.getString("school");
-                                            String birthDay = value.getString("birthDay");
-                                            String location = value.getString("destinationLocation");
-
-                                            if(school.isEmpty() || birthDay.isEmpty()){
-                                                startActivity(new Intent(getApplicationContext(),Additional_Information.class));
-                                                finish();
-                                            }else if (location.isEmpty()){
-                                                startActivity(new Intent(getApplicationContext(),selectLocation.class));
-                                                finish();
-                                            }else{
-                                                startActivity(new Intent(getApplicationContext(),MainActivityFragment.class));
-                                                finish();
-                                            }
-                                        }
-                                    });
-                                }
-                            } else {
-                                // Permiso no concedido, mostrar diálogo para solicitar permisos
-                                mostrarDialogoSolicitudPermisos();
-                            }
-
-                        }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(login.this, "Error al iniciar sesión. Verifica tu correo y contraseña", Toast.LENGTH_SHORT).show();
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    }
-                });
             }
         });
 
@@ -165,6 +86,67 @@ login extends AppCompatActivity {
             }
         });
     }
+
+    private void performLogin() {
+        if (ContextCompat.checkSelfPermission(login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+        }  else {
+            // El permiso de ubicación ya está concedido, proceder con el inicio de sesión
+            // Tu código de inicio de sesión actual aquí
+            // ...
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            String email = ed_email.getText().toString().trim();
+            String password = ed_password.getText().toString().trim();
+            if (TextUtils.isEmpty(email)) {
+                ed_email.setError("Correo requerido");
+                ed_email.requestFocus();
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                return;
+            } else if (!isValidEmail(email)) {
+                // Validar formato del correo
+                ed_email.setError("Correo inválido. El correo debe tener el formato 'ejemplo@ucol.mx' y contener solo letras y números.");
+                ed_email.requestFocus();
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                return;
+            }
+
+            // Validar el campo de contraseña
+            if (TextUtils.isEmpty(password)) {
+                ed_password.setError("Contraseña requerida", null);
+                ed_password.requestFocus();
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                return;
+            } else if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=\\S+$).{8,}$")) {
+                ed_password.setError("La contraseña debe tener al menos una letra mayúscula, dos números, un carácter especial y ser mayor a 8 caracteres", null);
+                ed_password.requestFocus();
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                return;
+            }
+            //Se cumplio las acciones
+            fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+
+                        fAuth = FirebaseAuth.getInstance();
+                        user = fAuth.getCurrentUser();
+                        iniciar();
+
+
+                    }
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(login.this, "Error al iniciar sesión. Verifica tu correo y contraseña", Toast.LENGTH_SHORT).show();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                }
+            });
+        }
+
+    }
+
     // Función para validar el formato del correo
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@ucol\\.mx$";
@@ -214,46 +196,48 @@ login extends AppCompatActivity {
         dialog.show();
 
     }
-    // apartado para verificar permisos y pedirlos
-    private AlertDialog alertDialog;
-    private void mostrarDialogoSolicitudPermisos() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permiso de Ubicación");
-        builder.setMessage("Esta aplicación necesita acceso a la ubicación para brindarte una mejor experiencia. ¿Conceder permiso ahora?");
-
-        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Solicitar permisos nuevamente
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-                }
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // El usuario rechazó los permisos, tomar la acción adecuada
-                Toast.makeText(login.this, "No se puede iniciar sesion, por favor habilite el acceso a la ubicación", Toast.LENGTH_SHORT).show();
-                fAuth.signOut();
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
     @Override
-    public void onBackPressed() {
-        // Verificar si el AlertDialog está mostrándose y, si es así, no permitir cerrar la actividad
-        if (alertDialog != null && alertDialog.isShowing()) {
-            // No permitir que se cierre el diálogo
-            return;
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // El permiso de ubicación fue concedido, proceder con el inicio de sesión
+                performLogin();
+            } else {
+                // El permiso de ubicación fue denegado, mostrar un mensaje al usuario
+                Toast.makeText(login.this, "Debes conceder el permiso de ubicación para iniciar sesión", Toast.LENGTH_SHORT).show();
+            }
         }
-
-        // Si el diálogo no está mostrándose, permite que se cierre la actividad
-        super.onBackPressed();
     }
 
+
+    public void iniciar() {
+        if (!user.isEmailVerified()) {
+            Toast.makeText(login.this, "Debes de verificar el correo", Toast.LENGTH_SHORT).show();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            fAuth.signOut();
+
+        } else if (user.isEmailVerified()) {
+            DocumentReference documentReference = fStore.collection("users").document(user.getUid());
+            documentReference.addSnapshotListener(com.example.uniride.login.this, new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    String school = value.getString("school");
+                    String birthDay = value.getString("birthDay");
+                    String location = value.getString("destinationLocation");
+
+                    if(school.isEmpty() || birthDay.isEmpty()){
+                        startActivity(new Intent(getApplicationContext(),Additional_Information.class));
+                        finish();
+                    }else if (location.isEmpty()){
+                        startActivity(new Intent(getApplicationContext(),selectLocation.class));
+                        finish();
+                    }else{
+                        startActivity(new Intent(getApplicationContext(),MapsActivity.class));// por el momento se cambia a maps para estar modificando pero es MainActivityFragment
+                        finish();
+                    }
+                }
+            });
+        }
+    }
 }
