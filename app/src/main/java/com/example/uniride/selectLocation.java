@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,12 +19,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.type.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,9 +56,9 @@ public class selectLocation extends AppCompatActivity {
 
     public void init() {
         elements = new ArrayList<>();
-        elements.add(new locationElement("Manzanillo, Colima", "Campus el Naranjo", "FIE FCAM FACIMAR facultad ingenieria software mecanica electromecanica electrica mecatronica contabilidad administracion oceanico ingeniero licenciatura ingeniero software"));
-        elements.add(new locationElement("Manzanillo, Colima", "Campus Barrio 3", "CUBAM gastronomia comercio exterior aduanas licenciatura "));
-        elements.add(new locationElement("Manzanillo, Colima", "Campus San Pedrito", "Bach 8 Bach 9 Bach 10 bachillerato 8 bachillerato 9 bachillerato 10"));
+        elements.add(new locationElement("Manzanillo, Colima", "Campus el Naranjo", "FIE FCAM FACIMAR facultad ingenieria software mecanica electromecanica electrica mecatronica contabilidad administracion oceanico ingeniero licenciatura ingeniero software",19.1226787, -104.4032666));
+        elements.add(new locationElement("Manzanillo, Colima", "Campus Barrio 3", "CUBAM gastronomia comercio exterior aduanas licenciatura ", 19.1060035, -104.311148));
+        elements.add(new locationElement("Manzanillo, Colima", "Campus San Pedrito", "Bach 8 Bach 9 Bach 10 bachillerato 8 bachillerato 9 bachillerato 10", 19.0546213, -104.3074771));
 
         listAdapter = new ListAdapterLocation(elements, this, new ListAdapterLocation.OnItemClickListener() {
             @Override
@@ -82,13 +85,16 @@ public class selectLocation extends AppCompatActivity {
                     });
 
                 }else{
-                    if(getIntent().getBooleanExtra("editar", false)){
-                        //----Recibir los datos anteriores----
-                        Bundle c = getIntent().getExtras();
-                        datos = (HashMap<String, Object>) c.getSerializable("datos");
 
+                    //----Recibir los datos anteriores----
+                    Bundle c = getIntent().getExtras();
+                    datos = (HashMap<String, Object>) c.getSerializable("datos");
+
+                    if(getIntent().getBooleanExtra("editar", false)){
                         Bundle cDatos = new Bundle();
                         datos.put("campusDestination", item.getnCampus());
+                        datos.put("DesLat", item.getLat());
+                        datos.put("DesLng", item.getLng());
                         cDatos.putSerializable("datos",datos);
 
                         Intent d = new Intent(selectLocation.this, CreateTravelDetails.class);
@@ -98,9 +104,11 @@ public class selectLocation extends AppCompatActivity {
                     }else{
                         Bundle cDatos = new Bundle();
                         datos.put("campusDestination", item.getnCampus());
+                        datos.put("DesLat", item.getLat());
+                        datos.put("DesLng", item.getLng());
                         cDatos.putSerializable("datos",datos);
 
-                        Intent d = new Intent(selectLocation.this, SelectDate.class);
+                        Intent d = new Intent(selectLocation.this, RouteMap.class);
                         d.putExtras(cDatos);
                         startActivity(d);
                     }

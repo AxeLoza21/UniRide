@@ -6,11 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
+    <TextView
         android:id="@+id/nose"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Pasar"/>
+        android:text="Hola soy una SplashScreen"
+        android:textSize="20dp"
+        android:gravity="center"/>
 
 </RelativeLayout>

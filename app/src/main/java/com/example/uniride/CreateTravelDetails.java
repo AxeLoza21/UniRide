@@ -58,6 +58,7 @@ public class CreateTravelDetails extends AppCompatActivity {
         cf = new FormatDateName();
         snackBar = new SnackBarElement(this);
 
+
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
