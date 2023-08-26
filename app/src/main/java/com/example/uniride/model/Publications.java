@@ -2,13 +2,14 @@ package com.example.uniride.model;
 
 public class Publications {
 
-    String IdCreator, timePublication, travelSeating;
+    String IdCreator, timePublication, travelSeating, direccionPartida;
     public Publications(){}
 
-    public Publications(String idCreator, String timePublication, String travelSeating) {
+    public Publications(String idCreator, String timePublication, String travelSeating, String direccionPartida) {
         this.IdCreator = idCreator;
         this.timePublication = timePublication;
         this.travelSeating = travelSeating;
+        this.direccionPartida = direccionPartida;
     }
 
     public String getIdCreator() {
@@ -33,5 +34,13 @@ public class Publications {
 
     public void setTravelSeating(String travelSeating) {
         this.travelSeating = travelSeating;
+    }
+
+    public String getDireccionPartida() {
+        return direccionPartida;
+    }
+
+    public void setDireccionPartida(String direccionPartida) {
+        this.direccionPartida = direccionPartida;
     }
 }

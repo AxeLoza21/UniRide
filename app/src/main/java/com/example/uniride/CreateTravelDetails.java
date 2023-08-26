@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.uniride.components.DialogElement;
 import com.example.uniride.components.SnackBarElement;
 import com.example.uniride.functions.FormatDateName;
+import com.example.uniride.functions.SplitDirection;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,10 +37,10 @@ import java.util.Map;
 
 public class CreateTravelDetails extends AppCompatActivity {
 
-    TextView fechaSalida, horaSalida, campusDestino, asientos, cuota, descripcion;
+    TextView fechaSalida, horaSalida, puntoInicio, campusDestino, asientos, cuota, descripcion;
     Button btnCrearRaite;
     ImageView btnSalir;
-    RelativeLayout btnEditarFecha, btnEditarHora, btnEditarCampusDestino, btnEditarAsientos, btnEditarCuota, btnEditarDescripcion;
+    RelativeLayout btnEditarFecha, btnEditarHora, btnPuntoInicio, btnEditarCampusDestino, btnEditarAsientos, btnEditarCuota, btnEditarDescripcion, btnVerRutaMapa;
     HashMap<String, Object> datos = new HashMap<>();
 
     DialogElement dialog;
@@ -64,6 +65,7 @@ public class CreateTravelDetails extends AppCompatActivity {
 
         fechaSalida = (TextView)findViewById(R.id.fechaSalida);
         horaSalida = (TextView)findViewById(R.id.horaSalida);
+        puntoInicio = (TextView)findViewById(R.id.puntoInicio);
         campusDestino = (TextView)findViewById(R.id.campusDestino);
         asientos = (TextView)findViewById(R.id.asientos);
         cuota = (TextView)findViewById(R.id.cuota);
@@ -72,24 +74,26 @@ public class CreateTravelDetails extends AppCompatActivity {
         btnSalir = (ImageView)findViewById(R.id.Salir);
         btnEditarFecha = (RelativeLayout)findViewById(R.id.cPulsaEditar);
         btnEditarHora = (RelativeLayout)findViewById(R.id.cPulsaEditar2);
-        btnEditarCampusDestino = (RelativeLayout)findViewById(R.id.cPulsaEditar3);
+        btnPuntoInicio = (RelativeLayout)findViewById(R.id.cPulsaEditar31);
+        btnEditarCampusDestino = (RelativeLayout)findViewById(R.id.cPulsaEditar32);
         btnEditarAsientos = (RelativeLayout)findViewById(R.id.cPulsaEditar4);
         btnEditarCuota = (RelativeLayout)findViewById(R.id.cPulsaEditar5);
         btnEditarDescripcion = (RelativeLayout)findViewById(R.id.cPulsaEditar6);
+        btnVerRutaMapa = (RelativeLayout)findViewById(R.id.btnVerRutaMapa);
 
         //-----------Setear la informacion---------
-
         if(getIntent().getStringExtra("idItem") != null){
+            //Recibir la informacion de FireStore
             fStore.collection("publications").document(getIntent().getStringExtra("idItem")).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                     datos = (HashMap<String, Object>) value.getData();
-                    Log.e("Map", datos.toString());
-
                     String fecha = datos.get("datePublication").toString();
+                    String direccion = datos.get("direccionPartida").toString();
 
                     fechaSalida.setText(cf.getDiaSemana(fecha)+" "+fecha.substring(0,2)+" de "+cf.getNombreMes(fecha)+" del "+fecha.substring(6));
                     horaSalida.setText(datos.get("timePublication").toString());
+                    puntoInicio.setText(new SplitDirection().getDirection(direccion));
                     campusDestino.setText(datos.get("campusDestination").toString());
                     asientos.setText(datos.get("travelSeating").toString());
                     cuota.setText("$"+datos.get("travelPrice").toString());
@@ -102,17 +106,18 @@ public class CreateTravelDetails extends AppCompatActivity {
             datos = (HashMap<String, Object>) c.getSerializable("datos");
 
             String fecha = datos.get("datePublication").toString();
+            String direccion = datos.get("direccionPartida").toString();
 
             fechaSalida.setText(cf.getDiaSemana(fecha)+" "+fecha.substring(0,2)+" de "+cf.getNombreMes(fecha)+" del "+fecha.substring(6));
             horaSalida.setText(datos.get("timePublication").toString());
+            puntoInicio.setText(new SplitDirection().getDirection(direccion));
             campusDestino.setText(datos.get("campusDestination").toString());
             asientos.setText(datos.get("travelSeating").toString());
             cuota.setText("$"+datos.get("travelPrice").toString());
             descripcion.setText(datos.get("travelDescription").toString());
         }
-
-
         //-------------------------------------------
+
 
         btnEditarFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +147,20 @@ public class CreateTravelDetails extends AppCompatActivity {
             }
         });
 
+        btnPuntoInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle cDatos = new Bundle();
+                cDatos.putSerializable("datos", datos);
+
+                Intent d = new Intent(getApplicationContext(), MapsActivity.class);
+                d.putExtra("editar", true);
+                d.putExtra("activity","createTravelDetails");
+                d.putExtras(cDatos);
+                startActivity(d);
+            }
+        });
+
         btnEditarCampusDestino.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,8 +170,16 @@ public class CreateTravelDetails extends AppCompatActivity {
                 Intent d = new Intent(getApplicationContext(), selectLocation.class);
                 d.putExtra("editar", true);
                 d.putExtra("create", true);
+                d.putExtra("activity","createTravelDetails");
                 d.putExtras(cDatos);
                 startActivity(d);
+            }
+        });
+
+        btnVerRutaMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Ir al activity que va a hacer Ernesto con unicamente el mapa con los dos puntos y la ruta
             }
         });
 
@@ -204,10 +231,6 @@ public class CreateTravelDetails extends AppCompatActivity {
                 DocumentReference documentReference = fStore.collection("publications").document();
                 Map<String, Object> publication = datos;
                 publication.put("IdCreator", fAuth.getUid());
-                publication.put("latCampus", "");
-                publication.put("longCampus", "");
-                publication.put("latInitation", "");
-                publication.put("longInitation", "");
                 publication.put("State", "Activo");
 
                 documentReference.set(publication).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -244,8 +267,8 @@ public class CreateTravelDetails extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         dialog.showDialogWarningExit();
-        //new DialogElement(this).showDialogWarningExit();
 
     }
+
 
 }

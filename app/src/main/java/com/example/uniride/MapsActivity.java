@@ -95,12 +95,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Bundle createTravel = new Bundle();
                 datos.put("OriLat", Double.parseDouble(pOriginLatLng.latitude+""));
                 datos.put("OriLng", Double.parseDouble(pOriginLatLng.longitude+""));
-                datos.put("Direccion", direccion);
+                datos.put("direccionPartida", direccion);
                 createTravel.putSerializable("datos", datos);
-                Intent i = new Intent(MapsActivity.this, selectLocation.class);
-                i.putExtra("create", true);
-                i.putExtras(createTravel);
-                startActivity(i);
+
+                if(getIntent().getBooleanExtra("editar", false)){
+                    if(getIntent().getStringExtra("activity").equals("routeMap")){
+                        Intent i = new Intent(MapsActivity.this, RouteMap.class);
+                        i.putExtras(createTravel);
+                        startActivity(i);
+                        finish();
+                    }else if(getIntent().getStringExtra("activity").equals("createTravelDetails")){
+                        Intent i = new Intent(MapsActivity.this, CreateTravelDetails.class);
+                        i.putExtras(createTravel);
+                        startActivity(i);
+                        finish();
+                    }
+
+                }else{
+                    Intent i = new Intent(MapsActivity.this, selectLocation.class);
+                    i.putExtra("create", true);
+                    i.putExtras(createTravel);
+                    startActivity(i);
+                }
+
             }
         });
 
@@ -137,8 +154,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng latLngColima = new LatLng(19.1510171, -103.9152456);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngColima, 8));
+
+        if(getIntent().getBooleanExtra("editar", false)){
+            //Recibir la informacion de las vistas anteriores
+            Bundle c = getIntent().getExtras();
+            datos = (HashMap<String, Object>) c.getSerializable("datos");
+
+            double oriLat = Double.parseDouble(datos.get("OriLat").toString());
+            double oriLng = Double.parseDouble(datos.get("OriLng").toString());
+
+            LatLng latLngAnterior = new LatLng(oriLat, oriLng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAnterior, 18));
+
+        }else{
+            LatLng latLngColima = new LatLng(19.1510171, -103.9152456);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngColima, 8));
+
+        }
+
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
@@ -152,6 +185,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+
+
         //LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
         //Log.e("Latitude", String.valueOf(currentLocation.getLatitude()));
         //Log.e("Longitud", String.valueOf(currentLocation.getLongitude()));

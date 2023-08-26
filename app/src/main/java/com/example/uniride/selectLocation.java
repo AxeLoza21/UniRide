@@ -97,10 +97,18 @@ public class selectLocation extends AppCompatActivity {
                         datos.put("DesLng", item.getLng());
                         cDatos.putSerializable("datos",datos);
 
-                        Intent d = new Intent(selectLocation.this, CreateTravelDetails.class);
-                        d.putExtras(cDatos);
-                        startActivity(d);
-                        finish();
+                        if(getIntent().getStringExtra("activity").equals("routeMap")){
+                            Intent d = new Intent(selectLocation.this, RouteMap.class);
+                            d.putExtras(cDatos);
+                            startActivity(d);
+                            finish();
+                        }else if(getIntent().getStringExtra("activity").equals("createTravelDetails")){
+                            Intent d = new Intent(selectLocation.this, CreateTravelDetails.class);
+                            d.putExtras(cDatos);
+                            startActivity(d);
+                            finish();
+                        }
+
                     }else{
                         Bundle cDatos = new Bundle();
                         datos.put("campusDestination", item.getnCampus());
@@ -111,6 +119,7 @@ public class selectLocation extends AppCompatActivity {
                         Intent d = new Intent(selectLocation.this, RouteMap.class);
                         d.putExtras(cDatos);
                         startActivity(d);
+                        finish();
                     }
 
 
@@ -148,4 +157,8 @@ public class selectLocation extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 }

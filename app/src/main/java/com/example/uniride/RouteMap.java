@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.uniride.components.DialogElement;
+import com.example.uniride.functions.SplitDirection;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,10 +36,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import okhttp3.Route;
+
 public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
 
     TextView tv_Origen, tv_Destino;
     Button btnConfirmar;
+    RelativeLayout btnEditarPPartida, btnEditarPDestino;
 
     HashMap<String, Object> datos = new HashMap<>();
 
@@ -50,6 +56,8 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
         tv_Origen = (TextView)findViewById(R.id.OriDireccion);
         tv_Destino = (TextView)findViewById(R.id.OriDestino);
         btnConfirmar = (Button)findViewById(R.id.btnConfirmar);
+        btnEditarPPartida = (RelativeLayout) findViewById(R.id.cPulsaEditar);
+        btnEditarPDestino = (RelativeLayout)findViewById(R.id.cPulsaEditar2);
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(RouteMap.this);
 
@@ -57,9 +65,41 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
         //----Recibir los datos anteriores----
         Bundle c = getIntent().getExtras();
         datos = (HashMap<String, Object>) c.getSerializable("datos");
+        String direccion = datos.get("direccionPartida").toString();
 
-        tv_Origen.setText(datos.get("Direccion").toString().substring(0,40));
+
+        tv_Origen.setText(new SplitDirection().getDirection(direccion));
         tv_Destino.setText(datos.get("campusDestination").toString());
+
+
+        btnEditarPPartida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle cDatos = new Bundle();
+                cDatos.putSerializable("datos", datos);
+
+                Intent i = new Intent(RouteMap.this, MapsActivity.class);
+                i.putExtra("editar", true);
+                i.putExtra("activity","routeMap");
+                i.putExtras(cDatos);
+                startActivity(i);
+            }
+        });
+
+        btnEditarPDestino.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle cDatos = new Bundle();
+                cDatos.putSerializable("datos", datos);
+
+                Intent i = new Intent(RouteMap.this, selectLocation.class);
+                i.putExtra("editar", true);
+                i.putExtra("create", true);
+                i.putExtra("activity","routeMap");
+                i.putExtras(cDatos);
+                startActivity(i);
+            }
+        });
 
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,5 +178,10 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
         requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
+        new DialogElement(this).showDialogWarningExit();
     }
 }

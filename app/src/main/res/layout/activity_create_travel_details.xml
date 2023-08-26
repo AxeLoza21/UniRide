@@ -255,7 +255,7 @@
                     android:background="#E0E0E0" />
 
                 <RelativeLayout
-                    android:id="@+id/cPulsaEditar3.5"
+                    android:id="@+id/cPulsaEditar31"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -283,7 +283,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_height="1.5dp"
-                    android:layout_below="@+id/cPulsaEditar3.5"
+                    android:layout_below="@+id/cPulsaEditar31"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:background="#717171"/>
@@ -330,7 +330,7 @@
                     android:background="#E0E0E0" />
 
                 <RelativeLayout
-                    android:id="@+id/cPulsaEditar3"
+                    android:id="@+id/cPulsaEditar32"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -358,13 +358,14 @@
                     android:layout_width="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_height="1.5dp"
-                    android:layout_below="@+id/cPulsaEditar3"
+                    android:layout_below="@+id/cPulsaEditar32"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:background="#717171"/>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/btnVerRutaMapa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/destinationLocation"

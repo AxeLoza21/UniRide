@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uniride.ListAdapterLocation;
 import com.example.uniride.R;
+import com.example.uniride.functions.SplitDirection;
 import com.example.uniride.model.Publications;
 import com.example.uniride.travelDetails2;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -72,6 +73,7 @@ public class PublicationAdapter extends FirestoreRecyclerAdapter<Publications, P
 
         holder.timePublication.setText(publication.getTimePublication());
         holder.travelSeating.setText(publication.getTravelSeating());
+        holder.direccion.setText(new SplitDirection().getDirection(publication.getDireccionPartida()));
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -103,7 +103,7 @@ public class CreateFragment extends Fragment {
                                 Bundle createTravel = new Bundle();
                                 datos.put("OriLat", currentLocation.getLatitude());
                                 datos.put("OriLng", currentLocation.getLongitude());
-                                datos.put("Direccion", getDireccion());
+                                datos.put("direccionPartida", getDireccion());
                                 createTravel.putSerializable("datos", datos);
                                 Intent i = new Intent(getActivity(), selectLocation.class);
                                 i.putExtra("create", true);
