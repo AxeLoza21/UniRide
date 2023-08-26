@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,11 +29,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MapsClient extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap gmap;
     //FirebaseFirestore mFirestore;
     //FirebaseAuth mAuth;
+    ImageView back;
+    HashMap<String, Object> datos = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +44,23 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
         setContentView(R.layout.activity_maps_client);
         //mAuth = FirebaseAuth.getInstance();
         //mFirestore = FirebaseFirestore.getInstance();
+        //----Recibir los datos anteriores----
+        Bundle c = getIntent().getExtras();
+        datos = (HashMap<String, Object>) c.getSerializable("datos");
+        back = (ImageView)findViewById(R.id.backArrowImageView);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
-        direction();
+
+        //direction();
 
 
     }
@@ -52,22 +68,74 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gmap = googleMap;
+        double OriLat = Double.parseDouble(datos.get("OriLat").toString());
+        double OriLng = Double.parseDouble(datos.get("OriLng").toString());
+        double DesLat = Double.parseDouble(datos.get("DesLat").toString());
+        double DesLng = Double.parseDouble(datos.get("DesLng").toString());
 
-        LatLng pOrigen = new LatLng(19.1256515, -104.3590974);
-        LatLng pDestino = new LatLng(19.1256791, -104.4093514);
+        LatLng latLngOrigin = new LatLng(OriLat, OriLng);
+        LatLng latLngDestination = new LatLng(DesLat, DesLng);
+        MarkerOptions markerOrigin = new MarkerOptions().position(latLngOrigin).title("Punto de Inicio");
+        MarkerOptions markerDestination = new MarkerOptions().position(latLngDestination).title("Punto de Destino");
 
-        MarkerOptions mOrigen = new MarkerOptions().position(pOrigen).title("Punto de Inicio");
-        MarkerOptions mDestino = new MarkerOptions().position(pDestino).title("Punto Destino");
+        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 12));
+        gmap.addMarker(markerOrigin);
+        gmap.addMarker(markerDestination);
+        generateRoute(OriLat, OriLng, DesLat, DesLng);
 
-        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(pOrigen, 15));
-        gmap.addMarker(mOrigen);
-        gmap.addMarker(mDestino);
+    }
 
+    private void generateRoute(double OriLat, double OriLng, double DesLat, double DesLng) {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = Uri.parse("https://api.openrouteservice.org/v2/directions/driving-car")
+                .buildUpon()
+                .appendQueryParameter("api_key", "5b3ce3597851110001cf6248fae2b5f6a9704b838bdb3940818fef72")
+                .appendQueryParameter("start", OriLng+","+OriLat)
+                .appendQueryParameter("end", DesLng+","+DesLat)
+                .toString();
+        Log.e("URL", url);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray features = response.getJSONArray("features");
+                    JSONObject featuresContent = features.getJSONObject(0);
+                    JSONObject geometry = featuresContent.getJSONObject("geometry");
+                    JSONArray coordinates = geometry.getJSONArray("coordinates");
+
+                    PolylineOptions polylineOptions = new PolylineOptions();
+                    polylineOptions.color(getResources().getColor(R.color.purple_700));
+                    polylineOptions.width(10);
+                    for(int i=0; i < coordinates.length(); i++){
+                        JSONArray coordinate = coordinates.getJSONArray(i);
+                        polylineOptions.add(new LatLng(coordinate.getDouble(1), coordinate.getDouble(0)));
+                    }
+                    gmap.addPolyline(polylineOptions);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsClient.this, "Error del Servidor", Toast.LENGTH_SHORT).show();
+                Log.e("Error Servidor", error.toString());
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
 
 
-    public void direction(){
+    /*public void direction(){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String url = Uri.parse("https://api.openrouteservice.org/v2/directions/driving-car")
                 .buildUpon()
@@ -108,7 +176,7 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
             }
         });
         requestQueue.add(jsonObjectRequest);
-    }
+    }*/
 
 
 

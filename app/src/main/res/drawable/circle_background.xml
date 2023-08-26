@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#00AEFF" /> <!-- Fondo transparente -->
+    <stroke android:width="40dp" android:color="#00AEFF" /> <!-- Borde azul -->
+    <corners android:radius="500dp" /> <!-- Radio para hacerlo circular -->
+</shape>

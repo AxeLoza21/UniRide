@@ -3,17 +3,20 @@ package com.example.uniride;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.uniride.functions.CalculateAge;
 import com.example.uniride.functions.FormatDateName;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -21,19 +24,25 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 public class travelDetails2 extends AppCompatActivity {
 
     TextView dateAndTime, startingLocation, destinationLocation, nameCreator, ageCreator, description, time, price, seating;
     ImageView btnBack, imgCreator;
     Button btnPedirRaite;
     LinearLayout cTxtYourPublication;
+    RelativeLayout seemap;
 
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
+    double deslat, deslng ,orilat, orilng;
 
     CalculateAge cE;
     FormatDateName cf;
+    HashMap<String, Object> datos = new HashMap<>();
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +62,7 @@ public class travelDetails2 extends AppCompatActivity {
         nameCreator = (TextView)findViewById(R.id.nameUser);
         ageCreator = (TextView)findViewById(R.id.ageUser);
         description = (TextView)findViewById(R.id.description);
+        seemap = (RelativeLayout)findViewById(R.id.seemap);
         time = (TextView)findViewById(R.id.salida);
         price = (TextView)findViewById(R.id.cuota);
         seating = (TextView)findViewById(R.id.seats);
@@ -60,6 +70,9 @@ public class travelDetails2 extends AppCompatActivity {
         btnBack = (ImageView)findViewById(R.id.btn_back);
         btnPedirRaite = (Button)findViewById(R.id.btnPedirRaite);
         final String originActivity = getIntent().getStringExtra("originActivity");
+        final String idPublication = getIntent().getStringExtra("idItem");
+
+        setInformation(idPublication);
         if ("TravelAdapter".equals(originActivity)) {
             btnPedirRaite.setVisibility(View.GONE);
         }
@@ -70,6 +83,7 @@ public class travelDetails2 extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
 
         btnPedirRaite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,9 +99,22 @@ public class travelDetails2 extends AppCompatActivity {
                 startActivity(new Intent(travelDetails2.this, MyTravelsCreated.class));
             }
         });
-
-        final String idPublication = getIntent().getStringExtra("idItem");
-        setInformation(idPublication);
+        seemap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Verifica si los valores no son nulos o vacíos
+                Bundle createTravel = new Bundle();
+                datos.put("OriLat", orilat);
+                datos.put("OriLng", orilng);
+                datos.put("DesLat", deslat);
+                datos.put("DesLng", deslng);
+                createTravel.putSerializable("datos", datos);
+                Intent i = new Intent(travelDetails2.this, MapsClient.class);
+                i.putExtra("create", true);
+                i.putExtras(createTravel);
+                startActivity(i);
+            }
+        });
     }
 
     private void setInformation(String idPublication) {
@@ -114,6 +141,12 @@ public class travelDetails2 extends AppCompatActivity {
                 //----------Setear la informacion restante del Viaje----------
                 String date = value.getString("datePublication");
                 String timee = value.getString("timePublication");
+                deslat = value.getDouble("DesLat");
+                deslng = value.getDouble("DesLng");
+                orilat = value.getDouble("OriLat");
+                orilng = value.getDouble("OriLng");
+                String direccion = value.getString("direccionPartida");
+                startingLocation.setText(direccion);
                 dateAndTime.setText(cf.getDiaSemana(date)+" "+date.substring(0,2)+", "+cf.getNombreMes(date)+" - "+timee);
                 destinationLocation.setText(value.getString("campusDestination"));
                 description.setText(value.getString("travelDescription"));
