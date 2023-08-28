@@ -180,6 +180,11 @@ public class CreateTravelDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Ir al activity que va a hacer Ernesto con unicamente el mapa con los dos puntos y la ruta
+                Bundle cDatos = new Bundle();
+                cDatos.putSerializable("datos", datos);
+                Intent d = new Intent(getApplicationContext(), MapsClient.class);
+                d.putExtras(cDatos);
+                startActivity(d);
             }
         });
 

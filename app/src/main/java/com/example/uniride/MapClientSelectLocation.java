@@ -4,14 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,8 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.uniride.components.DialogElement;
-import com.example.uniride.functions.SplitDirection;
+import com.example.uniride.components.SnackBarElement;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,97 +32,88 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import okhttp3.Route;
+public class MapClientSelectLocation extends AppCompatActivity implements OnMapReadyCallback {
+    GoogleMap gmap;
+    ImageView back;
+    Button btnContinue;
+    LatLng pOriginLatLng;
+    SnackBarElement snackBar;
 
-public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
-
-    TextView tv_Origen, tv_Destino;
-    Button btnConfirmar;
-    RelativeLayout btnEditarPPartida, btnEditarPDestino;
-
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    String direccionPointRecolection;
     HashMap<String, Object> datos = new HashMap<>();
-
-    GoogleMap mMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route_map);
-
-        tv_Origen = (TextView)findViewById(R.id.OriDireccion);
-        tv_Destino = (TextView)findViewById(R.id.OriDestino);
-        btnConfirmar = (Button)findViewById(R.id.btnConfirmar);
-        btnEditarPPartida = (RelativeLayout) findViewById(R.id.cPulsaEditar);
-        btnEditarPDestino = (RelativeLayout)findViewById(R.id.cPulsaEditar2);
-        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        supportMapFragment.getMapAsync(RouteMap.this);
-
-
-        //----Recibir los datos anteriores----
+        setContentView(R.layout.activity_map_client_select_location);
         Bundle c = getIntent().getExtras();
+        //firebase
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
         datos = (HashMap<String, Object>) c.getSerializable("datos");
-        String direccion = datos.get("direccionPartida").toString();
-
-
-        tv_Origen.setText(new SplitDirection().getDirection(direccion));
-        tv_Destino.setText(datos.get("campusDestination").toString());
-
-
-        btnEditarPPartida.setOnClickListener(new View.OnClickListener() {
+        //snackbar
+        snackBar = new SnackBarElement(this);
+        back = (ImageView)findViewById(R.id.Exit);
+        btnContinue = (Button)findViewById(R.id.btnContinue);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
+        mapFragment.getMapAsync(this);
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle cDatos = new Bundle();
-                cDatos.putSerializable("datos", datos);
-
-                Intent i = new Intent(RouteMap.this, MapsActivity.class);
-                i.putExtra("editar", true);
-                i.putExtra("activity","routeMap");
-                i.putExtras(cDatos);
-                startActivity(i);
+                onBackPressed();
             }
         });
-
-        btnEditarPDestino.setOnClickListener(new View.OnClickListener() {
+        //al continuar manda  los datos del punto a firebase para crear la solicitud
+        btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Bundle cDatos = new Bundle();
-                cDatos.putSerializable("datos", datos);
+            public void onClick(View view) {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                DocumentReference documentReference = fStore.collection("solicitud").document();
+                Map<String, Object> solicitud = new HashMap<>();
+                solicitud.put("IdCreator", fAuth.getUid());
+                solicitud.put("PoinLat", Double.parseDouble(pOriginLatLng.latitude+""));
+                solicitud.put("PointLng", Double.parseDouble(pOriginLatLng.longitude+""));
+                solicitud.put("direccionPoint", direccionPointRecolection);
 
-                Intent i = new Intent(RouteMap.this, selectLocation.class);
-                i.putExtra("editar", true);
-                i.putExtra("create", true);
-                i.putExtra("activity","routeMap");
-                i.putExtras(cDatos);
-                startActivity(i);
+                documentReference.set(solicitud).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(getApplicationContext(), travel_sent.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                                finish();
+                            }
+                        },1200);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        snackBar.showSnackBar(getResources().getColor(R.color.red),"Error al mandar la solicitud");
+                    }
+                });
             }
         });
-
-        btnConfirmar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle cDatos = new Bundle();
-                cDatos.putSerializable("datos", datos);
-
-                Intent d = new Intent(RouteMap.this, SelectDate.class);
-                d.putExtras(cDatos);
-                startActivity(d);
-            }
-        });
-
-
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        mMap = googleMap;
-
+        gmap = googleMap;
         double OriLat = Double.parseDouble(datos.get("OriLat").toString());
         double OriLng = Double.parseDouble(datos.get("OriLng").toString());
         double DesLat = Double.parseDouble(datos.get("DesLat").toString());
@@ -135,19 +127,33 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
                 .position(latLngDestination)
                 .title("Escuela")
                 .icon(colege);
-        MarkerOptions markerOrigin = new MarkerOptions()
+        MarkerOptions markerDriver = new MarkerOptions()
                 .position(latLngOrigin)
-                .title("Tú ubicacion")
+                .title("Conductor")
                 .icon(driver);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 12));
-        mMap.addMarker(markerOrigin);
-        mMap.addMarker(markerDestination);
-
+        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 14));
+        gmap.addMarker(markerDriver);
+        gmap.addMarker(markerDestination);
         generateRoute(OriLat, OriLng, DesLat, DesLng);
+        //obtener direccion de puntp
+        gmap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                try {
+                    Geocoder geocoder = new Geocoder(MapClientSelectLocation.this);
+                    pOriginLatLng = gmap.getCameraPosition().target;
+                    List<Address> addressList = geocoder.getFromLocation(pOriginLatLng.latitude, pOriginLatLng.longitude, 1);
+                    direccionPointRecolection = addressList.get(0).getAddressLine(0);
+                }catch (Exception e){
+                    Log.d("Error:", e.getMessage()+"");
+                }
+            }
+        });
+
     }
 
-    public void generateRoute(double OriLat, double OriLng, double DesLat, double DesLng) {
+    private void generateRoute(double OriLat, double OriLng, double DesLat, double DesLng) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String url = Uri.parse("https://api.openrouteservice.org/v2/directions/driving-car")
                 .buildUpon()
@@ -173,7 +179,7 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
                         JSONArray coordinate = coordinates.getJSONArray(i);
                         polylineOptions.add(new LatLng(coordinate.getDouble(1), coordinate.getDouble(0)));
                     }
-                    mMap.addPolyline(polylineOptions);
+                    gmap.addPolyline(polylineOptions);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -183,7 +189,7 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RouteMap.this, "Error del Servidor", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapClientSelectLocation.this, "Error del Servidor", Toast.LENGTH_SHORT).show();
                 Log.e("Error Servidor", error.toString());
             }
         });
@@ -192,6 +198,7 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public void onBackPressed() {
-        new DialogElement(this).showDialogWarningExit();
+        super.onBackPressed();
+        finish();
     }
 }

@@ -20,6 +20,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -36,6 +38,9 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
     //FirebaseFirestore mFirestore;
     //FirebaseAuth mAuth;
     ImageView back;
+    int newWidth = 40;  // Ancho deseado en píxeles
+    int newHeight = 40; // Alto deseado en píxeles
+
     HashMap<String, Object> datos = new HashMap<>();
 
     @Override
@@ -75,11 +80,19 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
 
         LatLng latLngOrigin = new LatLng(OriLat, OriLng);
         LatLng latLngDestination = new LatLng(DesLat, DesLng);
-        MarkerOptions markerOrigin = new MarkerOptions().position(latLngOrigin).title("Punto de Inicio");
-        MarkerOptions markerDestination = new MarkerOptions().position(latLngDestination).title("Punto de Destino");
+        BitmapDescriptor colege = BitmapDescriptorFactory.fromResource(R.drawable.colegio32);
+        BitmapDescriptor driver = BitmapDescriptorFactory.fromResource(R.drawable.pointcar);
+        MarkerOptions markerDestination = new MarkerOptions()
+                .position(latLngDestination)
+                .title("Escuela")
+                .icon(colege);
+        MarkerOptions markerDriver = new MarkerOptions()
+                .position(latLngOrigin)
+                .title("Conductor")
+                .icon(driver);
 
         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 12));
-        gmap.addMarker(markerOrigin);
+        gmap.addMarker(markerDriver);
         gmap.addMarker(markerDestination);
         generateRoute(OriLat, OriLng, DesLat, DesLng);
 

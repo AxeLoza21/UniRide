@@ -1,11 +1,15 @@
 package com.example.uniride;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,19 +20,25 @@ import android.widget.Toast;
 
 import com.example.uniride.functions.CalculateAge;
 import com.example.uniride.functions.FormatDateName;
+import com.example.uniride.functions.SplitDirection;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class travelDetails2 extends AppCompatActivity {
 
-    TextView dateAndTime, startingLocation, destinationLocation, nameCreator, ageCreator, description, time, price, seating;
+    TextView dateAndTime, startingLocation, destinationLocation, nameCreator, ageCreator, description, time, price, seating, yearCar, colorCar, brandCar;
     ImageView btnBack, imgCreator;
     Button btnPedirRaite;
     LinearLayout cTxtYourPublication;
@@ -60,6 +70,9 @@ public class travelDetails2 extends AppCompatActivity {
         startingLocation = (TextView)findViewById(R.id.startingLocation);
         destinationLocation = (TextView)findViewById(R.id.destinationLocation);
         nameCreator = (TextView)findViewById(R.id.nameUser);
+        brandCar = (TextView)findViewById(R.id.brandCar);
+        yearCar = (TextView)findViewById(R.id.yearCar);
+        colorCar = (TextView)findViewById(R.id.colorCar);
         ageCreator = (TextView)findViewById(R.id.ageUser);
         description = (TextView)findViewById(R.id.description);
         seemap = (RelativeLayout)findViewById(R.id.seemap);
@@ -88,7 +101,15 @@ public class travelDetails2 extends AppCompatActivity {
         btnPedirRaite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(travelDetails2.this, travel_sent.class);
+                Bundle createTravel = new Bundle();
+                datos.put("OriLat", orilat);
+                datos.put("OriLng", orilng);
+                datos.put("DesLat", deslat);
+                datos.put("DesLng", deslng);
+                createTravel.putSerializable("datos", datos);
+                Intent i = new Intent(travelDetails2.this, MapClientSelectLocation.class);//antes travel_sent
+                i.putExtra("create", true);
+                i.putExtras(createTravel);
                 startActivity(i);
             }
         });
@@ -102,7 +123,6 @@ public class travelDetails2 extends AppCompatActivity {
         seemap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Verifica si los valores no son nulos o vacíos
                 Bundle createTravel = new Bundle();
                 datos.put("OriLat", orilat);
                 datos.put("OriLng", orilng);
@@ -123,7 +143,8 @@ public class travelDetails2 extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 //-----Obtener Datos del creador del viaje Mediante su ID-----
-                fStore.collection("users").document(value.getString("IdCreator")).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                String userId = value.getString("IdCreator");
+                fStore.collection("users").document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         nameCreator.setText(value.getString("username"));
@@ -133,6 +154,30 @@ public class travelDetails2 extends AppCompatActivity {
                         } else {
                             Picasso.get().load(value.getString("photo")).into(imgCreator);
                         }
+                        CollectionReference carsRef = fStore.collection("users")
+                                .document(userId)
+                                .collection("cars");
+                        carsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot carDocument : task.getResult()) {
+                                        // documento (car) en la subcolección "cars"
+                                        String make = carDocument.getString("make");
+                                        String carModel = carDocument.getString("model");
+                                        String color = carDocument.getString("color");
+                                        String year = carDocument.getString("year");
+                                        String combinedText = make + " " + carModel;
+                                        yearCar.setText(year);
+                                        colorCar.setText(color);
+                                        brandCar.setText(combinedText);
+                                        // ... y así sucesivamente para los demás campos del auto
+                                    }
+                                } else {
+                                    Log.w(TAG, "Error getting documents.", task.getException());
+                                }
+                            }
+                        });
                     }
                 });
                 //------------------------------------------------------------
@@ -146,7 +191,7 @@ public class travelDetails2 extends AppCompatActivity {
                 orilat = value.getDouble("OriLat");
                 orilng = value.getDouble("OriLng");
                 String direccion = value.getString("direccionPartida");
-                startingLocation.setText(direccion);
+                startingLocation.setText(new SplitDirection().getDirection(direccion));
                 dateAndTime.setText(cf.getDiaSemana(date)+" "+date.substring(0,2)+", "+cf.getNombreMes(date)+" - "+timee);
                 destinationLocation.setText(value.getString("campusDestination"));
                 description.setText(value.getString("travelDescription"));
