@@ -62,7 +62,7 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
         DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
         final String id = documentSnapshot.getId();
 
-        holder.Initiation.setText(Travel.getLatInitation());
+        holder.Initiation.setText(Travel.getDireccionPartida());
         holder.fecha.setText(Travel.getDatePublication());
         holder.hora.setText(Travel.getTimePublication());
         holder.Destination.setText(Travel.getCampusDestination());
@@ -108,7 +108,7 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView Initiation, Destination, fecha, hora;
+        TextView Initiation, Destination, fecha, hora ;
         LinearLayout borde;
 
         public ViewHolder(@NonNull View itemView) {

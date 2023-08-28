@@ -316,6 +316,7 @@ public class DialogElement {
         btnSi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                d_edit.dismiss();
                 fStore.collection("users").document(idUser).collection("cars").document(idDocumento).update("predeterminado",true);
                 fStore.collection("users").document(idUser).collection("cars").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -325,7 +326,6 @@ public class DialogElement {
                                 fStore.collection("users").document(idUser).collection("cars").document(cars.getId()).update("predeterminado",false).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
-                                        d_edit.dismiss();
                                     }
                                 });
                             }
