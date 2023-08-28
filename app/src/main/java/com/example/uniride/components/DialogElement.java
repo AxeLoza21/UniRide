@@ -11,12 +11,15 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.example.uniride.MainActivityFragment;
 import com.example.uniride.MyPerfil;
@@ -27,7 +30,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
@@ -288,6 +295,49 @@ public class DialogElement {
         //-------Boton para cerrar el dialog-------
         Button btnCancelar = d_edit.findViewById(R.id.btnCancelar);
         btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                d_edit.dismiss();
+            }
+        });
+    }
+
+    public void showDialogConfirmPredeterminado(String idDocumento, String idUser){
+        Dialog d_edit = new Dialog(activity);
+
+
+        d_edit.setContentView(R.layout.confirm_predeterminado_dialog);
+        d_edit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        d_edit.setCanceledOnTouchOutside(true);
+        d_edit.show();
+
+        //-------Boton para borrar el viaje-------
+        Button btnSi = d_edit.findViewById(R.id.btnSi);
+        btnSi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fStore.collection("users").document(idUser).collection("cars").document(idDocumento).update("predeterminado",true);
+                fStore.collection("users").document(idUser).collection("cars").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
+                        for (DocumentSnapshot cars : task.getResult().getDocuments()) {
+                            if(!idDocumento.equals(cars.getId())){
+                                fStore.collection("users").document(idUser).collection("cars").document(cars.getId()).update("predeterminado",false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
+                                        d_edit.dismiss();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        //-------Boton para cerrar el dialog-------
+        Button btnNo = d_edit.findViewById(R.id.btnNo);
+        btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 d_edit.dismiss();

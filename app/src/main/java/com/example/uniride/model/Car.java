@@ -1,15 +1,18 @@
 package com.example.uniride.model;
 
 public class Car {
-    String make, model, color, year;
+    String make, model, color, year, plateNumber;
+    boolean predeterminado;
 
     public Car(){}
 
-    public Car(String make, String model, String color, String year) {
+    public Car(String make, String model, String color, String year, String plateNumber, boolean predeterminado) {
         this.make = make;
         this.model = model;
         this.color = color;
         this.year = year;
+        this.plateNumber = plateNumber;
+        this.predeterminado = predeterminado;
     }
 
     public String getMake() {
@@ -42,5 +45,21 @@ public class Car {
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public boolean isPredeterminado() {
+        return predeterminado;
+    }
+
+    public void setPredeterminado(boolean predeterminado) {
+        this.predeterminado = predeterminado;
     }
 }

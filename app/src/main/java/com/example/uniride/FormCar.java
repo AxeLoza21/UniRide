@@ -1,15 +1,19 @@
 package com.example.uniride;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uniride.components.SnackBarElement;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import android.graphics.Color;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -25,8 +29,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -187,51 +195,63 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
         Map<String, Object> carro = new HashMap<>();
         carro.put("make", marca);
         carro.put("model", modelo);
-        carro.put("plate number", placa);
+        carro.put("plateNumber", placa);
         carro.put("type", tipo);
         carro.put("color", color);
         carro.put("year", anio);
 
         // Obtener la referencia del documento cars para el usuario actual
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DocumentReference carsRef = db.collection("users").document(userId).collection("cars").document();
-        carsRef.set(carro).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                snakBar.showSnackBar(getResources().getColor(R.color.green),"Se agrego un vehículo");
 
-                // Esperar 3 segundos antes de desbloquear la pantalla y volver a la actividad principal
-                new Handler().postDelayed(new Runnable() {
+        db.collection("users").document(userId).collection("cars").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.getResult().size() >= 1){
+                    carro.put("predeterminado", false);
+                }else{
+                    carro.put("predeterminado", true);
+                }
+
+                DocumentReference carsRef = db.collection("users").document(userId).collection("cars").document();
+                carsRef.set(carro).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void run() {
-                        // Desbloquear la pantalla
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                        Intent intent = getIntent();
-                        String vehicles = intent.getStringExtra("Vehicles");
-                        if (vehicles != null && vehicles.equals("MyVehicles")) {
-                            // Devolver a MyVehicles.class
-                            Intent i = new Intent(FormCar.this, MyVehicles.class);
-                            startActivity(i);
-                            SaveCar.setEnabled(true);
-                            finish();
+                    public void onSuccess(Void unused) {
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        snakBar.showSnackBar(getResources().getColor(R.color.green),"Se agrego un vehículo");
 
-                        } else {
-                            // Devolver al MainActivityFragment.class
-                            Intent i = new Intent(FormCar.this, MainActivityFragment.class);
-                            startActivity(i);
-                            SaveCar.setEnabled(true);
-                            finish();
-                        }
+                        // Esperar 3 segundos antes de desbloquear la pantalla y volver a la actividad principal
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Desbloquear la pantalla
+                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                Intent intent = getIntent();
+                                String vehicles = intent.getStringExtra("Vehicles");
+                                if (vehicles != null && vehicles.equals("MyVehicles")) {
+                                    // Devolver a MyVehicles.class
+                                    Intent i = new Intent(FormCar.this, MyVehicles.class);
+                                    startActivity(i);
+                                    SaveCar.setEnabled(true);
+                                    finish();
 
+                                } else {
+                                    // Devolver al MainActivityFragment.class
+                                    Intent i = new Intent(FormCar.this, MainActivityFragment.class);
+                                    startActivity(i);
+                                    SaveCar.setEnabled(true);
+                                    finish();
+                                }
+
+                            }
+                        }, 3000);
                     }
-                }, 3000);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                SaveCar.setEnabled(true);
-                Toast.makeText(FormCar.this, "No se pudo guardar", Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        SaveCar.setEnabled(true);
+                        Toast.makeText(FormCar.this, "No se pudo guardar", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

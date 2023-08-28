@@ -14,11 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uniride.CarDetails;
 import com.example.uniride.MyVehicles;
 import com.example.uniride.R;
+import com.example.uniride.components.DialogElement;
 import com.example.uniride.model.Car;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -50,12 +52,26 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Car Car) {
 
         DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
-        final String id = documentSnapshot.getId();
+        final String idDocumento = documentSnapshot.getId();
 
         holder.make.setText(Car.getMake());
         holder.model.setText(Car.getModel());
         holder.color.setText(Car.getColor());
+        holder.placas.setText(Car.getPlateNumber());
+        holder.cardColor.setCardBackgroundColor(Color.parseColor(getColor(Car.getColor())));
         holder.year.setText(Car.getYear());
+        if(Car.isPredeterminado()){
+            holder.predeterminado.setVisibility(View.VISIBLE);
+            holder.btnPredeterminado.setEnabled(false);
+            holder.btnPredeterminado.setColorFilter(Color.parseColor("#DADADA"));
+        }
+
+        holder.btnPredeterminado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DialogElement(activity).showDialogConfirmPredeterminado(idDocumento, mAuth.getUid());
+            }
+        });
 
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +79,7 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
                 disableButtons();
                 holder.btn_delete.setEnabled(false);
                 Intent i = new Intent(activity, CarDetails.class);
-                i.putExtra("id_car", id);
+                i.putExtra("id_car", idDocumento);
                 activity.startActivity(i);
             }
         });
@@ -74,7 +90,7 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
             public void onClick(View view) {
                 disableButtons();
                 holder.btn_edit.setEnabled(false);
-                deleteCar(id); // delete the selected car
+                deleteCar(idDocumento); // delete the selected car
                 enableButtons();
             }
         });
@@ -118,18 +134,51 @@ public class CarAdapter extends FirestoreRecyclerAdapter <Car, CarAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView make, model, color, year, btn_edit;
-        ImageView btn_delete;
+        TextView make, model, color, year, placas, predeterminado;
+        ImageView btn_delete, btn_edit, btnPredeterminado;
+        CardView cardColor;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             make = itemView.findViewById(R.id.marca);
             model = itemView.findViewById(R.id.modelo);
+            placas = itemView.findViewById(R.id.placas);
             color = itemView.findViewById(R.id.color);
+            cardColor = itemView.findViewById(R.id.cardColor);
+            predeterminado = itemView.findViewById(R.id.txtPredeterminado);
             year = itemView.findViewById(R.id.año);
+            btnPredeterminado = itemView.findViewById(R.id.fijarPredeterminado);
             btn_delete = itemView.findViewById(R.id.btn_eliminars);
             btn_edit = itemView.findViewById(R.id.btn_editar);
         }
+    }
+
+    public String getColor(String nombreColor){
+        switch(nombreColor){
+            case "Rojo":
+                return "#E30D00";
+            case "Verde":
+                return "#03BD06";
+            case "Azul":
+                return "#05B0EC";
+            case "Blanco":
+                return "#FFFFFF";
+            case "Negro":
+                return "#000000";
+            case "Plateado":
+                return "#DCD5D5";
+            case "Amarillo":
+                return "#EAD105";
+            case "Rosa":
+                return "#D905EA";
+            case "Morado":
+                return "#9A05EA";
+            case "Gris":
+                return "#545454";
+            case "Café":
+                return "#764310";
+        }
+        return "#FFFFFF";
     }
 }
