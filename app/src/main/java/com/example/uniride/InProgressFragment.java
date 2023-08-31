@@ -15,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.uniride.adapter.TravelAdapter;
 import com.example.uniride.model.Travel;
+import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -33,8 +35,7 @@ public class InProgressFragment extends Fragment {
     RecyclerView mRecycler;
     TravelAdapter mAdapter;
     FirebaseFirestore mFirestore;
-    Query query;
-
+    FirebaseAuth mAuth;
 
 
     @Override
@@ -53,39 +54,50 @@ public class InProgressFragment extends Fragment {
         mRecycler = view.findViewById(R.id.recyclerInProgress);
 
         mFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
         mRecycler.setLayoutManager(new WrapContentLinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL,false));
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //--------Obtener la cantidad de elementos que va haber en el RecyclerView-------
-        mFirestore.collection("publications").whereEqualTo("IdCreator", "nadaPorElMomento").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        mFirestore.collection("users").document(mAuth.getUid()).collection("myRequestTo").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value.size() > 0){
-                    cTexto.setVisibility(View.INVISIBLE);
-                }else{
-                    cTexto.setVisibility(View.VISIBLE);
+                if(value != null){
+                    if (value.size() > 0){
+                        cTexto.setVisibility(View.INVISIBLE);
+                    }else{
+                        cTexto.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
-        //---------------------------------------------------------------------------------
 
-        query = mFirestore.collection("publications").whereEqualTo("IdCreator", "nadaPorElMomento");
+        Query query = mFirestore.collection("users").document(mAuth.getUid()).collection("myRequestTo");
         FirestoreRecyclerOptions<Travel> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<Travel>().setQuery(query, Travel.class).build();
 
-        mAdapter = new TravelAdapter(firestoreRecyclerOptions, this.getActivity(), false, false);
+        mAdapter = new TravelAdapter(firestoreRecyclerOptions, getActivity(), true, false);
         mAdapter.notifyDataSetChanged();
         mRecycler.setAdapter(mAdapter);
+
+        //---------------------------------------------------------------------------------
+
     }
+
     @Override
     public void onStart() {
         super.onStart();
         mAdapter.startListening();
     }
+
+
     @Override
     public void onStop() {
         super.onStop();
         mAdapter.stopListening();
     }
+
+
     public class WrapContentLinearLayoutManager extends LinearLayoutManager {
         public WrapContentLinearLayoutManager(Context context) {
             super(context);

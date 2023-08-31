@@ -105,42 +105,80 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5">
-                <TextView
-                    android:id="@+id/txtSolicitudes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="18dp"
-                    android:text="Solicitudes"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textSize="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/txtSolicitudes"
-                    android:layout_marginTop="5dp"
-                    android:text="En Espera"
-                    android:fontFamily="@font/poppins"
-                    android:textSize="15dp"
-                    android:visibility="invisible"/> <!--Esto solo se ve cuando NO eres el creador de la publicacion-->
-                <ImageView
-                    android:id="@+id/imgSolicitudes"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@+id/txtSolicitudes"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_baseline_message_24"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtSolicitudes"
-                    android:layout_marginTop="-7dp"
-                    android:layout_toRightOf="@+id/imgSolicitudes"
-                    android:text="0"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textColor="@color/black"
-                    android:textSize="15dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/cMyRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible">
+                    <ImageView
+                        android:id="@+id/iconSolictud"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_baseline_access_time_24"
+                        app:tint="@color/purple_500"/>
+
+                    <TextView
+                        android:id="@+id/txtSolicitud"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iconSolictud"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:text="Solicitud"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textSize="15dp"/>
+
+                    <TextView
+                        android:id="@+id/estadoSolicitud"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/txtSolicitud"
+                        android:layout_marginTop="-5dp"
+                        android:text="Pendiente"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textSize="15dp"
+                        android:textColor="@color/purple_500" /> <!--Esto solo se ve cuando NO eres el creador de la publicacion-->
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/cMyTravelCreated"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/txtSolicitudes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Solicitudes"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textSize="15dp"/>
+
+                    <ImageView
+                        android:id="@+id/imgSolicitudes"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_below="@+id/txtSolicitudes"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_baseline_message_24"/>
+
+                    <TextView
+                        android:id="@+id/numSolicitudes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtSolicitudes"
+                        android:layout_marginTop="-7dp"
+                        android:layout_toRightOf="@+id/imgSolicitudes"
+                        android:text="0"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
+                </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
 

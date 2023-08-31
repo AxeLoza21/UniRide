@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,19 +24,25 @@ import com.example.uniride.model.Travel;
 import com.example.uniride.travelDetails2;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.BreakIterator;
 
 public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapter.ViewHolder> {
     private FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+
     Activity activity;
-    boolean isCompletedFragment, isMyHistoryTravels;
+    boolean isMyRequestFragment, isMyTravelCreatedFragment;
 
 
 
@@ -45,11 +52,11 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
      *
      * @param options
      */
-    public TravelAdapter(@NonNull FirestoreRecyclerOptions<Travel> options, Activity activity, boolean isCompletedFragment, boolean isMyHistoryTravels) {
+    public TravelAdapter(@NonNull FirestoreRecyclerOptions<Travel> options, Activity activity, boolean isMyRequestFragment , boolean isMyTravelCreatedFragment) {
         super(options);
         this.activity = activity;
-        this.isCompletedFragment = isCompletedFragment;
-        this.isMyHistoryTravels = isMyHistoryTravels;
+        this.isMyRequestFragment = isMyRequestFragment;
+        this.isMyTravelCreatedFragment = isMyTravelCreatedFragment;
 
 
 
@@ -66,28 +73,34 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
         holder.fecha.setText(Travel.getDatePublication());
         holder.hora.setText(Travel.getTimePublication());
         holder.Destination.setText(Travel.getCampusDestination());
-        if (isCompletedFragment) {
+
+        if(isMyRequestFragment){
+            holder.cMyTravelCreated.setVisibility(View.INVISIBLE);
+            holder.cMyRequest.setVisibility(View.VISIBLE);
+            holder.borde.setBackgroundResource(R.drawable.cardview_process);
+        }else if(isMyTravelCreatedFragment){
+            holder.cMyTravelCreated.setVisibility(View.VISIBLE);
+            holder.cMyRequest.setVisibility(View.INVISIBLE);
+            holder.borde.setBackgroundResource(R.drawable.cardview_border);
+
+            fStore.collection("solicitud").whereEqualTo("IdPublication", id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    holder.numSolicitudes.setText(task.getResult().getDocuments().size()+"");
+                }
+            });
+        }
+        /*if (isCompletedFragment) {
             // Cambiar el fondo del CardView para el CompletedFragment
             holder.borde.setBackgroundResource(R.drawable.cardview_border);
         } else if (isMyHistoryTravels) {
             holder.borde.setBackgroundResource(R.drawable.cardview_history);
-        }
-
+        }*/
 
         holder.borde.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isMyHistoryTravels){
-                    Intent e = new Intent(activity, MyTravelsCreated.class);
-                    e.putExtra("idItem", id);
-                    e.putExtra("state", Travel.getState());
-                    activity.startActivity(e);
-                } else if (isCompletedFragment) {
-                    Intent e = new Intent(activity, MyTravelsCreated.class);
-                    e.putExtra("idItem", id);
-                    e.putExtra("state", Travel.getState());
-                    activity.startActivity(e);
-                } else {
+                if (isMyTravelCreatedFragment){
                     Intent e = new Intent(activity, MyTravelsCreated.class);
                     e.putExtra("idItem", id);
                     e.putExtra("state", Travel.getState());
@@ -108,8 +121,9 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView Initiation, Destination, fecha, hora ;
+        TextView Initiation, Destination, fecha, hora, estadoSolicitud, numSolicitudes;
         LinearLayout borde;
+        RelativeLayout cMyRequest, cMyTravelCreated;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,6 +133,10 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
             fecha = itemView.findViewById(R.id.txtCalendar);
             hora = itemView.findViewById(R.id.txtHour);
             borde = itemView.findViewById(R.id.primero);
+            cMyRequest = itemView.findViewById(R.id.cMyRequest);
+            cMyTravelCreated = itemView.findViewById(R.id.cMyTravelCreated);
+            estadoSolicitud = itemView.findViewById(R.id.estadoSolicitud);
+            numSolicitudes = itemView.findViewById(R.id.numSolicitudes);
 
         }
     }

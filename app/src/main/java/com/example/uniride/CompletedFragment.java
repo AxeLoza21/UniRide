@@ -58,10 +58,12 @@ public class CompletedFragment extends Fragment {
         mFirestore.collection("publications").whereEqualTo("IdCreator", userId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value.size() > 0){
-                    cTexto.setVisibility(View.INVISIBLE);
-                }else{
-                    cTexto.setVisibility(View.VISIBLE);
+                if(value != null){
+                    if (value.size() > 0){
+                        cTexto.setVisibility(View.INVISIBLE);
+                    }else{
+                        cTexto.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
@@ -70,7 +72,7 @@ public class CompletedFragment extends Fragment {
         query = mFirestore.collection("publications").whereEqualTo("IdCreator", userId).whereEqualTo("State", "Activo");
         FirestoreRecyclerOptions<Travel> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<Travel>().setQuery(query, Travel.class).build();
 
-        mAdapter = new TravelAdapter(firestoreRecyclerOptions, this.getActivity(), true, false);
+        mAdapter = new TravelAdapter(firestoreRecyclerOptions, this.getActivity(), false, true);
         mAdapter.notifyDataSetChanged();
         mRecycler.setAdapter(mAdapter);
 

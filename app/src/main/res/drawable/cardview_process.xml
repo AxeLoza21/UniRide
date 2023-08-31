@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <solid android:color="#FFFFFF" /> <!-- color de fondo -->
+    <corners android:radius="9sp" /> <!-- el radio de las esquinas, debe ser el mismo que en CardView -->
+    <stroke android:color="@color/purple_500" android:width="1sp" /> <!-- color y grosor del contorno -->
+</shape>

@@ -32,10 +32,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
@@ -55,8 +58,10 @@ public class MapClientSelectLocation extends AppCompatActivity implements OnMapR
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    String direccionPointRecolection;
+    String direccionPointRecolection, IdSolicitud;
     HashMap<String, Object> datos = new HashMap<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,34 +77,55 @@ public class MapClientSelectLocation extends AppCompatActivity implements OnMapR
         btnContinue = (Button)findViewById(R.id.btnContinue);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
         mapFragment.getMapAsync(this);
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+
         //al continuar manda  los datos del punto a firebase para crear la solicitud
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                DocumentReference documentReference = fStore.collection("solicitud").document();
+
                 Map<String, Object> solicitud = new HashMap<>();
-                solicitud.put("IdCreator", fAuth.getUid());
+                solicitud.put("IdUser", fAuth.getUid());
+                solicitud.put("IdPublication", datos.get("IdPublication"));
                 solicitud.put("PoinLat", Double.parseDouble(pOriginLatLng.latitude+""));
                 solicitud.put("PointLng", Double.parseDouble(pOriginLatLng.longitude+""));
+                solicitud.put("State", "Pendiente");
                 solicitud.put("direccionPoint", direccionPointRecolection);
 
-                documentReference.set(solicitud).addOnSuccessListener(new OnSuccessListener<Void>() {
+                fStore.collection("solicitud").add(solicitud).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        new Handler().postDelayed(new Runnable() {
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        IdSolicitud = task.getResult().getId();
+
+                        fStore.collection("publications").document(datos.get("IdPublication").toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
-                            public void run() {
-                                startActivity(new Intent(getApplicationContext(), travel_sent.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
-                                finish();
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                Map<String, Object> docPublicationRequested = task.getResult().getData();
+                                docPublicationRequested.put("IdSolicitud", task.getResult().getId());
+                                fStore.collection("users").document(fAuth.getUid()).collection("myRequestTo").document(datos.get("IdPublication").toString()).set(docPublicationRequested).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                startActivity(new Intent(getApplicationContext(), travel_sent.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                                                finish();
+                                            }
+                                        },1200);
+
+                                    }
+                                });
                             }
-                        },1200);
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -109,6 +135,9 @@ public class MapClientSelectLocation extends AppCompatActivity implements OnMapR
                 });
             }
         });
+
+
+
     }
 
     @Override

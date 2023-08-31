@@ -233,21 +233,23 @@ public class CreateTravelDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                DocumentReference documentReference = fStore.collection("publications").document();
                 Map<String, Object> publication = datos;
                 publication.put("IdCreator", fAuth.getUid());
                 publication.put("State", "Activo");
+                publication.put("IdPublication", "");
 
-                documentReference.set(publication).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                fStore.collection("publications").add(publication).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onSuccess(DocumentReference documentReference) {
+                        fStore.collection("publications").document(documentReference.getId()).update("IdPublication", documentReference.getId());
                         snackBar.showSnackBar(getResources().getColor(R.color.green),"Publicacion creada Correctamente");
                         new Handler().postDelayed(new Runnable() {
-                          @Override
-                          public void run() {
-                              startActivity(new Intent(getApplicationContext(), MainActivityFragment.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
-                              finish();
-                          }
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(getApplicationContext(), MainActivityFragment.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                                finish();
+                            }
                         },1200);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

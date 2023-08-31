@@ -1,6 +1,6 @@
 package com.example.uniride.model;
 
-public class Travel {
+public class  Travel {
     String campusDestination,datePublication,timePublication, State, direccionPartida;
 
     public Travel(){}

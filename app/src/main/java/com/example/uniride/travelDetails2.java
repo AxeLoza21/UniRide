@@ -86,6 +86,8 @@ public class travelDetails2 extends AppCompatActivity {
         final String idPublication = getIntent().getStringExtra("idItem");
 
         setInformation(idPublication);
+
+
         if ("TravelAdapter".equals(originActivity)) {
             btnPedirRaite.setVisibility(View.GONE);
         }
@@ -106,6 +108,7 @@ public class travelDetails2 extends AppCompatActivity {
                 datos.put("OriLng", orilng);
                 datos.put("DesLat", deslat);
                 datos.put("DesLng", deslng);
+                datos.put("IdPublication", idPublication);
                 createTravel.putSerializable("datos", datos);
                 Intent i = new Intent(travelDetails2.this, MapClientSelectLocation.class);//antes travel_sent
                 i.putExtra("create", true);
@@ -147,37 +150,40 @@ public class travelDetails2 extends AppCompatActivity {
                 fStore.collection("users").document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        nameCreator.setText(value.getString("username"));
-                        ageCreator.setText(cE.calcularEdad(value.getString("birthDay")));
-                        if (value.getString("photo").isEmpty()) {
-                            Picasso.get().load(R.drawable.person_2).into(imgCreator);
-                        } else {
-                            Picasso.get().load(value.getString("photo")).into(imgCreator);
-                        }
-                        CollectionReference carsRef = fStore.collection("users")
-                                .document(userId)
-                                .collection("cars");
-                        carsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot carDocument : task.getResult()) {
-                                        // documento (car) en la subcolección "cars"
-                                        String make = carDocument.getString("make");
-                                        String carModel = carDocument.getString("model");
-                                        String color = carDocument.getString("color");
-                                        String year = carDocument.getString("year");
-                                        String combinedText = make + " " + carModel;
-                                        yearCar.setText(year);
-                                        colorCar.setText(color);
-                                        brandCar.setText(combinedText);
-                                        // ... y así sucesivamente para los demás campos del auto
-                                    }
-                                } else {
-                                    Log.w(TAG, "Error getting documents.", task.getException());
-                                }
+                        if(value != null){
+                            nameCreator.setText(value.getString("username"));
+                            ageCreator.setText(cE.calcularEdad(value.getString("birthDay")));
+                            if (value.getString("photo").isEmpty()) {
+                                Picasso.get().load(R.drawable.person_2).into(imgCreator);
+                            } else {
+                                Picasso.get().load(value.getString("photo")).into(imgCreator);
                             }
-                        });
+                            CollectionReference carsRef = fStore.collection("users")
+                                    .document(userId)
+                                    .collection("cars");
+                            carsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot carDocument : task.getResult()) {
+                                            // documento (car) en la subcolección "cars"
+                                            String make = carDocument.getString("make");
+                                            String carModel = carDocument.getString("model");
+                                            String color = carDocument.getString("color");
+                                            String year = carDocument.getString("year");
+                                            String combinedText = make + " " + carModel;
+                                            yearCar.setText(year);
+                                            colorCar.setText(color);
+                                            brandCar.setText(combinedText);
+                                            // ... y así sucesivamente para los demás campos del auto
+                                        }
+                                    } else {
+                                        Log.w(TAG, "Error getting documents.", task.getException());
+                                    }
+                                }
+                            });
+                        }
+
                     }
                 });
                 //------------------------------------------------------------

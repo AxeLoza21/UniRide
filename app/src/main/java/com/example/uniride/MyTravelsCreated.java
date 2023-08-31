@@ -33,7 +33,7 @@ public class MyTravelsCreated extends AppCompatActivity {
         aCircleState = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.circle_state);
         circleState1 = (CardView)findViewById(R.id.circleState);
         circleState2 = (CardView)findViewById(R.id.circleState2);
-        btnEditarPublicacion = (CardView)findViewById(R.id.cVerPublicacion);
+        //btnEditarPublicacion = (CardView)findViewById(R.id.cVerPublicacion);
 
         String statePublicacion = getIntent().getStringExtra("state");
         if(statePublicacion.equals("Activo")){
@@ -58,14 +58,14 @@ public class MyTravelsCreated extends AppCompatActivity {
 
 
 
-        btnEditarPublicacion.setOnClickListener(new View.OnClickListener() {
+        /*btnEditarPublicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent e = new Intent(getApplicationContext(), CreateTravelDetails.class);
                 e.putExtra("idItem", getIntent().getStringExtra("idItem"));
                 startActivity(e);
             }
-        });
+        });*/
 
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
