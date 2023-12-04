@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.tabs;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,12 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.example.uniride.R;
 import com.example.uniride.adapter.TravelAdapter;
 import com.example.uniride.model.Travel;
+import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -28,34 +31,37 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-public class CompletedFragment extends Fragment {
+public class InProgressFragment extends Fragment {
     LinearLayout cTexto;
     RecyclerView mRecycler;
     TravelAdapter mAdapter;
     FirebaseFirestore mFirestore;
-    Query query;
+    FirebaseAuth mAuth;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_completed, container, false);
+        View view = inflater.inflate(R.layout.fragment_in_progress, container, false);
 
         return view;
+
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         cTexto = view.findViewById(R.id.cTexto);
-        mRecycler = view.findViewById(R.id.recyclerCompleted);
+        mRecycler = view.findViewById(R.id.recyclerInProgress);
 
         mFirestore = FirebaseFirestore.getInstance();
-        mRecycler.setLayoutManager(new CompletedFragment.WrapContentLinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL,false));
+        mAuth = FirebaseAuth.getInstance();
+
+        mRecycler.setLayoutManager(new WrapContentLinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL,false));
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //--------Obtener la cantidad de elementos que va haber en el RecyclerView-------
-        mFirestore.collection("publications").whereEqualTo("IdCreator", userId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        mFirestore.collection("users").document(mAuth.getUid()).collection("myRequestTo").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(value != null){
@@ -67,28 +73,32 @@ public class CompletedFragment extends Fragment {
                 }
             }
         });
-        //---------------------------------------------------------------------------------
 
-        query = mFirestore.collection("publications").whereEqualTo("IdCreator", userId).whereEqualTo("State", "Activo");
+        Query query = mFirestore.collection("users").document(mAuth.getUid()).collection("myRequestTo");
         FirestoreRecyclerOptions<Travel> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<Travel>().setQuery(query, Travel.class).build();
 
-        mAdapter = new TravelAdapter(firestoreRecyclerOptions, this.getActivity(), false, true);
+        mAdapter = new TravelAdapter(firestoreRecyclerOptions, getActivity(), true, false);
         mAdapter.notifyDataSetChanged();
         mRecycler.setAdapter(mAdapter);
 
-
+        //---------------------------------------------------------------------------------
 
     }
+
     @Override
     public void onStart() {
         super.onStart();
         mAdapter.startListening();
     }
+
+
     @Override
     public void onStop() {
         super.onStop();
         mAdapter.stopListening();
     }
+
+
     public class WrapContentLinearLayoutManager extends LinearLayoutManager {
         public WrapContentLinearLayoutManager(Context context) {
             super(context);

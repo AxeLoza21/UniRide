@@ -1,20 +1,16 @@
-package com.example.uniride;
+package com.example.uniride.publicationCreation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import com.example.uniride.R;
+
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -81,7 +77,7 @@ public class SelectTime extends AppCompatActivity {
                 cDatos.putSerializable("datos", datos);
 
                 if(getIntent().getBooleanExtra("editar", false)){
-                    Intent d = new Intent(SelectTime.this, CreateTravelDetails.class);
+                    Intent d = new Intent(SelectTime.this, CreatePublicationDetails.class);
                     d.putExtras(cDatos);
                     startActivity(d);
                     finish();

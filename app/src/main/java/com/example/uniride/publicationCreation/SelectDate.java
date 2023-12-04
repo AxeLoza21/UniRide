@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.publicationCreation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,10 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.uniride.R;
 import com.example.uniride.functions.FormatDateName;
 
 import java.text.DateFormat;
@@ -94,7 +93,7 @@ public class SelectDate extends AppCompatActivity {
                 cDatos.putSerializable("datos", datos);
 
                 if(getIntent().getBooleanExtra("editar", false)){
-                    Intent d = new Intent(SelectDate.this, CreateTravelDetails.class);
+                    Intent d = new Intent(SelectDate.this, CreatePublicationDetails.class);
                     d.putExtras(cDatos);
                     startActivity(d);
                     finish();

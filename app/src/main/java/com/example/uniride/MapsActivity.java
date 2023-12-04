@@ -1,44 +1,29 @@
 package com.example.uniride;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
+import com.example.uniride.publicationCreation.ConfirmRouteMap;
+import com.example.uniride.publicationCreation.CreatePublicationDetails;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -100,12 +85,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if(getIntent().getBooleanExtra("editar", false)){
                     if(getIntent().getStringExtra("activity").equals("routeMap")){
-                        Intent i = new Intent(MapsActivity.this, RouteMap.class);
+                        Intent i = new Intent(MapsActivity.this, ConfirmRouteMap.class);
                         i.putExtras(createTravel);
                         startActivity(i);
                         finish();
                     }else if(getIntent().getStringExtra("activity").equals("createTravelDetails")){
-                        Intent i = new Intent(MapsActivity.this, CreateTravelDetails.class);
+                        Intent i = new Intent(MapsActivity.this, CreatePublicationDetails.class);
                         i.putExtras(createTravel);
                         startActivity(i);
                         finish();

@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,24 +6,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.uniride.R;
+import com.example.uniride.model.SchoolsLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocation.ViewHolder> implements Filterable {
-    private List<locationElement> mData;
+public class SchoolsLocationAdapter extends RecyclerView.Adapter<SchoolsLocationAdapter.ViewHolder> implements Filterable {
+    private List<SchoolsLocation> mData;
     private LayoutInflater mInflater;
     private Context context;
-    final ListAdapterLocation.OnItemClickListener listener;
-    private List<locationElement> filteredElements;
+    final SchoolsLocationAdapter.OnItemClickListener listener;
+    private List<SchoolsLocation> filteredElements;
 
     //-----Metodo Constructor-----
-    public ListAdapterLocation(List<locationElement> itemList, Context context, ListAdapterLocation.OnItemClickListener listener) {
+    public SchoolsLocationAdapter(List<SchoolsLocation> itemList, Context context, SchoolsLocationAdapter.OnItemClickListener listener) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.mData = itemList;
@@ -37,12 +38,12 @@ public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocatio
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String query = constraint.toString().toLowerCase().trim();
-                List<locationElement> filteredList = new ArrayList<>();
+                List<SchoolsLocation> filteredList = new ArrayList<>();
 
                 if (query.isEmpty()) {
                     filteredList.addAll(mData);
                 } else {
-                    for (locationElement element : mData) {
+                    for (SchoolsLocation element : mData) {
                         if (element.getnCampus().toLowerCase().contains(query) ||
                                 element.getnEscuela().toLowerCase().contains(query) ||
                                 element.getCategorias().toLowerCase().contains(query)) {
@@ -58,14 +59,14 @@ public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocatio
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredElements = (List<locationElement>) results.values;
+                filteredElements = (List<SchoolsLocation>) results.values;
                 notifyDataSetChanged();
             }
         };
     }
 
     public interface OnItemClickListener {
-        void onItemClick(locationElement item);
+        void onItemClick(SchoolsLocation item);
     }
 
     @Override
@@ -74,16 +75,16 @@ public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocatio
     }
 
     @Override
-    public ListAdapterLocation.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SchoolsLocationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.location_element, null);
-        return new ListAdapterLocation.ViewHolder(view);
+        return new SchoolsLocationAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ListAdapterLocation.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final SchoolsLocationAdapter.ViewHolder holder, final int position) {
         holder.bindData(filteredElements.get(position));
     }
-    public void setItems(List<locationElement> items) { mData = items; }
+    public void setItems(List<SchoolsLocation> items) { mData = items; }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView nEscuela, nCampus;
@@ -94,7 +95,7 @@ public class ListAdapterLocation extends RecyclerView.Adapter<ListAdapterLocatio
             nCampus = itemView.findViewById(R.id.card_L_campus);
         }
 
-        void bindData(final locationElement item) {
+        void bindData(final SchoolsLocation item) {
             nEscuela.setText(item.getnEscuela());
             nCampus.setText(item.getnCampus());
             itemView.setOnClickListener(new View.OnClickListener() {

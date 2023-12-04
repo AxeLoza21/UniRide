@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.publicationCreation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,8 +19,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.uniride.MapsActivity;
+import com.example.uniride.R;
 import com.example.uniride.components.DialogElement;
 import com.example.uniride.functions.SplitDirection;
+import com.example.uniride.selectLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,9 +40,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import okhttp3.Route;
-
-public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
+public class ConfirmRouteMap extends AppCompatActivity implements OnMapReadyCallback {
 
     TextView tv_Origen, tv_Destino;
     Button btnConfirmar;
@@ -61,7 +61,7 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
         btnEditarPPartida = (RelativeLayout) findViewById(R.id.cPulsaEditar);
         btnEditarPDestino = (RelativeLayout)findViewById(R.id.cPulsaEditar2);
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        supportMapFragment.getMapAsync(RouteMap.this);
+        supportMapFragment.getMapAsync(ConfirmRouteMap.this);
 
 
         //----Recibir los datos anteriores----
@@ -80,7 +80,7 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
                 Bundle cDatos = new Bundle();
                 cDatos.putSerializable("datos", datos);
 
-                Intent i = new Intent(RouteMap.this, MapsActivity.class);
+                Intent i = new Intent(ConfirmRouteMap.this, MapsActivity.class);
                 i.putExtra("editar", true);
                 i.putExtra("activity","routeMap");
                 i.putExtras(cDatos);
@@ -94,7 +94,7 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
                 Bundle cDatos = new Bundle();
                 cDatos.putSerializable("datos", datos);
 
-                Intent i = new Intent(RouteMap.this, selectLocation.class);
+                Intent i = new Intent(ConfirmRouteMap.this, selectLocation.class);
                 i.putExtra("editar", true);
                 i.putExtra("create", true);
                 i.putExtra("activity","routeMap");
@@ -109,7 +109,7 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
                 Bundle cDatos = new Bundle();
                 cDatos.putSerializable("datos", datos);
 
-                Intent d = new Intent(RouteMap.this, SelectDate.class);
+                Intent d = new Intent(ConfirmRouteMap.this, SelectDate.class);
                 d.putExtras(cDatos);
                 startActivity(d);
             }
@@ -183,7 +183,7 @@ public class RouteMap extends AppCompatActivity implements OnMapReadyCallback {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RouteMap.this, "Error del Servidor", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ConfirmRouteMap.this, "Error del Servidor", Toast.LENGTH_SHORT).show();
                 Log.e("Error Servidor", error.toString());
             }
         });

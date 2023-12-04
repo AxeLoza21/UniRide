@@ -10,23 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.Toast;
 
+import com.example.uniride.adapter.SchoolsLocationAdapter;
+import com.example.uniride.model.SchoolsLocation;
+import com.example.uniride.publicationCreation.ConfirmRouteMap;
+import com.example.uniride.publicationCreation.CreatePublicationDetails;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.type.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +34,8 @@ import java.util.Map;
 public class selectLocation extends AppCompatActivity {
 
     HashMap<String, Object> datos = new HashMap<>();
-    List<locationElement> elements;
-    ListAdapterLocation listAdapter;
+    List<SchoolsLocation> elements;
+    SchoolsLocationAdapter listAdapter;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
 
@@ -56,13 +54,13 @@ public class selectLocation extends AppCompatActivity {
 
     public void init() {
         elements = new ArrayList<>();
-        elements.add(new locationElement("Manzanillo, Colima", "Campus el Naranjo", "FIE FCAM FACIMAR facultad ingenieria software mecanica electromecanica electrica mecatronica contabilidad administracion oceanico ingeniero licenciatura ingeniero software",19.1226787, -104.4032666));
-        elements.add(new locationElement("Manzanillo, Colima", "Campus Barrio 3", "CUBAM gastronomia comercio exterior aduanas licenciatura ", 19.1060035, -104.311148));
-        elements.add(new locationElement("Manzanillo, Colima", "Campus San Pedrito", "Bach 8 Bach 9 Bach 10 bachillerato 8 bachillerato 9 bachillerato 10", 19.0546213, -104.3074771));
+        elements.add(new SchoolsLocation("Manzanillo, Colima", "Campus el Naranjo", "FIE FCAM FACIMAR facultad ingenieria software mecanica electromecanica electrica mecatronica contabilidad administracion oceanico ingeniero licenciatura ingeniero software",19.1226787, -104.4032666));
+        elements.add(new SchoolsLocation("Manzanillo, Colima", "Campus Barrio 3", "CUBAM gastronomia comercio exterior aduanas licenciatura ", 19.1060035, -104.311148));
+        elements.add(new SchoolsLocation("Manzanillo, Colima", "Campus San Pedrito", "Bach 8 Bach 9 Bach 10 bachillerato 8 bachillerato 9 bachillerato 10", 19.0546213, -104.3074771));
 
-        listAdapter = new ListAdapterLocation(elements, this, new ListAdapterLocation.OnItemClickListener() {
+        listAdapter = new SchoolsLocationAdapter(elements, this, new SchoolsLocationAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(locationElement item) {
+            public void onItemClick(SchoolsLocation item) {
                 boolean crear = getIntent().getBooleanExtra("create", false);
                 if(!crear){
                     guardarDestino(item.getnCampus());
@@ -98,12 +96,12 @@ public class selectLocation extends AppCompatActivity {
                         cDatos.putSerializable("datos",datos);
 
                         if(getIntent().getStringExtra("activity").equals("routeMap")){
-                            Intent d = new Intent(selectLocation.this, RouteMap.class);
+                            Intent d = new Intent(selectLocation.this, ConfirmRouteMap.class);
                             d.putExtras(cDatos);
                             startActivity(d);
                             finish();
                         }else if(getIntent().getStringExtra("activity").equals("createTravelDetails")){
-                            Intent d = new Intent(selectLocation.this, CreateTravelDetails.class);
+                            Intent d = new Intent(selectLocation.this, CreatePublicationDetails.class);
                             d.putExtras(cDatos);
                             startActivity(d);
                             finish();
@@ -116,7 +114,7 @@ public class selectLocation extends AppCompatActivity {
                         datos.put("DesLng", item.getLng());
                         cDatos.putSerializable("datos",datos);
 
-                        Intent d = new Intent(selectLocation.this, RouteMap.class);
+                        Intent d = new Intent(selectLocation.this, ConfirmRouteMap.class);
                         d.putExtras(cDatos);
                         startActivity(d);
                         finish();

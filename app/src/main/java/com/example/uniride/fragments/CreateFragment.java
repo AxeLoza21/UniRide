@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.fragments;
 
 import android.Manifest;
 import android.content.Context;
@@ -27,7 +27,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.uniride.MapsActivity;
+import com.example.uniride.R;
 import com.example.uniride.components.SnackBarElement;
+import com.example.uniride.selectLocation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;

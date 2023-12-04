@@ -1,121 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyTravelsCreated">
+    tools:context=".MyTravelsCreated"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/btn_back"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_baseline_arrow_back_24" />
 
     <TextView
-        android:id="@+id/txtDetallesPublicacion"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Detalles de la Publicacion"
         android:textColor="#040415"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:gravity="center"/>
 
     <TextView
-        android:id="@+id/txtEstadoPublicacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtDetallesPublicacion"
         android:layout_marginTop="5dp"
-        android:layout_centerHorizontal="true"
-        android:text="Estado de la Publicacion"
+        android:text="Acciones de la Publicacion"
         android:fontFamily="@font/poppins"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:layout_gravity="center"/>
 
+    <!--Card de las Acciones de la publicacion-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardEstadoPublicacion"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_below="@+id/txtEstadoPublicacion"
-        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        app:cardCornerRadius="30dp"
-        app:cardBackgroundColor="#E8E8E8">
-
-
+        app:cardBackgroundColor="#FBFBFB"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:id="@+id/btnActivo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Activo"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="15dp"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:elevation="1dp"/>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/circleState"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginBottom="6dp"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="0dp" />
-            </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/btnPAndF"
+            <!--Botones de la Acciones de la publicacion-->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="En Pause /
-                    Finalizado"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="15dp"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:elevation="1dp"/>
+                android:layout_height="55dp"
+                android:orientation="horizontal">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/circleState2"
+                <!--Elemento 1-->
+                <LinearLayout
+                    android:id="@+id/btnVerPublicacion"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginBottom="6dp"
-                    android:visibility="gone"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="0dp" />
-            </RelativeLayout>
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="-10dp"
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="6dp"
+                        app:cardBackgroundColor="#E0E0E0"/>
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="3dp"
+                        android:src="@drawable/ic_baseline_preview_24"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ver"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <!--Linea-->
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="5dp"
+                    android:background="#E0E0E0" />
+
+                <!--Elemento 2-->
+                <LinearLayout
+                    android:id="@+id/btnEditarPublicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="-10dp"
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="6dp"
+                        app:cardBackgroundColor="@color/purple_500"/>
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="3dp"
+                        android:src="@drawable/baseline_edit_24"
+                        app:tint="#5E5E5E" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Editar"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <!--Linea-->
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="5dp"
+                    android:background="#E0E0E0" />
+
+                <!--Elemento 3-->
+                <LinearLayout
+                    android:id="@+id/btnEliminarPublicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="-10dp"
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="6dp"
+                        app:cardBackgroundColor="#BF0D0D"/>
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="3dp"
+                        android:src="@drawable/baseline_delete_24"
+                        app:tint="#5E5E5E" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Eliminar"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textSize="13dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--________________________________________________-->
+
+            <!--Linea-->
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Estado de la Publicacion"
+                android:fontFamily="@font/poppins"
+                android:textSize="16dp"
+                android:layout_gravity="center"/>
+
+            <!--________Botones del Estado de la publicacion_________-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardEstadoPublicacion"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="10dp"
+                app:cardCornerRadius="30dp"
+                app:cardBackgroundColor="#EFEFEF">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:id="@+id/btnActivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Activo"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textSize="12dp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:elevation="1dp"/>
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/circleState"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="4dp"
+                            app:cardCornerRadius="30dp"
+                            app:cardElevation="0dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/btnPAndF"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="En Pause /\nFinalizado"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textSize="12dp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:elevation="1dp"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/circleState2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="4dp"
+                            android:visibility="gone"
+                            app:cardCornerRadius="30dp"
+                            app:cardElevation="0dp" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--________________________________________________-->
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
+    <!--________________________________________________-->
 
     <TextView
         android:id="@+id/txtSolicitudes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cardEstadoPublicacion"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
         android:text="Solicitudes"
         android:fontFamily="@font/poppins"
         android:textSize="16dp"
@@ -126,259 +258,50 @@
         android:id="@+id/line"
         android:layout_width="wrap_content"
         android:layout_height="2dp"
-        android:layout_below="@+id/txtSolicitudes"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="2dp"
         android:background="#E0E0E0" />
 
+    <!--Texto para cuando no hay ninguna solicitud-->
+    <LinearLayout
+        android:id="@+id/cTxtNoSolicitudes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="-50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/not_notificacion"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No hay Solicitudes"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="22dp"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
+            android:text="Las solicitudes que hagan los pasajeros apareceran aqui"
+            android:fontFamily="@font/poppins"
+            android:textSize="12dp"
+            android:gravity="center"/>
+    </LinearLayout>
+    <!--________________________________________-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rSolicitudes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/line"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="5dp">
+        android:layout_height="match_parent"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="5dp"
+        android:visibility="visible">
     </androidx.recyclerview.widget.RecyclerView>
 
 
-    <!--Linea-->
-    <View
-        android:id="@+id/line2"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_above="@+id/txtAcciones"
-        android:layout_marginBottom="30dp"
-        android:layout_marginHorizontal="20dp"
-        android:background="#E0E0E0" />
-
-    <TextView
-        android:id="@+id/txtAcciones"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/cOpcionesPublicacion"
-        android:text="Acciones"
-        android:fontFamily="@font/poppins"
-        android:textSize="16dp"
-        android:gravity="center"/>
-
-    <View
-        android:id="@+id/line3"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_above="@+id/cOpcionesPublicacion"
-        android:background="#E0E0E0" />
-
-
-    <LinearLayout
-        android:id="@+id/cOpcionesPublicacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="5">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="-10dp"
-                    android:layout_marginHorizontal="20dp"
-                    app:cardBackgroundColor="#E3E3E3"
-                    app:cardElevation="0dp"/>
-
-                <ImageView
-                    android:id="@+id/imgVPub"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="6dp"
-                    android:src="@drawable/ic_baseline_preview_24"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ver
-                    Publicacion"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="15dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/txtAcciones"
-            android:background="#E0E0E0" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="5">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="-10dp"
-                    android:layout_marginHorizontal="20dp"
-                    app:cardBackgroundColor="@color/purple_500"
-                    app:cardElevation="0dp"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="6dp"
-                    android:src="@drawable/baseline_edit_24_white"
-                    app:tint="@color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Editar
-                    Publicacion"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="15dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/txtAcciones"
-            android:background="#E0E0E0" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="5">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="-10dp"
-                    android:layout_marginHorizontal="20dp"
-                    app:cardBackgroundColor="#AA1414"
-                    app:cardElevation="0dp"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="6dp"
-                    android:src="@drawable/baseline_delete_24"
-                    app:tint="@color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Eliminar
-                    Publicacion"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="15dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-        </RelativeLayout>
-
-    </LinearLayout>
-        <!--<androidx.cardview.widget.CardView
-            android:id="@+id/cVerPublicacion"
-            android:layout_width="130dp"
-            android:layout_height="60dp"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="10dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/cardview_process"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
-                <ImageView
-                    android:id="@+id/imgVPub"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="6dp"
-                    android:src="@drawable/ic_baseline_preview_24"
-                    app:tint="@color/black" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ver Publicacion"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="15dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cEditarPublicacion"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_marginHorizontal="5dp"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="10dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/cardview_process"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
-                <ImageView
-                    android:id="@+id/imgEPub"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="6dp"
-                    android:src="@drawable/baseline_edit_24"
-                    app:tint="@color/black" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ver Publicacion"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="15dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="85dp"
-            android:layout_height="60dp"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="10dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:background="@drawable/border_delete">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="6dp"
-                    android:src="@drawable/baseline_delete_24"
-                    app:tint="@color/black" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Eliminar"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="15dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>-->
-
-</RelativeLayout>
+</LinearLayout>

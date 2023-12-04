@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.publicationCreation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,19 +10,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.uniride.R;
+
 import java.util.HashMap;
 
-public class SelectStudents extends AppCompatActivity {
+public class SelectCuota extends AppCompatActivity {
+
     ImageButton aumentar,disminuir;
     Button continuar;
     TextView contadorTexto;
-    int contador = 1;
+    int contador = 0;
     HashMap<String, Object> datos = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_students);
+        setContentView(R.layout.activity_select_cuota);
 
         aumentar = (ImageButton) findViewById(R.id.btnAumentar);
         disminuir = (ImageButton) findViewById(R.id.btnDisminuir);
@@ -35,8 +38,8 @@ public class SelectStudents extends AppCompatActivity {
         datos = (HashMap<String, Object>) c.getSerializable("datos");
 
         if(getIntent().getBooleanExtra("editar", false)){
-            contador = Integer.parseInt(datos.get("travelSeating").toString());
-            contadorTexto.setText(String.valueOf(contador));
+            contador = Integer.parseInt(datos.get("travelPrice").toString());
+            contadorTexto.setText(String.valueOf("$"+contador));
             continuar.setText("Confirmar");
         }else{
             //Nada
@@ -45,22 +48,22 @@ public class SelectStudents extends AppCompatActivity {
         aumentar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (contador < 4) {
-                    contador++;
-                    contadorTexto.setText(String.valueOf(contador));
-                }else if (contador == 4){
-                    Toast.makeText(SelectStudents.this,"El maximo de estudiantes es 4",Toast.LENGTH_SHORT).show();
+                if (contador < 20) {
+                    contador+=5;
+                    contadorTexto.setText(String.valueOf("$"+contador));
+                }else if (contador == 20){
+                    Toast.makeText(SelectCuota.this,"El maximo de cuota es $20",Toast.LENGTH_SHORT).show();
                 }
             }
         });
         disminuir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (contador > 1) {
-                    contador--;
-                    contadorTexto.setText(String.valueOf(contador));
-                }else if (contador == 1){
-                    Toast.makeText(SelectStudents.this,"El minino de estudiantes es 1",Toast.LENGTH_SHORT).show();
+                if (contador > 0) {
+                    contador-=5;
+                    contadorTexto.setText(String.valueOf("$"+contador));
+                }else if (contador == 0){
+                    //Nada
                 }
 
             }
@@ -70,16 +73,16 @@ public class SelectStudents extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle cDatos = new Bundle();
-                datos.put("travelSeating", ""+contador);
+                datos.put("travelPrice", ""+contador);
                 cDatos.putSerializable("datos", datos);
 
                 if(getIntent().getBooleanExtra("editar", false)){
-                    Intent d = new Intent(SelectStudents.this, CreateTravelDetails.class);
+                    Intent d = new Intent(SelectCuota.this, CreatePublicationDetails.class);
                     d.putExtras(cDatos);
                     startActivity(d);
                     finish();
                 }else{
-                    Intent d = new Intent(SelectStudents.this, SelectCuota.class);
+                    Intent d = new Intent(SelectCuota.this, DescriptionPublication.class);
                     d.putExtras(cDatos);
                     startActivity(d);
                 }

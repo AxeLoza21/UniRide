@@ -1,10 +1,6 @@
-package com.example.uniride;
+package com.example.uniride.model;
 
-import com.google.type.LatLng;
-
-import java.util.List;
-
-public class locationElement {
+public class SchoolsLocation {
     private String nEscuela;
     private String nCampus;
     private String categorias;
@@ -12,7 +8,7 @@ public class locationElement {
     private double lng;
 
 
-    public locationElement(String nEscuela, String nCampus, String categorias, double lat, double lng) {
+    public SchoolsLocation(String nEscuela, String nCampus, String categorias, double lat, double lng) {
         this.nEscuela = nEscuela;
         this.nCampus = nCampus;
         this.categorias = categorias;

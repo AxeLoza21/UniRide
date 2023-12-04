@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,8 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.uniride.R;
 import com.example.uniride.adapter.PublicationAdapter;
 import com.example.uniride.model.Publications;
+import com.example.uniride.selectLocation;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.EventListener;

@@ -17,10 +17,17 @@
         android:theme="@style/Theme.UniRide.NoActionBar2"
         tools:targetApi="31">
         <activity
+            android:name=".MapTravel"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".MapClientSelectLocation"
             android:exported="false" />
         <activity
-            android:name=".RouteMap"
+            android:name=".publicationCreation.ConfirmRouteMap"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -47,14 +54,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".SelectCuota"
+            android:name=".publicationCreation.SelectCuota"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".CreateTravelDetails"
+            android:name=".publicationCreation.CreatePublicationDetails"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -81,16 +88,16 @@
             android:name=".CarDetails"
             android:exported="false" />
         <activity
-            android:name=".SelectDate"
+            android:name=".publicationCreation.SelectDate"
             android:exported="false" />
         <activity
-            android:name=".SelectTime"
+            android:name=".publicationCreation.SelectTime"
             android:exported="false" />
         <activity
-            android:name=".SelectStudents"
+            android:name=".publicationCreation.SelectStudents"
             android:exported="false" />
         <activity
-            android:name=".DescriptionTravel"
+            android:name=".publicationCreation.DescriptionPublication"
             android:exported="false" />
         <activity
             android:name=".MainActivityFragment"
@@ -106,20 +113,10 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".PerfilGeneral"
-            android:exported="false" />
-        <activity
             android:name=".FormCar"
             android:exported="false" />
         <activity
             android:name=".travelDetails2"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".home"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

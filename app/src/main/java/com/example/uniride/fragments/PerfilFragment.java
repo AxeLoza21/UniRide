@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -19,7 +19,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.uniride.AlertAddCar;
+import com.example.uniride.MyHistoryTravels;
+import com.example.uniride.MyPerfil;
+import com.example.uniride.MyVehicles;
+import com.example.uniride.R;
 import com.example.uniride.functions.CalculateAge;
+import com.example.uniride.login;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;

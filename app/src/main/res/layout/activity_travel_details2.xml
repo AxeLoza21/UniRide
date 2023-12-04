@@ -486,7 +486,6 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:visibility="gone">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -498,6 +497,30 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pulsa para ver mas Informacion"
+                            android:fontFamily="@font/poppins_light"
+                            android:textSize="12dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/cTexto2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ya has hecho una Solicitud a este viaje"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textSize="16dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pulsa para ver tus Solicitudes"
                             android:fontFamily="@font/poppins_light"
                             android:textSize="12dp"/>
                     </LinearLayout>

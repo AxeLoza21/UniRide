@@ -41,12 +41,13 @@ public class travelDetails2 extends AppCompatActivity {
     TextView dateAndTime, startingLocation, destinationLocation, nameCreator, ageCreator, description, time, price, seating, yearCar, colorCar, brandCar;
     ImageView btnBack, imgCreator;
     Button btnPedirRaite;
-    LinearLayout cTxtYourPublication;
+    LinearLayout cTxtYourPublication, cTxtAlreadyRequested;
     RelativeLayout seemap;
 
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
     double deslat, deslng ,orilat, orilng;
+    String statePublication;
 
     CalculateAge cE;
     FormatDateName cf;
@@ -65,6 +66,7 @@ public class travelDetails2 extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
+        cTxtAlreadyRequested = (LinearLayout)findViewById(R.id.cTexto2);
         cTxtYourPublication = (LinearLayout)findViewById(R.id.cTexto);
         dateAndTime = (TextView)findViewById(R.id.fechaYhoraSalida);
         startingLocation = (TextView)findViewById(R.id.startingLocation);
@@ -88,17 +90,21 @@ public class travelDetails2 extends AppCompatActivity {
         setInformation(idPublication);
 
 
-        if ("TravelAdapter".equals(originActivity)) {
-            btnPedirRaite.setVisibility(View.GONE);
-        }
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        seemap.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                onBackPressed();
+            public void onClick(View view) {
+                Bundle createTravel = new Bundle();
+                datos.put("OriLat", orilat);
+                datos.put("OriLng", orilng);
+                datos.put("DesLat", deslat);
+                datos.put("DesLng", deslng);
+                createTravel.putSerializable("datos", datos);
+                Intent i = new Intent(travelDetails2.this, MapsClient.class);
+                i.putExtra("create", true);
+                i.putExtras(createTravel);
+                startActivity(i);
             }
         });
-
 
         btnPedirRaite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,22 +126,28 @@ public class travelDetails2 extends AppCompatActivity {
         cTxtYourPublication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(travelDetails2.this, MyTravelsCreated.class));
+                if (originActivity.equals("HomeFragment")){
+                    Intent i = new Intent(travelDetails2.this, MyTravelsCreated.class);
+                    i.putExtra("state",statePublication);
+                    startActivity(i);
+                }else if(originActivity.equals("MyTravelsCreated")){
+                    onBackPressed();
+                }
+
             }
         });
-        seemap.setOnClickListener(new View.OnClickListener() {
+
+        cTxtAlreadyRequested.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Bundle createTravel = new Bundle();
-                datos.put("OriLat", orilat);
-                datos.put("OriLng", orilng);
-                datos.put("DesLat", deslat);
-                datos.put("DesLng", deslng);
-                createTravel.putSerializable("datos", datos);
-                Intent i = new Intent(travelDetails2.this, MapsClient.class);
-                i.putExtra("create", true);
-                i.putExtras(createTravel);
-                startActivity(i);
+            public void onClick(View v) {
+                //Mandar al Fragment de Viajes
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -147,6 +159,7 @@ public class travelDetails2 extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 //-----Obtener Datos del creador del viaje Mediante su ID-----
                 String userId = value.getString("IdCreator");
+                statePublication = value.getString("State");
                 fStore.collection("users").document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -208,9 +221,30 @@ public class travelDetails2 extends AppCompatActivity {
                 //----------------La publicacion es tuya----------------
                 if(value.getString("IdCreator").equals(mAuth.getUid())){
                     btnPedirRaite.setVisibility(View.GONE);
+                    cTxtAlreadyRequested.setVisibility(View.GONE);
                     cTxtYourPublication.setVisibility(View.VISIBLE);
 
                 }
+
+                //----------------Ya solicitaste este viaje----------------
+                fStore.collection("users").document(mAuth.getUid()).collection("myRequestTo").whereEqualTo("IdPublication", idPublication).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.getResult().getDocuments().size() == 1){
+                            Log.e("Error", "Ya has solicitado este viaje");
+                            btnPedirRaite.setVisibility(View.GONE);
+                            cTxtYourPublication.setVisibility(View.GONE);
+                            cTxtAlreadyRequested.setVisibility(View.VISIBLE);
+                        }else{
+                            Log.e("Error", "Todavia no solicitas es viaje");
+                        }
+                    }
+                });
+
+
+
+
+
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.publicationCreation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.uniride.R;
+
 import java.util.HashMap;
 
-public class DescriptionTravel extends AppCompatActivity {
+public class DescriptionPublication extends AppCompatActivity {
 
     Button continuar;
     EditText description;
@@ -44,12 +46,12 @@ public class DescriptionTravel extends AppCompatActivity {
                 cDatos.putSerializable("datos", datos);
 
                 if(getIntent().getBooleanExtra("editar", false)){
-                    Intent d = new Intent(DescriptionTravel.this, CreateTravelDetails.class);
+                    Intent d = new Intent(DescriptionPublication.this, CreatePublicationDetails.class);
                     d.putExtras(cDatos);
                     startActivity(d);
                     finish();
                 }else{
-                    Intent d = new Intent(DescriptionTravel.this, CreateTravelDetails.class);
+                    Intent d = new Intent(DescriptionPublication.this, CreatePublicationDetails.class);
                     d.putExtras(cDatos);
                     startActivity(d);
                 }

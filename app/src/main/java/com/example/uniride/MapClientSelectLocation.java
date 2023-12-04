@@ -110,7 +110,7 @@ public class MapClientSelectLocation extends AppCompatActivity implements OnMapR
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 Map<String, Object> docPublicationRequested = task.getResult().getData();
-                                docPublicationRequested.put("IdSolicitud", task.getResult().getId());
+                                docPublicationRequested.put("IdSolicitud", IdSolicitud);
                                 fStore.collection("users").document(fAuth.getUid()).collection("myRequestTo").document(datos.get("IdPublication").toString()).set(docPublicationRequested).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

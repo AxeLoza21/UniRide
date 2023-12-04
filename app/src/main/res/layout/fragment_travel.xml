@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:backgroundTint="#FFFFFF"
-    tools:context=".TravelFragment">
+    tools:context=".fragments.TravelFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"

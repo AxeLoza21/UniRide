@@ -1,23 +1,20 @@
 package com.example.uniride.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.uniride.ListAdapterLocation;
 import com.example.uniride.R;
+import com.example.uniride.functions.CalculateAge;
 import com.example.uniride.functions.SplitDirection;
 import com.example.uniride.model.Publications;
 import com.example.uniride.travelDetails2;
@@ -28,8 +25,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 public class PublicationAdapter extends FirestoreRecyclerAdapter<Publications, PublicationAdapter.ViewHolder>{
     FirebaseFirestore fStore;
@@ -60,8 +55,10 @@ public class PublicationAdapter extends FirestoreRecyclerAdapter<Publications, P
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null) {
-                    holder.userName = value.getString("username");
-                    holder.nameUser.setText(holder.userName);
+                    String userName = value.getString("username");
+                    String userAge = new CalculateAge().calcularEdad(value.getString("birthDay"));
+                    holder.nameUser.setText(userName);
+                    holder.ageUser.setText(userAge);
                     if(!value.getString("photo").equals("")){
                         Picasso.get().load(value.getString("photo")).into(holder.imgUser);
                     }
@@ -79,7 +76,7 @@ public class PublicationAdapter extends FirestoreRecyclerAdapter<Publications, P
             public void onClick(View v) {
                 Intent i = new Intent(activity, travelDetails2.class);
                 i.putExtra("idItem", idItem);
-                i.putExtra("originActivity", "PublicationAdapter");
+                i.putExtra("originActivity", "HomeFragment");
                 activity.startActivity(i);
 
             }
@@ -99,16 +96,15 @@ public class PublicationAdapter extends FirestoreRecyclerAdapter<Publications, P
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imgUser;
-        TextView nameUser, direccion, timePublication, travelSeating;
+        TextView nameUser, ageUser, direccion, timePublication, travelSeating;
         CardView item;
-
-        String userName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imgUser = itemView.findViewById(R.id.imgUser);
             nameUser = itemView.findViewById(R.id.cardNameUser);
+            ageUser = itemView.findViewById(R.id.cardAgeUser);
             direccion = itemView.findViewById(R.id.cardMiniDireccion);
             timePublication = itemView.findViewById(R.id.cardSalida);
             travelSeating = itemView.findViewById(R.id.cardAsientos);

@@ -9,10 +9,10 @@ public class  Travel {
         this.campusDestination = campusDestination;
         this.datePublication = datePublication;
         this.timePublication = timePublication;
-
         this.State = State;
         this.direccionPartida = direccionPartida;
     }
+
     public String getCampusDestination() {
         return campusDestination;
     }

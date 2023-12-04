@@ -1,6 +1,4 @@
-package com.example.uniride;
-
-import static android.content.ContentValues.TAG;
+package com.example.uniride.publicationCreation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,20 +7,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.uniride.MainActivityFragment;
+import com.example.uniride.MapsActivity;
+import com.example.uniride.MapsClient;
+import com.example.uniride.R;
 import com.example.uniride.components.DialogElement;
 import com.example.uniride.components.SnackBarElement;
 import com.example.uniride.functions.FormatDateName;
 import com.example.uniride.functions.SplitDirection;
+import com.example.uniride.publicationCreation.DescriptionPublication;
+import com.example.uniride.publicationCreation.SelectCuota;
+import com.example.uniride.publicationCreation.SelectDate;
+import com.example.uniride.publicationCreation.SelectStudents;
+import com.example.uniride.publicationCreation.SelectTime;
+import com.example.uniride.selectLocation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateTravelDetails extends AppCompatActivity {
+public class CreatePublicationDetails extends AppCompatActivity {
 
     TextView fechaSalida, horaSalida, puntoInicio, campusDestino, asientos, cuota, descripcion;
     Button btnCrearRaite;
@@ -221,7 +226,7 @@ public class CreateTravelDetails extends AppCompatActivity {
                 Bundle cDatos = new Bundle();
                 cDatos.putSerializable("datos", datos);
 
-                Intent d = new Intent(getApplicationContext(), DescriptionTravel.class);
+                Intent d = new Intent(getApplicationContext(), DescriptionPublication.class);
                 d.putExtra("editar", true);
                 d.putExtras(cDatos);
                 startActivity(d);
