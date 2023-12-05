@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/purple_500"
     tools:context=".MainActivity">
 
-    <TextView
+    <View
         android:id="@+id/nose"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_centerInParent="true"
-        android:text="Hola soy una SplashScreen"
-        android:textSize="20dp"
-        android:gravity="center"/>
+        android:background="@drawable/logouni"
+        android:gravity="center" />
 
 </RelativeLayout>

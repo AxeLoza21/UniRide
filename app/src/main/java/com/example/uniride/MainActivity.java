@@ -31,7 +31,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
-    TextView pasar;
+    View pasar;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseUser user;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        pasar = (TextView)findViewById(R.id.nose);
+        pasar = (View)findViewById(R.id.nose);
 
         //Abrir la ventana para solicitar los permisos de Ubicacion
         ActivityCompat.requestPermissions(MainActivity.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
@@ -86,12 +86,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Toast.makeText(this, "Hola", Toast.LENGTH_SHORT).show();
         if (requestCode == LOCATION_REQUEST_CODE){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                     //Los permisos de ubicacion se consedieron
-                    Toast.makeText(this, "Consedidos", Toast.LENGTH_SHORT).show();
                     if(fAuth.getCurrentUser() != null){
                         //Entra aqui, si, hay una cuenta activa
                         user = fAuth.getCurrentUser();
