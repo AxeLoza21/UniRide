@@ -67,10 +67,10 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
         DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
         final String id = documentSnapshot.getId();
 
-        holder.Initiation.setText(Travel.getDireccionPartida());
-        holder.fecha.setText(Travel.getDatePublication());
-        holder.hora.setText(Travel.getTimePublication());
-        holder.Destination.setText(Travel.getCampusDestination());
+        holder.Initiation.setText(Travel.getDireccionPartida() != null ? Travel.getDireccionPartida() : "Desconocido");
+        holder.fecha.setText(Travel.getDatePublication() != null ? Travel.getDatePublication() : "Fecha desconocida");
+        holder.hora.setText(Travel.getTimePublication() != null ? Travel.getTimePublication() : "Hora desconocida");
+        holder.Destination.setText(Travel.getCampusDestination() != null ? Travel.getCampusDestination() : "Destino desconocido");
 
         if(isMyRequestFragment){
             holder.cMyTravelCreated.setVisibility(View.INVISIBLE);
@@ -79,8 +79,9 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
             fStore.collection("solicitud").document(Travel.getIdSolicitud()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if(value != null){
-                        switch(value.getString("State")){
+                    if(value != null && value.getString("State") != null){
+                        String state = value.getString("State");
+                        switch(state){
                             case "Aceptado":
                                 holder.borde.setBackgroundResource(R.drawable.cardview_completed);
                                 holder.estadoSolicitud.setText("Aceptado");

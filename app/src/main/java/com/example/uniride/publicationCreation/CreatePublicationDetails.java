@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import com.example.uniride.MainActivityFragment;
 import com.example.uniride.MapsActivity;
 import com.example.uniride.MapsClient;
+import com.example.uniride.MyTravelsCreated;
 import com.example.uniride.R;
 import com.example.uniride.components.DialogElement;
 import com.example.uniride.components.SnackBarElement;
@@ -28,8 +31,10 @@ import com.example.uniride.publicationCreation.SelectDate;
 import com.example.uniride.publicationCreation.SelectStudents;
 import com.example.uniride.publicationCreation.SelectTime;
 import com.example.uniride.selectLocation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -85,6 +90,20 @@ public class CreatePublicationDetails extends AppCompatActivity {
         btnEditarCuota = (RelativeLayout)findViewById(R.id.cPulsaEditar5);
         btnEditarDescripcion = (RelativeLayout)findViewById(R.id.cPulsaEditar6);
         btnVerRutaMapa = (RelativeLayout)findViewById(R.id.btnVerRutaMapa);
+
+        SharedPreferences preferences = getSharedPreferences("editarTodaLaPublicacion", Context.MODE_PRIVATE);
+        boolean editarFirst = getIntent().getBooleanExtra("editar", false);
+        if(editarFirst){
+            btnCrearRaite.setText("Guardar Cambios");
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("IdPublicacionAEditar", getIntent().getStringExtra("idItem"));
+            editor.putBoolean("editarToda",true);
+            editor.commit();
+        }
+
+        if(preferences.getBoolean("editarToda", false)){
+            btnCrearRaite.setText("Guardar Cambios");
+        }
 
         //-----------Setear la informacion---------
         if(getIntent().getStringExtra("idItem") != null){
@@ -238,32 +257,49 @@ public class CreatePublicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                Map<String, Object> publication = datos;
-                publication.put("IdCreator", fAuth.getUid());
-                publication.put("State", "Activo");
-                publication.put("IdPublication", "");
+                if(preferences.getBoolean("editarToda", false)){
+                    fStore.collection("publications").document(preferences.getString("IdPublicacionAEditar", "")).update(datos).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.clear().apply();
+                            snackBar.showSnackBar(getResources().getColor(R.color.purple_500),"Cambios Realizados Correctamente");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(new Intent(getApplicationContext(), MyTravelsCreated.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                                    finish();
+                                }
+                            },1200);
+                        }
+                    });
+                }else{
+                    Map<String, Object> publication = datos;
+                    publication.put("IdCreator", fAuth.getUid());
+                    publication.put("State", "Activo");
+                    publication.put("IdPublication", "");
 
 
-                fStore.collection("publications").add(publication).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        fStore.collection("publications").document(documentReference.getId()).update("IdPublication", documentReference.getId());
-                        snackBar.showSnackBar(getResources().getColor(R.color.green),"Publicacion creada Correctamente");
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(getApplicationContext(), MainActivityFragment.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
-                                finish();
-                            }
-                        },1200);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        snackBar.showSnackBar(getResources().getColor(R.color.red),"Error al crear la Publicacion");
-                    }
-                });
-
+                    fStore.collection("publications").add(publication).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            fStore.collection("publications").document(documentReference.getId()).update("IdPublication", documentReference.getId());
+                            snackBar.showSnackBar(getResources().getColor(R.color.green),"Publicacion creada Correctamente");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(new Intent(getApplicationContext(), MainActivityFragment.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                                    finish();
+                                }
+                            },1200);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            snackBar.showSnackBar(getResources().getColor(R.color.red),"Error al crear la Publicacion");
+                        }
+                    });
+                }
             }
         });
 

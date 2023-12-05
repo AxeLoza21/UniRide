@@ -20,6 +20,7 @@ import com.example.uniride.adapter.PublicationAdapter;
 import com.example.uniride.adapter.RequestAdapter;
 import com.example.uniride.model.Publications;
 import com.example.uniride.model.Request;
+import com.example.uniride.publicationCreation.CreatePublicationDetails;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,7 +62,7 @@ public class MyTravelsCreated extends AppCompatActivity {
         circleState1 = (CardView)findViewById(R.id.circleState);
         circleState2 = (CardView)findViewById(R.id.circleState2);
         txtNoSolicitudes = (LinearLayout)findViewById(R.id.cTxtNoSolicitudes);
-        //btnEditarPublicacion = (CardView)findViewById(R.id.cVerPublicacion);
+        btnEditarPublicacion = (LinearLayout) findViewById(R.id.btnEditarPublicacion);
 
 
         if(statePublicacion.equals("Activo")){
@@ -108,14 +109,15 @@ public class MyTravelsCreated extends AppCompatActivity {
             }
         });
 
-        /*btnEditarPublicacion.setOnClickListener(new View.OnClickListener() {
+        btnEditarPublicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent e = new Intent(getApplicationContext(), CreatePublicationDetails.class);
-                e.putExtra("idItem", getIntent().getStringExtra("idItem"));
+                e.putExtra("idItem", idPublicacion);
+                e.putExtra("editar", true);
                 startActivity(e);
             }
-        });*/
+        });
 
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override

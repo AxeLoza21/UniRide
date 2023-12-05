@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.uniride.components.SnackBarElement;
+import com.example.uniride.functions.CalculateAge;
 import com.example.uniride.publicationCreation.ConfirmRouteMap;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -179,7 +180,7 @@ public class MapClientLocation extends AppCompatActivity implements OnMapReadyCa
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         nameUser.setText(task.getResult().getString("username"));
-                        ageUser.setText(task.getResult().getString("birthDay"));
+                        ageUser.setText(new CalculateAge().calcularEdad(task.getResult().getString("birthDay")));
                         schoolUser.setText(task.getResult().getString("school"));
                         if(!task.getResult().getString("photo").equals("")){
                             Picasso.get().load(task.getResult().getString("photo")).into(imgUser);
