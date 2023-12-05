@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cRequest">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cEstado"
@@ -13,6 +14,7 @@
         app:cardBackgroundColor="@color/purple_500"
         app:cardCornerRadius="10dp">
         <TextView
+            android:id="@+id/txtEstado"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="9.5dp"

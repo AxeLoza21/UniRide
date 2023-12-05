@@ -3,14 +3,18 @@ package com.example.uniride.adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uniride.MyTravelsCreated;
@@ -22,8 +26,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.io.Console;
 
 public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapter.ViewHolder> {
     private FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
@@ -67,7 +75,36 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
         if(isMyRequestFragment){
             holder.cMyTravelCreated.setVisibility(View.INVISIBLE);
             holder.cMyRequest.setVisibility(View.VISIBLE);
-            holder.borde.setBackgroundResource(R.drawable.cardview_process);
+
+            fStore.collection("solicitud").document(Travel.getIdSolicitud()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if(value != null){
+                        switch(value.getString("State")){
+                            case "Aceptado":
+                                holder.borde.setBackgroundResource(R.drawable.cardview_completed);
+                                holder.estadoSolicitud.setText("Aceptado");
+                                holder.estadoSolicitud.setTextColor(Color.parseColor("#58CA5D"));
+                                holder.iconSolictud.setImageResource(R.drawable.baseline_check_24);
+                                holder.iconSolictud.setColorFilter(Color.parseColor("#58CA5D"));
+                                break;
+                            case "Rechazado":
+                                holder.borde.setBackgroundResource(R.drawable.border_delete);
+                                holder.estadoSolicitud.setText("Rechazado");
+                                holder.estadoSolicitud.setTextColor(Color.parseColor("#CF0A0A"));
+                                holder.iconSolictud.setImageResource(R.drawable.ic_baseline_close_24);
+                                holder.iconSolictud.setColorFilter(Color.parseColor("#CF0A0A"));
+                                break;
+                            case "Pendiente":
+                                holder.borde.setBackgroundResource(R.drawable.cardview_process);
+                                holder.estadoSolicitud.setText("Pendiente");
+                                holder.estadoSolicitud.setTextColor(Color.parseColor("#01B1EA"));
+                                holder.iconSolictud.setColorFilter(Color.parseColor("#01B1EA"));
+                                break;
+                        }
+                    }
+                }
+            });
         }else if(isMyTravelCreatedFragment){
             holder.cMyTravelCreated.setVisibility(View.VISIBLE);
             holder.cMyRequest.setVisibility(View.INVISIBLE);
@@ -112,12 +149,14 @@ public class TravelAdapter extends FirestoreRecyclerAdapter<Travel, TravelAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView Initiation, Destination, fecha, hora, estadoSolicitud, numSolicitudes;
+        ImageView iconSolictud;
         LinearLayout borde;
         RelativeLayout cMyRequest, cMyTravelCreated;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            iconSolictud = itemView.findViewById(R.id.iconSolictud);
             Initiation = itemView.findViewById(R.id.txtinitiation);
             Destination = itemView.findViewById(R.id.txtDestination);
             fecha = itemView.findViewById(R.id.txtCalendar);

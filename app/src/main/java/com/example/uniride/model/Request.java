@@ -1,16 +1,18 @@
 package com.example.uniride.model;
 
 public class Request {
-    String IdUser, direccionPoint;
+    String IdUser, IdPublication, direccionPoint, State;
     double PoinLat, PointLng;
 
     public Request(){}
 
-    public Request(String IdUser, String direccionPoint, double PoinLat, double PointLng){
+    public Request(String IdUser, String IdPublication ,String direccionPoint, double PoinLat, double PointLng, String State){
         this.IdUser = IdUser;
+        this.IdPublication = IdPublication;
         this.direccionPoint = direccionPoint;
         this.PoinLat = PoinLat;
         this.PointLng = PointLng;
+        this.State = State;
     }
 
     public String getIdUser() {
@@ -19,6 +21,14 @@ public class Request {
 
     public void setIdUser(String idUser) {
         IdUser = idUser;
+    }
+
+    public String getIdPublication() {
+        return IdPublication;
+    }
+
+    public void setIdPublication(String idPublication) {
+        IdPublication = idPublication;
     }
 
     public String getDireccionPoint() {
@@ -43,5 +53,13 @@ public class Request {
 
     public void setPointLng(double pointLng) {
         PointLng = pointLng;
+    }
+
+    public String getState() {
+        return State;
+    }
+
+    public void setState(String state) {
+        State = state;
     }
 }

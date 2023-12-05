@@ -1,16 +1,17 @@
 package com.example.uniride.model;
 
 public class  Travel {
-    String campusDestination,datePublication,timePublication, State, direccionPartida;
+    String campusDestination,datePublication,timePublication, State, direccionPartida, IdSolicitud;
 
     public Travel(){}
 
-    public Travel(String campusDestination, String datePublication, String timePublication, String State, String direccionPartida) {
+    public Travel(String campusDestination, String datePublication, String timePublication, String State, String direccionPartida, String IdSolicitud) {
         this.campusDestination = campusDestination;
         this.datePublication = datePublication;
         this.timePublication = timePublication;
         this.State = State;
         this.direccionPartida = direccionPartida;
+        this.IdSolicitud = IdSolicitud;
     }
 
     public String getCampusDestination() {
@@ -52,5 +53,13 @@ public class  Travel {
 
     public void setDireccionPartida(String direccionPartida) {
         this.direccionPartida = direccionPartida;
+    }
+
+    public String getIdSolicitud() {
+        return IdSolicitud;
+    }
+
+    public void setIdSolicitud(String idSolicitud) {
+        IdSolicitud = idSolicitud;
     }
 }
