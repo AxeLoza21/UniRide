@@ -51,6 +51,7 @@ public class PerfilFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
     boolean hasCar;
+
     String URL_PHOTO;
 
     @Override
@@ -207,4 +208,23 @@ public class PerfilFragment extends Fragment {
         enableButtons();
 
     }
+    public class PerfilFragment extends Fragment {
+
+        private boolean modoOscuro = false;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_perfil, container, false);
+            return view;
+        }
+
+        public void toggleModoOscuro(View view) {
+            modoOscuro = !modoOscuro;
+            int tema = modoOscuro ? R.style.Theme_UniRide_Dark : R.style.Theme_UniRide;
+            requireActivity().setTheme(tema);
+            requireActivity().recreate(); // Reinicia la actividad para aplicar el nuevo tema
+        }
+
+
 }
