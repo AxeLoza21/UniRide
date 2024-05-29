@@ -88,6 +88,17 @@ public class travelDetails2 extends AppCompatActivity {
         final String idPublication = getIntent().getStringExtra("idItem");
 
         setInformation(idPublication);
+//Declaraciones e inicializaciones: Se declaran e inicializan todas las vistas y variables necesarias, incluyendo TextViews para mostrar
+// la información del viaje, ImageView para botones de navegación y botones para acciones como solicitar el viaje.
+
+//Método onCreate(): Este método se llama cuando se crea la actividad. Aquí se configura el diseño de la actividad y se obtienen instancias
+// de FirebaseAuth y FirebaseFirestore para la autenticación y acceso a la base de datos, respectivamente.
+
+//Método setInformation(): Este método recibe el ID de la publicación del viaje y recupera la información relacionada con ese viaje de la base
+// de datos. Se obtiene información sobre el creador del viaje, como su nombre, edad y foto de perfil, así como detalles del vehículo utilizado
+// en el viaje, como la marca, modelo, color y año. También se obtiene información sobre el viaje, como la fecha, hora, ubicación de inicio y destino,
+// descripción, precio y número de asientos disponibles. Además, se comprueba si el usuario actual es el creador del viaje o si ya ha solicitado este
+// viaje, y se muestra la interfaz de usuario correspondiente en función de estas condiciones.
 
 
         seemap.setOnClickListener(new View.OnClickListener() {

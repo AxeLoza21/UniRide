@@ -51,7 +51,25 @@ public class selectLocation extends AppCompatActivity {
         setupSearchView();
 
     }
+    //esta actividad permite al usuario seleccionar una ubicación de una lista predefinida de escuelas y guardar esa selección para su uso posterior en la aplicación.
+//Declaraciones e inicializaciones: Se importan las clases necesarias y se declaran e inicializan las variables y objetos necesarios, como
+// FirebaseAuth y FirebaseFirestore para la autenticación y acceso a la base de datos, respectivamente. También se inicializan la lista de
+// ubicaciones de escuelas y el adaptador para la vista de reciclaje.
 
+//Método onCreate(): Este método se llama cuando se crea la actividad. Aquí se configura el diseño de la actividad y se inicializan los elementos
+// y métodos necesarios.
+
+//Método init(): Este método inicializa la lista de ubicaciones de las escuelas y configura el adaptador para la vista de reciclaje. También maneja
+// la lógica cuando se hace clic en un elemento de la lista.
+
+//Método setupSearchView(): Este método configura el EditText de búsqueda para filtrar la lista de ubicaciones de las escuelas a medida que el usuario
+// escribe en él.
+
+//Método guardarDestino(): Este método guarda la selección de ubicación del usuario en SharedPreferences para que pueda ser recuperada más tarde en
+// otras partes de la aplicación.
+
+//Método onStart(): Este método se llama cuando la actividad se vuelve visible para el usuario. Aquí se puede realizar cualquier inicialización adicional
+// o actualización de la interfaz de usuario.
     public void init() {
         elements = new ArrayList<>();
         elements.add(new SchoolsLocation("Manzanillo, Colima", "Campus el Naranjo", "FIE FCAM FACIMAR facultad ingenieria software mecanica electromecanica electrica mecatronica contabilidad administracion oceanico ingeniero licenciatura ingeniero software",19.1226787, -104.4032666));

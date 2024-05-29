@@ -77,7 +77,22 @@ public class MapTravel extends AppCompatActivity implements OnMapReadyCallback {
     }
 
 
+//Declaraciones de variables: Se declaran todas las variables necesarias, incluyendo el mapa de Google (GoogleMap), el proveedor de ubicación
+// (FusedLocationProviderClient), y otras variables para almacenar datos relacionados con la ruta y el destino.
 
+//Método onCreate(): Este método se llama cuando se crea la actividad. Aquí se configura el diseño de la actividad y se obtiene una instancia
+// del fragmento del mapa.
+
+//Método onMapReady(): Este método se llama cuando el mapa de Google está listo para ser utilizado. Aquí se configura el mapa, se establece la
+// ubicación del destino y se solicita la ubicación actual del usuario.
+
+//Método getCurrentLocation(): Este método solicita actualizaciones de ubicación del proveedor de ubicación. Cuando se recibe una actualización
+// e ubicación, se actualiza la cámara del mapa para mostrar la ubicación actual del usuario. También se comprueba si el usuario está cerca del
+// destino y, si es así, se inicia otra actividad.
+
+//Método generateRoute(): Este método genera la ruta desde la ubicación actual del usuario hasta el destino utilizando la API de OpenRouteService.
+// Se construye la URL de la solicitud HTTP y se realiza una solicitud GET. Cuando se recibe la respuesta, se procesa para obtener las coordenadas
+// de la ruta y se dibuja la ruta en el mapa.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

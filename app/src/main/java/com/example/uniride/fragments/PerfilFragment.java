@@ -3,6 +3,7 @@ package com.example.uniride.fragments;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -84,17 +85,26 @@ public class PerfilFragment extends Fragment {
             }
         });
 
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 disableButtons();
+                // Limpiar SharedPreferences
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("UserDetails", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.clear();
+                editor.apply();
+
+                // Cerrar sesión con FirebaseAuth
                 mAuth.signOut();
+
+                // Redirigir a la pantalla de inicio de sesión
                 Intent i = new Intent(getActivity(), login.class);
                 startActivity(i);
                 getActivity().finish();
             }
         });
-
 
 
         opcion2.setOnClickListener(new View.OnClickListener() {
@@ -208,23 +218,15 @@ public class PerfilFragment extends Fragment {
         enableButtons();
 
     }
-    public class PerfilFragment extends Fragment {
+
 
         private boolean modoOscuro = false;
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_perfil, container, false);
-            return view;
-        }
-
-        public void toggleModoOscuro(View view) {
-            modoOscuro = !modoOscuro;
-            int tema = modoOscuro ? R.style.Theme_UniRide_Dark : R.style.Theme_UniRide;
-            requireActivity().setTheme(tema);
-            requireActivity().recreate(); // Reinicia la actividad para aplicar el nuevo tema
-        }
-
+    private void toggleModoOscuro() {
+        modoOscuro = !modoOscuro;
+        int tema = modoOscuro ? R.style.Theme_UniRide_Dark : R.style.Theme_UniRide;
+        requireActivity().setTheme(tema);
+        requireActivity().recreate(); // Reinicia la actividad para aplicar el nuevo tema
+    }
 
 }

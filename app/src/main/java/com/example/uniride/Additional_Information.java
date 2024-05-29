@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -68,17 +69,17 @@ public class Additional_Information extends AppCompatActivity {
 
         foto = new UploadPhoto(this);
 
-        etNacimiento = (EditText)findViewById(R.id.et_fechaNacimiento);
+        etNacimiento = findViewById(R.id.et_fechaNacimiento);
         etNacimiento.setFocusable(false);
-        etEscuela = (EditText)findViewById(R.id.et_Asistes);
-        Cargo = (AutoCompleteTextView) findViewById(R.id.SpinerCargo);
+        etEscuela = findViewById(R.id.et_Asistes);
+        Cargo = findViewById(R.id.SpinerCargo);
         etEscuela.setFilters(new InputFilter[]{new InputFilter.LengthFilter(40)});
-        abrirCalendario = (ImageView)findViewById(R.id.btnAbrirCalendario);
-        btnFoto = (CardView)findViewById(R.id.btnUploadPhoto);
-        imgUser = (ImageView)findViewById(R.id.imgUser);
-        btnContinue = (Button)findViewById(R.id.btnContinue);
+        abrirCalendario = findViewById(R.id.btnAbrirCalendario);
+        btnFoto = findViewById(R.id.btnUploadPhoto);
+        imgUser = findViewById(R.id.imgUser);
+        btnContinue = findViewById(R.id.btnContinue);
 
-        ArrayAdapter<String> aa = new ArrayAdapter<String>(Additional_Information.this,R.layout.listviewresours, opciones);
+        ArrayAdapter<String> aa = new ArrayAdapter<>(Additional_Information.this, R.layout.listviewresours, opciones);
         Cargo.setAdapter(aa);
         Cargo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -87,6 +88,15 @@ public class Additional_Information extends AppCompatActivity {
             }
         });
 
+        // Recuperar datos de SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        String school = sharedPref.getString("school", "");
+        String birthDay = sharedPref.getString("birthDay", "");
+        String cargo = sharedPref.getString("cargo", "");
+
+        etEscuela.setText(school);
+        etNacimiento.setText(birthDay);
+        Cargo.setText(cargo);
 
         estadoInpust();
 
@@ -99,21 +109,16 @@ public class Additional_Information extends AppCompatActivity {
 
         etEscuela.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
-                    estadoInpust();
+                estadoInpust();
             }
         });
-
 
         btnFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,8 +134,16 @@ public class Additional_Information extends AppCompatActivity {
                 DocumentReference documentReference = fStore.collection("users").document(fAuth.getUid());
                 Map<String, Object> user = new HashMap<>();
                 user.put("school", etEscuela.getText().toString());
-
                 user.put("birthDay", etNacimiento.getText().toString().replace(" ",""));
+
+                // Guardar los datos en SharedPreferences
+                SharedPreferences sharedPref = getSharedPreferences("UserDetails", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("school", etEscuela.getText().toString());
+                editor.putString("birthDay", etNacimiento.getText().toString());
+                editor.putString("cargo", Cargo.getText().toString());
+                editor.apply();
+
                 documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
