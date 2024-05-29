@@ -8,11 +8,15 @@ import com.example.uniride.components.SnackBarElement;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,58 +40,55 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FormCar extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    Button SaveCar;
-    ImageView btnSalir;
-    SnackBarElement snakBar;
 
+    Button SaveCar;
+    ImageView btnSalir, imgCar;
+    SnackBarElement snakBar;
     EditText etMarcaVehiculo, etModeloVehiculo, etNumeroPlaca, etAnioVehiculo;
     Spinner spTipoVehiculo, spColorVehiculo;
-
-    // Referencia a Firestore
     FirebaseFirestore db;
-
     String [] opciones = {"-","Sedan","Suv","PickUp","Compacto"};
     String [] opciones2 = {"-","Rojo","Verde","Azul","Blanco","Negro","Plateado","Amarillo","Rosa","Morado","Gris","Café"};
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri imageUri;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_car);
-        spTipoVehiculo = (Spinner)findViewById(R.id.SpinerTipoVehiculo);
-        spColorVehiculo = (Spinner)findViewById(R.id.SpinerColorVehiculo);
-        SaveCar = (Button)findViewById(R.id.btn_image);
-        btnSalir = (ImageView)findViewById(R.id.salir);
-        etMarcaVehiculo = (EditText)findViewById(R.id.EditTextMarcaVehiculo);
-        etModeloVehiculo = (EditText)findViewById(R.id.EditTextModeloVehiculo);
-        etNumeroPlaca = (EditText)findViewById(R.id.EditTextNumeroPlaca);
-        etAnioVehiculo = (EditText)findViewById(R.id.EditTextAñoVehiculo);
+        spTipoVehiculo = findViewById(R.id.SpinerTipoVehiculo);
+        spColorVehiculo = findViewById(R.id.SpinerColorVehiculo);
+        SaveCar = findViewById(R.id.btn_image);
+        btnSalir = findViewById(R.id.salir);
+        etMarcaVehiculo = findViewById(R.id.EditTextMarcaVehiculo);
+        etModeloVehiculo = findViewById(R.id.EditTextModeloVehiculo);
+        etNumeroPlaca = findViewById(R.id.EditTextNumeroPlaca);
+        etAnioVehiculo = findViewById(R.id.EditTextAñoVehiculo);
         db = FirebaseFirestore.getInstance();
         snakBar = new SnackBarElement(this);
+        imgCar = findViewById(R.id.imgCar);
 
         // Configurar spinner de tipo de vehículo
-        ArrayAdapter<String> aa = new ArrayAdapter<String>(FormCar.this,
-                R.layout.listviewresours, opciones);
+        ArrayAdapter<String> aa = new ArrayAdapter<>(FormCar.this, R.layout.listviewresours, opciones);
         spTipoVehiculo.setAdapter(aa);
-        spTipoVehiculo.setOnItemSelectedListener( this);
+        spTipoVehiculo.setOnItemSelectedListener(this);
 
         // Configurar spinner de color de vehículo
-        ArrayAdapter<String> ae = new ArrayAdapter<String>(FormCar.this,
-                R.layout.listviewcolorcar, opciones2);
+        ArrayAdapter<String> ae = new ArrayAdapter<>(FormCar.this, R.layout.listviewcolorcar, opciones2);
         spColorVehiculo.setAdapter(ae);
         spColorVehiculo.setOnItemSelectedListener(this);
+
         SaveCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SaveCar.setEnabled(false);
                 guardarCarro();
-
-
             }
         });
 
@@ -97,8 +98,36 @@ public class FormCar extends AppCompatActivity implements AdapterView.OnItemSele
                 onBackPressed();
             }
         });
+
+        // Agrega OnClickListener al CardView "mycar"
+        findViewById(R.id.mycar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFileChooser();
+            }
+        });
     }
-    // Método para guardar el carro en Firestore
+
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                imgCar.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }    // Método para guardar el carro en Firestore
     private void guardarCarro() {
         String marca = etMarcaVehiculo.getText().toString();
         String modelo = etModeloVehiculo.getText().toString();

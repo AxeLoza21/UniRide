@@ -12,6 +12,8 @@
         android:padding="16dp"
         tools:context=".FormCar">
 
+
+
         <ImageView
             android:id="@+id/salir"
             android:layout_width="34dp"
@@ -49,6 +51,58 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/DatosVehiculo" />
+
+        <RelativeLayout
+            android:id="@+id/cCampo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ingresadatosvehiculo"
+            android:layout_marginTop="20dp">
+
+            <RelativeLayout
+                android:id="@+id/cImgUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cimgUser"
+                    android:layout_width="114dp"
+                    android:layout_height="114dp"
+                    app:cardCornerRadius="100dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@android:color/transparent">
+                    <ImageView
+                        android:id="@+id/imgCar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/foto_2"
+                        android:scaleType="centerCrop"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/mycar"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:layout_toRightOf="@+id/cimgUser"
+                    android:layout_marginTop="65dp"
+                    android:layout_marginLeft="-40dp"
+                    app:cardCornerRadius="50dp"
+                    app:cardBackgroundColor="@color/purple_500"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="+"
+                        android:textColor="@color/white"
+                        android:gravity="center"
+                        android:textSize="25dp"/>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+        </RelativeLayout>
 
         <!--Ingreso de datos-->
 
@@ -221,6 +275,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/AñoVehiculo" />
+
 
         <Button
             android:id="@+id/btn_image"
