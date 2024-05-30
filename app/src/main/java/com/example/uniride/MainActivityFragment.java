@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.uniride.fragments.AlertAddCarFragment;
+import com.example.uniride.fragments.Chatfragment;
 import com.example.uniride.fragments.CreateFragment;
 import com.example.uniride.fragments.HomeFragment;
 import com.example.uniride.fragments.PerfilFragment;
@@ -28,6 +29,7 @@ public class MainActivityFragment extends AppCompatActivity {
     CreateFragment createFragment = new CreateFragment();
     TravelFragment travelFragment = new TravelFragment();
     PerfilFragment perfilFragment = new PerfilFragment();
+    Chatfragment chatfragment = new Chatfragment();
 
     AlertAddCarFragment alertAddCarFragment = new AlertAddCarFragment();
     boolean hasCar = false;
@@ -53,12 +55,16 @@ public class MainActivityFragment extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, alertAddCarFragment).commit();
                     }
                     break;
+                case R.id.chat:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,chatfragment).commit();
+                    break;
                 case R.id.travel:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,travelFragment).commit();
                     break;
                 case R.id.perfil:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,perfilFragment).commit();
                     break;
+
             }
             return true;
         });

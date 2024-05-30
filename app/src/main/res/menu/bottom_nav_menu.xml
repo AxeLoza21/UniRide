@@ -6,6 +6,9 @@
     <item android:id="@+id/create"
         android:title="Crear"
         android:icon="@drawable/baseline_add_circle_outline_24"/>
+    <item android:id="@+id/chat"
+        android:title="Chats"
+        android:icon="@drawable/icon_chat"/>
     <item android:id="@+id/travel"
         android:title="Viajes"
         android:icon="@drawable/baseline_directions_car_24"/>
