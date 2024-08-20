@@ -1,59 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5sp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- Encabezado -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#03A9F4"
+        android:elevation="4dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="48sp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/fotoperfil"
-            android:layout_height="48sp"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre del usuario"
-            android:id="@+id/nombreusuario"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Usuario"
+                android:id="@+id/nombreusuario"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Online"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+        </LinearLayout>
     </LinearLayout>
+
+    <!-- Lista de mensajes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMensajes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#F5F5F5"
+        android:padding="8dp"/>
+
+    <!-- Barra de entrada de mensaje -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+
         <ImageButton
             android:id="@+id/btnEnviarfoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_gallery"
-            android:layout_gravity="center"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_camera"
+            android:contentDescription="Enviar Foto"
+            android:tint="#03A9F4"
+            android:layout_gravity="center_vertical"
+            tools:ignore="UseAppTint" />
+
         <EditText
             android:id="@+id/txtMensaje"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Escribe un mensaje"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:hint="Enter message"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:textColor="#333333"
+            android:minHeight="40dp"
+            android:textSize="16sp"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/btnenviar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Enviar"/>
-
-
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_send"
+            android:tint="#03A9F4"
+            android:layout_gravity="center_vertical"
+            tools:ignore="UseAppTint" />
     </LinearLayout>
-
 </LinearLayout>

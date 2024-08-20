@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -44,7 +43,7 @@ public class Chatfragment extends Fragment {
     private TextView nombre;
     private RecyclerView rvMensajes;
     private EditText txtMensaje;
-    private Button btnenviar;
+    private ImageButton btnenviar;
 
     private AdapterMensajes adapter;
     private ImageButton btnEnviarFoto;
@@ -65,7 +64,7 @@ public class Chatfragment extends Fragment {
         nombre = (TextView) view.findViewById(R.id.nombreusuario);
         rvMensajes = (RecyclerView) view.findViewById(R.id.rvMensajes);
         txtMensaje = (EditText) view.findViewById(R.id.txtMensaje);
-        btnenviar = (Button) view.findViewById(R.id.btnenviar);
+        btnenviar = (ImageButton) view.findViewById(R.id.btnenviar);
         btnEnviarFoto = (ImageButton) view.findViewById(R.id.btnEnviarfoto);
 
         // Inicializar Firestore
