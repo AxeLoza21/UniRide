@@ -1,9 +1,8 @@
-package com.example.uniride;
+package com.example.uniride.model;
 
 public class Mensaje {
     private String mensaje;
     private String nombre;
-    private String fotoperfil;
     private String type_mensaje;
     private String hora;
 
@@ -11,10 +10,9 @@ public class Mensaje {
     public Mensaje() {
     }
 
-    public Mensaje(String mensaje, String nombre, String fotoperfil, String type_mensaje, String hora) {
+    public Mensaje(String mensaje, String nombre, String type_mensaje, String hora) {
         this.mensaje = mensaje;
         this.nombre = nombre;
-        this.fotoperfil = fotoperfil;
         this.type_mensaje = type_mensaje;
         this.hora = hora;
     }
@@ -35,13 +33,7 @@ public class Mensaje {
         this.nombre = nombre;
     }
 
-    public String getFotoperfil() {
-        return fotoperfil;
-    }
 
-    public void setFotoperfil(String fotoperfil) {
-        this.fotoperfil = fotoperfil;
-    }
 
     public String getType_mensaje() {
         return type_mensaje;

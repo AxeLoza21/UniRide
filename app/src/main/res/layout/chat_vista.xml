@@ -65,16 +65,7 @@
         android:background="#FFFFFF"
         android:elevation="4dp">
 
-        <ImageButton
-            android:id="@+id/btnEnviarfoto"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_camera"
-            android:contentDescription="Enviar Foto"
-            android:tint="#03A9F4"
-            android:layout_gravity="center_vertical"
-            tools:ignore="UseAppTint" />
+
 
         <EditText
             android:id="@+id/txtMensaje"

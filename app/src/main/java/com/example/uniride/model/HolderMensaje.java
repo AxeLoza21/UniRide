@@ -1,4 +1,4 @@
-package com.example.uniride;
+package com.example.uniride.model;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,19 +6,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uniride.R;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HolderMensaje extends RecyclerView.ViewHolder {
     private TextView nombre;
     private TextView mensaje;
     private TextView hora;
-    private CircleImageView fotomensaje;
     public HolderMensaje(@NonNull View itemView) {
         super(itemView);
         nombre = (TextView) itemView.findViewById(R.id.nombreMensaje);
         mensaje = (TextView) itemView.findViewById(R.id.mensajeMensaje);
         hora = (TextView) itemView.findViewById(R.id.horaMensaje);
-        fotomensaje = (CircleImageView) itemView.findViewById(R.id.fotoperfilMensaje);
     }
 
     public TextView getNombre() {
@@ -45,11 +45,5 @@ public class HolderMensaje extends RecyclerView.ViewHolder {
         this.hora = hora;
     }
 
-    public CircleImageView getFotomensaje() {
-        return fotomensaje;
-    }
 
-    public void setFotomensaje(CircleImageView fotomensaje) {
-        this.fotomensaje = fotomensaje;
-    }
 }

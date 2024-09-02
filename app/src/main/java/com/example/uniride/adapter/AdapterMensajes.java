@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.uniride.HolderMensaje;
-import com.example.uniride.Mensaje;
+import com.example.uniride.model.HolderMensaje;
+import com.example.uniride.model.Mensaje;
 import com.example.uniride.R;
 
 import java.util.ArrayList;
