@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.uniride.fragments.Chatfragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -134,8 +135,21 @@ login extends AppCompatActivity {
                                             startActivity(new Intent(getApplicationContext(),selectLocation.class));
                                             finish();
                                         }else{
-                                            startActivity(new Intent(getApplicationContext(),MainActivityFragment.class));
-                                            finish();
+                                            // Obtener chatId y recipientId
+                                            String chatId = fStore.collection("chat").document().getId(); // O el ID del chat existente
+                                            String recipientId = "el_id_del_destinatario"; // Deberías obtener este ID según el usuario con el que deseas chatear
+
+                                            // Iniciar el fragmento de chat con los argumentos necesarios
+                                            Bundle args = new Bundle();
+                                            args.putString("chatId", chatId);
+                                            args.putString("recipientId", recipientId);
+
+                                            Chatfragment chatFragment = new Chatfragment();
+                                            chatFragment.setArguments(args);
+
+                                            getSupportFragmentManager().beginTransaction()
+                                                    .replace(R.id.container, chatFragment) // R.id.container es el ID del contenedor del fragmento en tu layout
+                                                    .commit();
                                         }
                                     }
                                 });

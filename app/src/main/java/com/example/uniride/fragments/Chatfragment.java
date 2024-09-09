@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.uniride.R;
 import com.example.uniride.adapter.AdapterMensajes;
 import com.example.uniride.model.Mensaje;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -40,40 +42,38 @@ public class Chatfragment extends Fragment {
     private FirebaseFirestore firestore;
     private CollectionReference chatReference;
 
-    // Aquí se recibe el ID del chat entre dos usuarios
     private String chatId;
+    private String userId;
+    private String recipientId;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.chat_vista, container, false);
 
-        fotoperfil = (CircleImageView) view.findViewById(R.id.fotoperfil);
-        nombre = (TextView) view.findViewById(R.id.nombreusuario);
-        rvMensajes = (RecyclerView) view.findViewById(R.id.rvMensajes);
-        txtMensaje = (EditText) view.findViewById(R.id.txtMensaje);
-        btnenviar = (ImageButton) view.findViewById(R.id.btnenviar);
+        fotoperfil = view.findViewById(R.id.fotoperfil);
+        nombre = view.findViewById(R.id.nombreusuario);
+        rvMensajes = view.findViewById(R.id.rvMensajes);
+        txtMensaje = view.findViewById(R.id.txtMensaje);
+        btnenviar = view.findViewById(R.id.btnenviar);
 
-        // Inicializar Firestore
         firestore = FirebaseFirestore.getInstance();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Obtener el ID del chat desde los argumentos o crear uno nuevo
         if (getArguments() != null) {
             chatId = getArguments().getString("chatId");
+            recipientId = getArguments().getString("recipientId");
         } else {
-            chatId = firestore.collection("chat").document().getId(); // Crear un nuevo chat si no se proporciona uno
+            chatId = firestore.collection("chat").document().getId();
         }
 
-        // Referencia a la subcolección `messages` dentro del chat específico
         chatReference = firestore.collection("chat").document(chatId).collection("messages");
 
-        // Configurar el adaptador
         adapter = new AdapterMensajes(getContext());
         LinearLayoutManager l = new LinearLayoutManager(getContext());
         rvMensajes.setLayoutManager(l);
         rvMensajes.setAdapter(adapter);
 
-        // Agregar mensaje nuevo
         btnenviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,15 +81,21 @@ public class Chatfragment extends Fragment {
                 String nombreUsuario = nombre.getText().toString();
 
                 if (!mensaje.isEmpty() && !nombreUsuario.isEmpty()) {
-                    // Enviar el mensaje al chat específico
-                    Mensaje nuevoMensaje = new Mensaje(mensaje, nombreUsuario, "1", "00:00");
+                    // Usar el constructor completo con Timestamp y otros parámetros
+                    Mensaje nuevoMensaje = new Mensaje(
+                            mensaje,
+                            nombreUsuario,
+                            "1",
+                            Timestamp.now(),
+                            recipientId,
+                            userId
+                    );
                     chatReference.add(nuevoMensaje);
-                    txtMensaje.setText(""); // Limpiar el campo de texto después de enviar
+                    txtMensaje.setText("");
                 }
             }
         });
 
-        // Escuchar los cambios en la base de datos para este chat específico
         chatReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
@@ -112,7 +118,6 @@ public class Chatfragment extends Fragment {
                     }
                 }
 
-                // Desplazarse a la última posición
                 setScrollbar();
             }
         });
@@ -124,4 +129,3 @@ public class Chatfragment extends Fragment {
         rvMensajes.scrollToPosition(adapter.getItemCount() - 1);
     }
 }
-
