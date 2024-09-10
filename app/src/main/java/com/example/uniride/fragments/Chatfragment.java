@@ -31,6 +31,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Chatfragment extends Fragment {
+
     private CircleImageView fotoperfil;
     private TextView nombre;
     private RecyclerView rvMensajes;
@@ -49,53 +50,63 @@ public class Chatfragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflar el layout del fragmento
         View view = inflater.inflate(R.layout.chat_vista, container, false);
 
+        // Inicializar las vistas
         fotoperfil = view.findViewById(R.id.fotoperfil);
         nombre = view.findViewById(R.id.nombreusuario);
         rvMensajes = view.findViewById(R.id.rvMensajes);
         txtMensaje = view.findViewById(R.id.txtMensaje);
         btnenviar = view.findViewById(R.id.btnenviar);
 
+        // Inicializar Firestore y obtener el userId del usuario actual
         firestore = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        // Obtener chatId y recipientId de los argumentos
         if (getArguments() != null) {
             chatId = getArguments().getString("chatId");
             recipientId = getArguments().getString("recipientId");
         } else {
+            // Si no hay chatId en los argumentos, generamos uno nuevo
             chatId = firestore.collection("chat").document().getId();
         }
 
+        // Referencia al chat en Firestore
         chatReference = firestore.collection("chat").document(chatId).collection("messages");
 
+        // Configurar el RecyclerView
         adapter = new AdapterMensajes(getContext());
         LinearLayoutManager l = new LinearLayoutManager(getContext());
         rvMensajes.setLayoutManager(l);
         rvMensajes.setAdapter(adapter);
 
+        // Enviar mensaje cuando se presiona el botón de enviar
         btnenviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String mensaje = txtMensaje.getText().toString();
                 String nombreUsuario = nombre.getText().toString();
 
+                // Validar que el mensaje y el nombre no estén vacíos
                 if (!mensaje.isEmpty() && !nombreUsuario.isEmpty()) {
-                    // Usar el constructor completo con Timestamp y otros parámetros
                     Mensaje nuevoMensaje = new Mensaje(
                             mensaje,
                             nombreUsuario,
-                            "1",
+                            "1", // Tipo de mensaje, podrías usarlo para diferenciar texto, imágenes, etc.
                             Timestamp.now(),
                             recipientId,
                             userId
                     );
+                    // Agregar el nuevo mensaje a Firestore
                     chatReference.add(nuevoMensaje);
-                    txtMensaje.setText("");
+                    txtMensaje.setText(""); // Limpiar el campo de texto
                 }
             }
         });
 
+        // Escuchar cambios en los mensajes del chat (Firestore listener)
         chatReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
@@ -103,6 +114,7 @@ public class Chatfragment extends Fragment {
                     return;
                 }
 
+                // Manejar cambios en el chat (nuevos mensajes)
                 for (DocumentChange dc : Objects.requireNonNull(snapshots).getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
@@ -110,14 +122,15 @@ public class Chatfragment extends Fragment {
                             adapter.addMensaje(m);
                             break;
                         case MODIFIED:
-                            // Manejar modificaciones si es necesario
+                            // Manejar mensajes modificados si es necesario
                             break;
                         case REMOVED:
-                            // Manejar eliminaciones si es necesario
+                            // Manejar mensajes eliminados si es necesario
                             break;
                     }
                 }
 
+                // Desplazar el RecyclerView al último mensaje
                 setScrollbar();
             }
         });
@@ -125,6 +138,7 @@ public class Chatfragment extends Fragment {
         return view;
     }
 
+    // Método para desplazar el RecyclerView al último mensaje
     private void setScrollbar() {
         rvMensajes.scrollToPosition(adapter.getItemCount() - 1);
     }

@@ -12,6 +12,7 @@ import com.example.uniride.fragments.AlertAddCarFragment;
 import com.example.uniride.fragments.Chatfragment;
 import com.example.uniride.fragments.CreateFragment;
 import com.example.uniride.fragments.HomeFragment;
+import com.example.uniride.fragments.ListaUsuariosFragment;
 import com.example.uniride.fragments.PerfilFragment;
 import com.example.uniride.fragments.TravelFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,7 +30,7 @@ public class MainActivityFragment extends AppCompatActivity {
     CreateFragment createFragment = new CreateFragment();
     TravelFragment travelFragment = new TravelFragment();
     PerfilFragment perfilFragment = new PerfilFragment();
-    Chatfragment chatfragment = new Chatfragment();
+    ListaUsuariosFragment listaUsuariosFragment = new ListaUsuariosFragment();
 
     AlertAddCarFragment alertAddCarFragment = new AlertAddCarFragment();
     boolean hasCar = false;
@@ -56,7 +57,7 @@ public class MainActivityFragment extends AppCompatActivity {
                     }
                     break;
                 case R.id.chat:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,chatfragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new ListaUsuariosFragment()).commit();
                     break;
                 case R.id.travel:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,travelFragment).commit();
