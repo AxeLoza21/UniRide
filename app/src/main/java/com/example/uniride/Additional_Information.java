@@ -134,6 +134,7 @@ public class Additional_Information extends AppCompatActivity {
                 documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
                         startActivity(new Intent(getApplicationContext(), selectLocation.class));
                         finish();
                     }

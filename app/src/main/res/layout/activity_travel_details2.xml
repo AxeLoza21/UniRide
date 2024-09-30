@@ -217,6 +217,15 @@
                     android:text="21 años"
                     android:textColor="#040415"
                     android:textSize="12dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="340dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/icon_chat"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -470,7 +479,6 @@
                         android:layout_height="55dp"
                         android:layout_centerHorizontal="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="10dp"
                         app:cornerRadius="30dp"
                         android:fontFamily="@font/poppins_bold"
                         android:textSize="15dp"

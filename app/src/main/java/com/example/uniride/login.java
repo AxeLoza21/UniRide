@@ -5,12 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,10 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.uniride.fragments.Chatfragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
@@ -37,15 +31,13 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class
-login extends AppCompatActivity {
+public class login extends AppCompatActivity {
     TextView registrarse, forgotpassword;
     Button login;
-    TextInputEditText  ed_email, ed_password;
+    TextInputEditText ed_email, ed_password;
     FirebaseAuth fAuth;
     FirebaseUser user;
     FirebaseFirestore fStore;
-    int REQUEST_CODE = 200;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -53,176 +45,167 @@ login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Inicialización de los elementos
+        registrarse = findViewById(R.id.btnRegistro);
+        login = findViewById(R.id.btn_login);
+        ed_email = findViewById(R.id.et_usarname);
+        ed_password = findViewById(R.id.et_password);
+        forgotpassword = findViewById(R.id.Forgotpassword);
 
-        registrarse = (TextView)findViewById(R.id.btnRegistro);
-        login = (Button)findViewById(R.id.btn_login);
-        ed_email = (TextInputEditText)findViewById(R.id.et_usarname);
-        ed_password = (TextInputEditText)findViewById(R.id.et_password);
-        forgotpassword = (TextView)findViewById(R.id.Forgotpassword);
-
+        // Inicialización de Firebase
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
+        // Evento para registrarse
         registrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(login.this, sign_in.class);
-                startActivity(i);
+                startActivity(new Intent(login.this, sign_in.class));
             }
         });
 
+        // Evento de inicio de sesión
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                disableTouch();
                 String email = ed_email.getText().toString().trim();
                 String password = ed_password.getText().toString().trim();
-                if (TextUtils.isEmpty(email)) {
-                    ed_email.setError("Correo requerido");
-                    ed_email.requestFocus();
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    return;
-                } else if (!isValidEmail(email)) {
-                    // Validar formato del correo
-                    ed_email.setError("Correo inválido. El correo debe tener el formato 'ejemplo@ucol.mx' y contener solo letras y números.");
-                    ed_email.requestFocus();
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                // Validación de los campos
+                if (!validateInputs(email, password)) {
+                    enableTouch();
                     return;
                 }
 
-                // Validar el campo de contraseña
-                if (TextUtils.isEmpty(password)) {
-                    ed_password.setError("Contraseña requerida", null);
-                    ed_password.requestFocus();
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    return;
-                } else if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=\\S+$).{8,}$")) {
-                    ed_password.setError("La contraseña debe tener al menos una letra mayúscula, dos números, un carácter especial y ser mayor a 8 caracteres", null);
-                    ed_password.requestFocus();
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    return;
-                }
-                //Se cumplio las acciones
-                fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            fAuth = FirebaseAuth.getInstance();
-                            user = fAuth.getCurrentUser();
-                            //int permiso_location_precisa = ContextCompat.checkSelfPermission(login.this, Manifest.permission.ACCESS_FINE_LOCATION);
-                            //if (permiso_location_precisa == PackageManager.PERMISSION_GRANTED) {
-                                // Permiso concedido, continuar con la lógica después de la autenticación
-                                // ...
-                            if (!user.isEmailVerified()) {
-                                Toast.makeText(login.this, "Debes de verificar el correo", Toast.LENGTH_SHORT).show();
-                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                fAuth.signOut();
-
-                            } else if (user.isEmailVerified()) {
-                                DocumentReference documentReference = fStore.collection("users").document(user.getUid());
-                                documentReference.addSnapshotListener(com.example.uniride.login.this, new EventListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                        String school = value.getString("school");
-                                        String birthDay = value.getString("birthDay");
-                                        String location = value.getString("destinationLocation");
-
-                                        if(school.isEmpty() || birthDay.isEmpty()){
-                                            startActivity(new Intent(getApplicationContext(),Additional_Information.class));
-                                            finish();
-                                        }else if (location.isEmpty()){
-                                            startActivity(new Intent(getApplicationContext(),selectLocation.class));
-                                            finish();
-                                        }else{
-                                            // Obtener chatId y recipientId
-                                            String chatId = fStore.collection("chat").document().getId(); // O el ID del chat existente
-                                            String recipientId = "el_id_del_destinatario"; // Deberías obtener este ID según el usuario con el que deseas chatear
-
-                                            // Iniciar el fragmento de chat con los argumentos necesarios
-                                            Bundle args = new Bundle();
-                                            args.putString("chatId", chatId);
-                                            args.putString("recipientId", recipientId);
-
-                                            Chatfragment chatFragment = new Chatfragment();
-                                            chatFragment.setArguments(args);
-
-                                            getSupportFragmentManager().beginTransaction()
-                                                    .replace(R.id.container, chatFragment) // R.id.container es el ID del contenedor del fragmento en tu layout
-                                                    .commit();
-                                        }
+                // Iniciar sesión con Firebase
+                fAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                user = fAuth.getCurrentUser();
+                                if (user != null) {
+                                    if (!user.isEmailVerified()) {
+                                        showToast("Debes verificar el correo");
+                                        fAuth.signOut();
+                                        enableTouch();
+                                    } else {
+                                        checkUserDetails();
                                     }
-                                });
+                                }
+                            } else {
+                                showToast("Error al iniciar sesión. Verifica tu correo y contraseña");
+                                enableTouch();
                             }
-                        }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(login.this, "Error al iniciar sesión. Verifica tu correo y contraseña", Toast.LENGTH_SHORT).show();
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    }
-                });
+                        });
             }
         });
 
-        forgotpassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showResetPasswordDialog();
-            }
-        });
+        // Evento de restablecimiento de contraseña
+        forgotpassword.setOnClickListener(view -> showResetPasswordDialog());
     }
-    // Función para validar el formato del correo
+
+    // Validar el formato del correo y la contraseña
+    private boolean validateInputs(String email, String password) {
+        if (TextUtils.isEmpty(email)) {
+            ed_email.setError("Correo requerido");
+            ed_email.requestFocus();
+            return false;
+        } else if (!isValidEmail(email)) {
+            ed_email.setError("Correo inválido. Debe ser 'ejemplo@ucol.mx'.");
+            ed_email.requestFocus();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            ed_password.setError("Contraseña requerida");
+            ed_password.requestFocus();
+            return false;
+        } else if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=\\S+$).{8,}$")) {
+            ed_password.setError("Contraseña debe tener mayúscula, número, carácter especial y más de 8 caracteres");
+            ed_password.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    // Validación del formato de correo
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@ucol\\.mx$";
         return email.matches(emailRegex);
     }
+
+    // Checar detalles del usuario tras iniciar sesión
+    private void checkUserDetails() {
+        DocumentReference documentReference = fStore.collection("users").document(user.getUid());
+        documentReference.addSnapshotListener(this, (value, error) -> {
+            if (value != null && value.exists()) {
+                String school = value.getString("school");
+                String birthDay = value.getString("birthDay");
+                String location = value.getString("destinationLocation");
+
+                // Verificar si falta información adicional
+                if (TextUtils.isEmpty(school) || TextUtils.isEmpty(birthDay)) {
+                    navigateToActivity(Additional_Information.class);
+                } else if (TextUtils.isEmpty(location)) {
+                    navigateToActivity(selectLocation.class);
+                } else {
+                    navigateToActivity(MainActivityFragment.class);
+                }
+            } else {
+                showToast("Error al recuperar detalles del usuario");
+                enableTouch();
+            }
+        });
+    }
+
+    // Deshabilitar interacción mientras espera
+    private void disableTouch() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    // Habilitar interacción
+    private void enableTouch() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    // Mostrar mensaje
+    private void showToast(String message) {
+        Toast.makeText(login.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    // Navegar a otra actividad
+    private void navigateToActivity(Class<?> activityClass) {
+        startActivity(new Intent(getApplicationContext(), activityClass));
+        finish();
+    }
+
+    // Mostrar diálogo para restablecer contraseña
     private void showResetPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.reset_password_dialog, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.reset_password_dialog, null);
         builder.setView(dialogView);
 
         final EditText emailEditText = dialogView.findViewById(R.id.emailEditText);
 
-        builder.setPositiveButton(R.string.reset_password, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String emailAddress = emailEditText.getText().toString().trim();
-                if (!TextUtils.isEmpty(emailAddress)) {
-                    FirebaseAuth auth = FirebaseAuth.getInstance();
-                    auth.sendPasswordResetEmail(emailAddress)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        // El correo electrónico de restablecimiento de contraseña se ha enviado correctamente
-                                        Toast.makeText(login.this, "El correo electrónico de restablecimiento de contraseña se ha enviado correctamente", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        // Error al enviar el correo electrónico de restablecimiento de contraseña
-                                        Toast.makeText(login.this, "Error al enviar el correo electrónico de restablecimiento de contraseña", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                } else {
-                    // El campo de entrada de correo electrónico está vacío, muestra un mensaje de error
-                    Toast.makeText(login.this, "Ingrese una dirección de correo electrónico válida", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // El usuario canceló la operación de restablecimiento de contraseña
+        builder.setPositiveButton(R.string.reset_password, (dialog, which) -> {
+            String emailAddress = emailEditText.getText().toString().trim();
+            if (!TextUtils.isEmpty(emailAddress)) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                auth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        showToast("Correo de restablecimiento enviado");
+                    } else {
+                        showToast("Error al enviar el correo de restablecimiento");
+                    }
+                });
+            } else {
+                showToast("Ingrese un correo válido");
             }
         });
 
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
-
-
 }
