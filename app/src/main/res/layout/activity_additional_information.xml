@@ -8,7 +8,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".Additional_Information">
+        tools:context=".Additional_Information"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/txtTermina"
@@ -17,56 +18,58 @@
             android:layout_marginTop="25dp"
             android:layout_marginHorizontal="20dp"
             android:fontFamily="@font/poppins_semibold"
-            android:textColor="#040415"
-            android:textSize="25dp"
+            android:textColor="@color/purple_700"
+            android:textSize="20dp"
             android:text="Termina la configuracion de tu cuenta"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_centerHorizontal="true"/>
 
         <RelativeLayout
             android:id="@+id/cCampo1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtTermina"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="16dp">
 
             <ImageView
                 android:id="@+id/imgExclamacion"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="8dp"
                 android:src="@drawable/exclamacion"/>
 
             <TextView
                 android:id="@+id/txtOpcional"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/imgExclamacion"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/poppins_light"
                 android:textColor="#575757"
-                android:textSize="13dp"
+                android:textSize="12sp"
                 android:text="Opcional"/>
 
             <!--Linea-->
             <View
                 android:id="@+id/line"
                 android:layout_width="wrap_content"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_below="@+id/txtOpcional"
                 android:layout_marginHorizontal="18dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:background="#E0E0E0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/line"
-                android:layout_marginLeft="20dp"
+                android:layout_below="@id/line"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="#575757"
-                android:textSize="17dp"
+                android:textSize="16sp"
                 android:text="Agrega una Foto"/>
 
             <RelativeLayout
@@ -75,13 +78,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="40dp">
+                android:layout_marginRight="16dp">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cimgUser"
-                    android:layout_width="114dp"
-                    android:layout_height="114dp"
-                    app:cardCornerRadius="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:cardCornerRadius="40dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@android:color/transparent">
                     <ImageView
@@ -94,12 +97,12 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btnUploadPhoto"
-                    android:layout_width="47dp"
-                    android:layout_height="47dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_toRightOf="@+id/cimgUser"
-                    android:layout_marginTop="65dp"
-                    android:layout_marginLeft="-40dp"
-                    app:cardCornerRadius="50dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginLeft="-20dp"
+                    app:cardCornerRadius="20dp"
                     app:cardBackgroundColor="@color/purple_500"
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground">
@@ -109,7 +112,7 @@
                         android:text="+"
                         android:textColor="@color/white"
                         android:gravity="center"
-                        android:textSize="25dp"/>
+                        android:textSize="20dp"/>
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>
         </RelativeLayout>
@@ -118,74 +121,74 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cCampo1"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="16dp">
 
             <ImageView
                 android:id="@+id/imgExclamacion2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="8dp"
                 android:src="@drawable/exclamacion"
-                app:tint="#D40000" />
+                app:tint="@color/red" />
 
             <TextView
                 android:id="@+id/txtObligatorio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/imgExclamacion2"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/poppins_light"
-                android:textColor="#D40000"
-                android:textSize="13dp"
+                android:textColor="@color/red"
+                android:textSize="12sp"
                 android:text="Obligatorio"/>
 
             <!--Linea-->
             <View
                 android:id="@+id/line2"
-                android:layout_width="wrap_content"
-                android:layout_height="2dp"
-                android:layout_below="@+id/txtObligatorio"
-                android:layout_marginHorizontal="18dp"
-                android:layout_marginTop="2dp"
-                android:background="#E0E0E0" />
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/txtObligatorio"
+                android:layout_marginTop="4dp"
+                android:background="#E0E0E0"  />
 
             <TextView
                 android:id="@+id/fechaNacimiento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/line2"
-                android:layout_marginLeft="20dp"
+                android:layout_below="@id/line2"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="#575757"
-                android:textSize="17dp"
+                android:textSize="16sp"
                 android:text="Ingresa tu fecha de nacimiento"/>
 
             <EditText
                 android:id="@+id/et_fechaNacimiento"
-                android:layout_width="250dp"
-                android:layout_height="52dp"
-                android:layout_below="@+id/fechaNacimiento"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@id/fechaNacimiento"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/custom_input"
                 android:fontFamily="@font/poppins_semibold"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:gravity="center"
-                android:hint="DD / MM / YY "
+                android:hint="DD / MM / YY"
                 android:inputType="date"/>
 
             <ImageView
                 android:id="@+id/btnAbrirCalendario"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="73dp"
-                android:layout_toRightOf="@+id/et_fechaNacimiento"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/ic_baseline_calendar_month_24"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="-53dp"
+                android:layout_marginTop="40dp"
+                android:layout_toEndOf="@id/et_fechaNacimiento"
                 android:clickable="true"
-                android:foreground="?attr/selectableItemBackground"/>
+                android:src="@drawable/ic_baseline_calendar_month_24" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -193,101 +196,100 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cCampo2"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="16dp">
 
             <ImageView
                 android:id="@+id/imgExclamacion3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="8dp"
                 android:src="@drawable/exclamacion"
-                app:tint="#D40000" />
+                app:tint="@color/red" />
 
             <TextView
                 android:id="@+id/txtObligatorio2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/imgExclamacion3"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/poppins_light"
-                android:textColor="#D40000"
-                android:textSize="13dp"
+                android:textColor="@color/red"
+                android:textSize="12sp"
                 android:text="Obligatorio"/>
 
             <!--Linea-->
             <View
                 android:id="@+id/line3"
                 android:layout_width="wrap_content"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_below="@+id/txtObligatorio2"
-                android:layout_marginHorizontal="18dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:background="#E0E0E0" />
 
             <TextView
                 android:id="@+id/txtAsistes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/line3"
-                android:layout_marginLeft="20dp"
+                android:layout_below="@id/line3"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="#575757"
-                android:textSize="17dp"
+                android:textSize="16sp"
                 android:text="Escuela / Facultad a la que asistes"/>
 
             <EditText
                 android:id="@+id/et_Asistes"
-                android:layout_width="350dp"
-                android:layout_height="52dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 android:layout_below="@+id/txtAsistes"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="21dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="22dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/custom_input"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center"
                 android:hint="Ej. Ingenieria en Software"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/cCampo4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cCampo3"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="16dp">
             <ImageView
                 android:id="@+id/imgExclamacion4"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="8dp"
                 android:src="@drawable/exclamacion"
-                app:tint="#D40000" />
+                app:tint="@color/red" />
 
             <TextView
                 android:id="@+id/txtObligatorio4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/imgExclamacion4"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/poppins_light"
-                android:textColor="#D40000"
-                android:textSize="13dp"
+                android:textColor="@color/red"
+                android:textSize="12sp"
                 android:text="Obligatorio"/>
 
             <!--Linea-->
             <View
                 android:id="@+id/line4"
                 android:layout_width="wrap_content"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_below="@+id/txtObligatorio4"
-                android:layout_marginHorizontal="18dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:background="#E0E0E0" />
 
             <TextView
@@ -295,26 +297,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/line4"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="#575757"
-                android:textSize="17dp"
+                android:textSize="16sp"
                 android:text="Selecciona el cargo que desempeñas "/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txttexto"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:hint="Cargo">
 
                 <AutoCompleteTextView
                     android:id="@+id/SpinerCargo"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="48dp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 

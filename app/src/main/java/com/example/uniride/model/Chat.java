@@ -1,54 +1,25 @@
-package com.example.uniride.model;
-
-import com.google.firebase.Timestamp;
+import java.util.List;
 
 public class Chat {
-    private String chatId;
-    private String senderId;
-    private String recipientId;
-    private Timestamp timestamp;
+    private List<String> users;
+    private String lastMessage;  // Último mensaje enviado en el chat
+    private String chatId;       // El ID del chat
 
-    // Constructor vacío necesario para Firestore
+    // Constructor vacío para Firebase
     public Chat() {}
 
-    // Constructor completo
-    public Chat(String chatId, String senderId, String recipientId, Timestamp timestamp) {
-        this.chatId = chatId;
-        this.senderId = senderId;
-        this.recipientId = recipientId;
-        this.timestamp = timestamp;
+    public Chat(List<String> users, String lastMessage) {
+        this.users = users;
+        this.lastMessage = lastMessage;
     }
 
     // Getters y Setters
-    public String getChatId() {
-        return chatId;
-    }
+    public List<String> getUsers() { return users; }
+    public void setUsers(List<String> users) { this.users = users; }
 
-    public void setChatId(String chatId) {
-        this.chatId = chatId;
-    }
+    public String getLastMessage() { return lastMessage; }
+    public void setLastMessage(String lastMessage) { this.lastMessage = lastMessage; }
 
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
-    public String getRecipientId() {
-        return recipientId;
-    }
-
-    public void setRecipientId(String recipientId) {
-        this.recipientId = recipientId;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
+    public String getChatId() { return chatId; }
+    public void setChatId(String chatId) { this.chatId = chatId; }
 }

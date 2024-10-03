@@ -22,6 +22,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -77,7 +78,7 @@ public class Chatfragment extends Fragment {
         // Verificar o crear el chat
         checkOrCreateChat(senderId, recipientId);
 
-        // Obtener chatId y recipientId de los argumentos
+        // Obtener chatId de los argumentos
         if (getArguments() != null) {
             chatId = getArguments().getString("chatId");
         } else {
@@ -144,34 +145,59 @@ public class Chatfragment extends Fragment {
     }
 
     // Método para verificar o crear un chat entre los usuarios
-    private void checkOrCreateChat(String senderId, String recipientId) {
-        // Buscar un chat entre los dos usuarios
-        firestore.collection("chats")
-                .whereArrayContains("users", senderId)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    boolean chatExists = false;
-                    for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
-                        List<String> users = (List<String>) dc.getDocument().get("users");
-                        if (users != null && users.contains(recipientId)) {
-                            chatId = dc.getDocument().getId();
-                            chatExists = true;
-                            break;
+    private void checkOrCreateChat(String senderId, @Nullable String recipientId) {
+        if (recipientId == null) {
+            // Es un chat individual del usuario (su propio chat privado)
+            firestore.collection("chats")
+                    .whereArrayContains("users", senderId)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        boolean chatExists = false;
+                        for (DocumentSnapshot dc : queryDocumentSnapshots) {
+                            List<String> users = (List<String>) dc.get("users");
+                            if (users != null && users.size() == 1 && users.contains(senderId)) {
+                                chatId = dc.getId();
+                                chatExists = true;
+                                break;
+                            }
                         }
-                    }
 
-                    // Si no existe un chat, crear uno nuevo
-                    if (!chatExists) {
-                        createNewChat(senderId, recipientId);
-                    }
-                });
+                        if (!chatExists) {
+                            createNewChat(senderId, null);
+                        }
+                    });
+        } else {
+            // Es un chat 1 a 1
+            firestore.collection("chats")
+                    .whereArrayContains("users", senderId)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        boolean chatExists = false;
+                        for (DocumentSnapshot dc : queryDocumentSnapshots) {
+                            List<String> users = (List<String>) dc.get("users");
+                            if (users != null && users.contains(recipientId)) {
+                                chatId = dc.getId();
+                                chatExists = true;
+                                break;
+                            }
+                        }
+
+                        if (!chatExists) {
+                            createNewChat(senderId, recipientId);
+                        }
+                    });
+        }
     }
 
     // Crear un nuevo chat con los usuarios involucrados
-    private void createNewChat(String senderId, String recipientId) {
+    private void createNewChat(String senderId, @Nullable String recipientId) {
         List<String> users = new ArrayList<>();
         users.add(senderId);
-        users.add(recipientId);
+        if (recipientId != null) {
+            users.add(recipientId);  // Agregar el destinatario si es un chat 1 a 1
+        }
+
+        chatId = firestore.collection("chats").document().getId();  // Generar un nuevo ID de chat
 
         firestore.collection("chats")
                 .document(chatId)
@@ -193,5 +219,14 @@ public class Chatfragment extends Fragment {
         Chat(List<String> users) {
             this.users = users;
         }
+
+        public List<String> getUsers() {
+            return users;
+        }
+
+        public void setUsers(List<String> users) {
+            this.users = users;
+        }
+
     }
 }

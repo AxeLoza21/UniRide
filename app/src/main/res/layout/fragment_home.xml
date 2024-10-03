@@ -4,87 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    android:padding="16dp"
+    tools:context=".fragments.HomeFragment"
+    android:background="@color/white">
 
+    <!-- Pin de ubicación -->
     <ImageView
         android:id="@+id/pinLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="18dp"
-        android:layout_marginTop="30dp"
-        android:rotation="-17"
-        android:src="@drawable/ic_baseline_location_on_24" />
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:rotation="-15"
+        android:src="@drawable/ic_baseline_location_on_24"
+        app:tint="@color/purple_500" />
 
+    <!-- Ubicación de Ejemplo -->
     <TextView
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/pinLocation"
-        android:layout_marginTop="32dp"
+        android:layout_toEndOf="@id/pinLocation"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/poppins"
         android:text="Ubicacion de Ejemplo"
         android:textColor="@color/black"
-        android:textSize="15dp" />
+        android:textSize="16sp" />
 
-
+    <!-- Texto de Viajes Disponibles -->
     <TextView
         android:id="@+id/txtDisponibles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/location"
-        android:layout_marginTop="-8dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Viajes Disponibles"
-        android:textColor="@color/black"
-        android:textSize="25dp" />
+        android:textColor="@color/purple_700"
+        android:textSize="22sp" />
 
+    <!-- Botón Cambiar de Ubicación -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_changeLocation"
-        android:layout_width="164dp"
-        android:layout_height="70dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="-90dp"
+        android:layout_width="140dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
-        app:cardCornerRadius="20dp">
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="12dp"
+        android:elevation="4dp"
+        app:cardBackgroundColor="@color/teal_200">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/rectangle2">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/txtChangeLocation"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/poppins_bold"
-                android:textColor="#575757"
-                android:textSize="9dp"
-                android:text="Cambiar de Escuela"
-                android:gravity="center"/>
-
-            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:text="Cambiar Escuela"
+                android:gravity="center" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_below="@+id/txtChangeLocation"
-                android:layout_marginLeft="22dp"
-                android:src="@drawable/ic_baseline_change_circle_24"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/ic_baseline_change_circle_24"
+                android:tint="@color/purple_500" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
-    <!--_____________ReciclerView______________-->
+    <!-- RecyclerView de Viajes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/raitesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/btn_changeLocation"
-        android:layout_marginTop="25dp"
-        android:layout_marginHorizontal="15dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="0dp"
+        android:padding="8dp"
+        android:scrollbars="vertical" />
 
+    <!-- Mensaje de No Hay Raites -->
     <LinearLayout
         android:id="@+id/cTexto"
         android:layout_width="match_parent"
@@ -95,18 +106,20 @@
         android:visibility="invisible">
 
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:src="@drawable/triste"
-            app:tint="#878787" />
+            app:tint="@color/teal_700" />
 
         <TextView
-            android:layout_width="250dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aun no hay Raites hacia este Campus"
+            android:layout_marginTop="8dp"
+            android:text="Aún no hay raites hacia este campus"
             android:fontFamily="@font/poppins_semibold"
-            android:textSize="25dp"
-            android:gravity="center"/>
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/teal_700" />
     </LinearLayout>
 
 </RelativeLayout>
