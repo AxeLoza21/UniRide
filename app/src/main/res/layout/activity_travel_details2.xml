@@ -31,7 +31,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="50dp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Detalles del viaje"
                 android:textColor="#040415"
                 android:textSize="25dp" />

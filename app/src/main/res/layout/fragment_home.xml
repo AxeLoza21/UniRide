@@ -49,8 +49,8 @@
     <!-- Botón Cambiar de Ubicación -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_changeLocation"
-        android:layout_width="140dp"
-        android:layout_height="56dp"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
@@ -68,10 +68,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/poppins_bold"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:gravity="center"
                 android:text="Cambiar Escuela"
-                android:gravity="center" />
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
             <ImageView
                 android:layout_width="24dp"

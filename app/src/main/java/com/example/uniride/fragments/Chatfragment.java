@@ -32,11 +32,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+//import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Chatfragment extends Fragment {
 
-    private CircleImageView fotoperfil;
+   // private CircleImageView fotoperfil;
     private TextView nombre;
     private RecyclerView rvMensajes;
     private EditText txtMensaje;
@@ -58,7 +58,7 @@ public class Chatfragment extends Fragment {
         View view = inflater.inflate(R.layout.chat_vista, container, false);
 
         // Inicializar las vistas
-        fotoperfil = view.findViewById(R.id.fotoperfil);
+        //fotoperfil = view.findViewById(R.id.fotoperfil);
         nombre = view.findViewById(R.id.nombreusuario);
         rvMensajes = view.findViewById(R.id.rvMensajes);
         txtMensaje = view.findViewById(R.id.txtMensaje);
