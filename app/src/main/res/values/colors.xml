@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#58CA5D</color>
     <color name="red">#CF0A0A</color>
-
+    <color name="theme_color_8">#142176FF</color>
+    <color name="light_8">#14000000</color>
 </resources>

@@ -64,4 +64,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.15.1' // Recortar Imagen Descargar Imagen
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1' // Requerido para Glide
     testImplementation 'junit:junit:4.13.2' // JUnit para pruebas
+
+    //implementacion imageciruclar
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    //picasso
+    implementation("com.squareup.picasso:picasso:2.8")
 }

@@ -113,23 +113,35 @@ public class MainActivity extends AppCompatActivity {
                             //Entra aqui si la cuenta activa actual ya esta verificada
                             DocumentReference documentReference = fStore.collection("users").document(user.getUid());
                             documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+
                                 @Override
                                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                    String school = value.getString("school");
-                                    String birthDay = value.getString("birthDay");
-                                    String location = value.getString("destinationLocation");
-                                    String cargo = value.getString("Rol");
-
-                                    if(school.equals("") || birthDay.equals("") || cargo.equals("")){
-                                        startActivity(new Intent(getApplicationContext(),Additional_Information.class));
-                                        finish();
-                                    }else if (location.isEmpty()){
-                                        startActivity(new Intent(getApplicationContext(),selectLocation.class));
-                                        finish();
+                                    if (error != null) {
+                                        Toast.makeText(MainActivity.this, "Error al obtener los datos", Toast.LENGTH_SHORT).show();
+                                        return;
                                     }
-                                    else{
-                                        startActivity(new Intent(getApplicationContext(),MainActivityFragment.class));
-                                        finish();
+                                    if (value != null && value.exists()) {
+                                        String school = value.getString("school");
+                                        String birthDay = value.getString("birthDay");
+                                        String location = value.getString("destinationLocation");
+                                        String cargo = value.getString("Rol");
+
+                                        // Verifica si los valores son nulos antes de comparar o realizar operaciones
+                                        if (school == null || school.isEmpty() ||
+                                                birthDay == null || birthDay.isEmpty() ||
+                                                cargo == null || cargo.isEmpty()) {
+
+                                            startActivity(new Intent(getApplicationContext(), Additional_Information.class));
+                                            finish();
+                                        } else if (location == null || location.isEmpty()) {
+                                            startActivity(new Intent(getApplicationContext(), selectLocation.class));
+                                            finish();
+                                        } else {
+                                            startActivity(new Intent(getApplicationContext(), MainActivityFragment.class));
+                                            finish();
+                                        }
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "Documento no encontrado", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

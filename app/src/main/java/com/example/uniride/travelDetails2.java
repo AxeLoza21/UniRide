@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,7 +44,7 @@ public class travelDetails2 extends AppCompatActivity {
     Button btnPedirRaite;
     LinearLayout cTxtYourPublication, cTxtAlreadyRequested;
     RelativeLayout seemap;
-
+    ImageButton icon_chat;
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
     double deslat, deslng ,orilat, orilng;
@@ -84,6 +85,7 @@ public class travelDetails2 extends AppCompatActivity {
         imgCreator = (ImageView) findViewById(R.id.imgUser);
         btnBack = (ImageView)findViewById(R.id.btn_back);
         btnPedirRaite = (Button)findViewById(R.id.btnPedirRaite);
+        icon_chat = (ImageButton) findViewById(R.id.icon_chat);
         final String originActivity = getIntent().getStringExtra("originActivity");
         final String idPublication = getIntent().getStringExtra("idItem");
 

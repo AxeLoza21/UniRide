@@ -54,16 +54,23 @@ public class PublicationAdapter extends FirestoreRecyclerAdapter<Publications, P
         fStore.collection("users").document(publication.getIdCreator()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value != null) {
-                    String userName = value.getString("username");
-                    String userAge = new CalculateAge().calcularEdad(value.getString("birthDay"));
+                if (value != null && value.exists()) {
+                    String userName = value.getString("username") != null ? value.getString("username") : "N/A";
+                    String birthDay = value.getString("birthDay") != null ? value.getString("birthDay") : "01-01-2000";
+                    String userAge = new CalculateAge().calcularEdad(birthDay);
                     holder.nameUser.setText(userName);
                     holder.ageUser.setText(userAge);
-                    if(!value.getString("photo").equals("")){
+
+                    if (value.getString("photo") != null && !value.getString("photo").isEmpty()) {
                         Picasso.get().load(value.getString("photo")).into(holder.imgUser);
+                    } else {
+                        holder.imgUser.setImageResource(R.drawable.foto_2); // Imagen por defecto
                     }
-                }else{
-                    //El Documento no existe
+                } else {
+                    // Manejar documento inexistente o error
+                    holder.nameUser.setText("Usuario desconocido");
+                    holder.ageUser.setText("--");
+                    holder.imgUser.setImageResource(R.drawable.foto_2); // Imagen por defecto
                 }
             }
         });
