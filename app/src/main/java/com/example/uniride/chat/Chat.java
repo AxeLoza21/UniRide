@@ -29,10 +29,10 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Chat extends AppCompatActivity {
-
+    // Inicializa una referencia a la raíz de la base de datos Firebase. Se utiliza para interactuar con los datos almacenados en Firebase.
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance()
             .getReferenceFromUrl("https://uniride-ec144-default-rtdb.firebaseio.com/");
-    private final List<ChatList> chatLists = new ArrayList<>();
+    private final List<ChatList> chatLists = new ArrayList<>();// Crea una lista mutable llamada 'chatLists' para almacenar los mensajes del chat que se mostrarán en la interfaz de usuario. Cada elemento de la lista será un objeto 'ChatList'.
     private String chatKey;
     private String getUserMobile;
     private RecyclerView chattingRecyclerView;
@@ -52,23 +52,26 @@ public class Chat extends AppCompatActivity {
 
         chattingRecyclerView = findViewById(R.id.chattingRecyclerView);
 
-        // Obtener datos de la actividad anterior
+        //  // Obtiene referencias a los elementos de la interfaz de usuario (ImageView para el botón de retroceso y enviar, TextView para el nombre del otro usuario, EditText para escribir mensajes y CircleImageView para la foto de perfil).
         final String getName = getIntent().getStringExtra("name");
         final String getProfilePic = getIntent().getStringExtra("profile_pic");
         chatKey = getIntent().getStringExtra("chat_key");
         final String getMobile = getIntent().getStringExtra("mobile");
-
+        // Obtiene el número de teléfono del usuario actual utilizando la clase 'MemoryData'.
         getUserMobile = MemoryData.getData(Chat.this);
-
+        // Establece el nombre del otro usuario en el TextView 'nameTv'.
         nameTv.setText(getName);
         if (getProfilePic != null && !getProfilePic.isEmpty()) {
             Picasso.get().load(getProfilePic).placeholder(R.drawable.foto_2).into(profilePic);
         } else {
             profilePic.setImageResource(R.drawable.foto_2);
         }
-
+        // Optimiza el RecyclerView indicando que su tamaño de contenido no cambiará dinámicamente.
         chattingRecyclerView.setHasFixedSize(true);
-        chattingRecyclerView.setLayoutManager(new LinearLayoutManager(Chat.this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Chat.this);
+        layoutManager.setStackFromEnd(true); // Esto hará que se muestren los últimos mensajes abajo
+        chattingRecyclerView.setLayoutManager(layoutManager);
+        // Establece un LinearLayoutManager para el RecyclerView, lo que significa que los elementos se mostrarán en una lista vertical.
 
         chatAdapter = new ChatAdapter(chatLists, Chat.this);
         chattingRecyclerView.setAdapter(chatAdapter);

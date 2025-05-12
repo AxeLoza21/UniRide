@@ -84,19 +84,20 @@ public class sign_in extends AppCompatActivity {
             }
         });
     }
-
+    //Esta función está diseñada para navegar desde la actividad actual hacia ChatFragment
     private void goToChatFragment(String userID, String username, String email, String phone, String profilePicUrl) {
         ChatFragment chatFragment = new ChatFragment();
+        // Función para ir al Fragment de chat.
         Bundle args = new Bundle();
-
+        // Crea un Bundle para pasar datos.
         args.putString("userID", userID);
         args.putString("username", username);
         args.putString("email", email);
         args.putString("phone", phone);
         args.putString("profile_pic", profilePicUrl);
-
+// Coloca los datos del usuario en el Bundle.
         chatFragment.setArguments(args);
-
+        // Asigna el Bundle al ChatFragment.
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, chatFragment)
