@@ -168,7 +168,8 @@ public class travelDetails2 extends AppCompatActivity {
                         if(value != null){
                             nameCreator.setText(value.getString("username"));
                             ageCreator.setText(cE.calcularEdad(value.getString("birthDay")));
-                            if (value.getString("photo").isEmpty()) {
+                            String photoUrl = value.getString("photo");
+                            if (photoUrl == null || photoUrl.isEmpty()) {
                                 Picasso.get().load(R.drawable.person_2).into(imgCreator);
                             } else {
                                 Picasso.get().load(value.getString("photo")).into(imgCreator);

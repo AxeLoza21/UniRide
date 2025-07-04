@@ -155,12 +155,12 @@ public class PerfilFragment extends Fragment {
                         schoolUser.setText(value.getString("school"));
                         ageUser.setText(edad.calcularEdad(value.getString("birthDay")));
 
-                        URL_PHOTO = value.getString("photo");
+                        String photoUrl = value.getString("photo");
 
-                        if(value.getString("photo").isEmpty()){
+                        if (photoUrl == null || photoUrl.isEmpty()) {
                             Picasso.get().load(R.drawable.person_2).into(imgUser);
-                        }else{
-                            Picasso.get().load(value.getString("photo")).into(imgUser);
+                        } else {
+                            Picasso.get().load(photoUrl).into(imgUser);
                         }
                     } else {
                         // El documento no existe
@@ -198,7 +198,7 @@ public class PerfilFragment extends Fragment {
         d_photo.show();
 
         ImageView photoUser = d_photo.findViewById(R.id.imgUserComplete);
-        if(URL_PHOTO.isEmpty()){
+        if(URL_PHOTO == null || URL_PHOTO.isEmpty()){
             Picasso.get().load(R.drawable.person_2).into(photoUser);
         }else{
             Picasso.get().load(URL_PHOTO).into(photoUser);

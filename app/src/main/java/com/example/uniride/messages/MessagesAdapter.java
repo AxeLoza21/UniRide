@@ -3,6 +3,7 @@ package com.example.uniride.messages;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MessagesAdapter.MyViewHolder holder, int position) {
         MessagesList list2 = messagesLists.get(position);
+        Log.d("MessagesAdapter", "Nombre: " + list2.getName() + " | Último mensaje: " + list2.getLastMessages());
 
         // Configurar imagen de perfil usando Picasso
         if (list2.getProfilePic() != null && !list2.getProfilePic().isEmpty()) {
