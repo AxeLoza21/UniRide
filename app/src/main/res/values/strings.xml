@@ -4,4 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="reset_password">Restablecer contraseña</string>
     <string name="cancel">Cancelar</string>
+
+    <!-- Texto para el botón de centrar vehículo -->
+    <string name="center_vehicle">Centrar vehículo</string>
 </resources>

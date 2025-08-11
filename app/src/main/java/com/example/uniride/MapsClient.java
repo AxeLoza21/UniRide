@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -35,39 +38,37 @@ import java.util.HashMap;
 
 public class MapsClient extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap gmap;
-    //FirebaseFirestore mFirestore;
-    //FirebaseAuth mAuth;
     ImageView back;
-    int newWidth = 40;  // Ancho deseado en píxeles
-    int newHeight = 40; // Alto deseado en píxeles
+    ImageButton btnCenterVehicle;
 
     HashMap<String, Object> datos = new HashMap<>();
+
+    ArrayList<LatLng> routePoints = new ArrayList<>();
+    Marker carMarker;
+    Handler handler = new Handler();
+    int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_client);
-        //mAuth = FirebaseAuth.getInstance();
-        //mFirestore = FirebaseFirestore.getInstance();
-        //----Recibir los datos anteriores----
+
         Bundle c = getIntent().getExtras();
         datos = (HashMap<String, Object>) c.getSerializable("datos");
-        back = (ImageView)findViewById(R.id.backArrowImageView);
 
+        back = findViewById(R.id.backArrowImageView);
+        btnCenterVehicle = findViewById(R.id.btnCenterVehicle);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
+
+        back.setOnClickListener(v -> onBackPressed());
+
+        btnCenterVehicle.setOnClickListener(v -> {
+            if (carMarker != null) {
+                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(carMarker.getPosition(), 15));
             }
         });
-
-
-        //direction();
-
-
     }
 
     @Override
@@ -82,20 +83,25 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
         LatLng latLngDestination = new LatLng(DesLat, DesLng);
         BitmapDescriptor colege = BitmapDescriptorFactory.fromResource(R.drawable.colegio32);
         BitmapDescriptor driver = BitmapDescriptorFactory.fromResource(R.drawable.pointcar);
+
         MarkerOptions markerDestination = new MarkerOptions()
                 .position(latLngDestination)
                 .title("Escuela")
                 .icon(colege);
-        MarkerOptions markerDriver = new MarkerOptions()
-                .position(latLngOrigin)
-                .title("Conductor")
-                .icon(driver);
 
         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 12));
-        gmap.addMarker(markerDriver);
         gmap.addMarker(markerDestination);
-        generateRoute(OriLat, OriLng, DesLat, DesLng);
 
+        // Creamos el marcador del carro en el origen
+        carMarker = gmap.addMarker(new MarkerOptions()
+                .position(latLngOrigin)
+                .title("Vehículo")
+                .flat(true)
+                .anchor(0.5f, 0.5f)
+                .icon(driver));
+
+        // Trazar la ruta y animar el carro
+        generateRoute(OriLat, OriLng, DesLat, DesLng);
     }
 
     private void generateRoute(double OriLat, double OriLng, double DesLat, double DesLng) {
@@ -103,9 +109,10 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
         String url = Uri.parse("https://api.openrouteservice.org/v2/directions/driving-car")
                 .buildUpon()
                 .appendQueryParameter("api_key", "5b3ce3597851110001cf6248fae2b5f6a9704b838bdb3940818fef72")
-                .appendQueryParameter("start", OriLng+","+OriLat)
-                .appendQueryParameter("end", DesLng+","+DesLat)
+                .appendQueryParameter("start", OriLng + "," + OriLat)
+                .appendQueryParameter("end", DesLng + "," + DesLat)
                 .toString();
+
         Log.e("URL", url);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -120,16 +127,22 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
                     PolylineOptions polylineOptions = new PolylineOptions();
                     polylineOptions.color(getResources().getColor(R.color.purple_700));
                     polylineOptions.width(10);
-                    for(int i=0; i < coordinates.length(); i++){
+
+                    for (int i = 0; i < coordinates.length(); i++) {
                         JSONArray coordinate = coordinates.getJSONArray(i);
-                        polylineOptions.add(new LatLng(coordinate.getDouble(1), coordinate.getDouble(0)));
+                        double lon = coordinate.getDouble(0);
+                        double lat = coordinate.getDouble(1);
+                        LatLng point = new LatLng(lat, lon);
+                        routePoints.add(point);
+                        polylineOptions.add(point);
                     }
+
                     gmap.addPolyline(polylineOptions);
+                    animateCar();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -140,151 +153,48 @@ public class MapsClient extends AppCompatActivity implements OnMapReadyCallback 
         });
         requestQueue.add(jsonObjectRequest);
     }
+
+    private void animateCar() {
+        index = 0;
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (index < routePoints.size() - 1) {
+                    LatLng start = routePoints.get(index);
+                    LatLng end = routePoints.get(index + 1);
+
+                    carMarker.setRotation(getBearing(start, end));
+                    carMarker.setPosition(end);
+
+                    index++;
+                    handler.postDelayed(this, 500); // cada 0.5 seg
+                }
+            }
+        });
+    }
+
+    private float getBearing(LatLng start, LatLng end) {
+        double lat = Math.abs(start.latitude - end.latitude);
+        double lng = Math.abs(start.longitude - end.longitude);
+
+        if (start.latitude < end.latitude && start.longitude < end.longitude)
+            return (float) (Math.toDegrees(Math.atan(lng / lat)));
+
+        else if (start.latitude >= end.latitude && start.longitude < end.longitude)
+            return (float) ((90 - Math.toDegrees(Math.atan(lng / lat))) + 90);
+
+        else if (start.latitude >= end.latitude && start.longitude >= end.longitude)
+            return (float) (Math.toDegrees(Math.atan(lng / lat)) + 180);
+
+        else if (start.latitude < end.latitude && start.longitude >= end.longitude)
+            return (float) ((90 - Math.toDegrees(Math.atan(lng / lat))) + 270);
+
+        return -1;
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
-
-
-
-    /*public void direction(){
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = Uri.parse("https://api.openrouteservice.org/v2/directions/driving-car")
-                .buildUpon()
-                .appendQueryParameter("api_key", "5b3ce3597851110001cf6248fae2b5f6a9704b838bdb3940818fef72")
-                .appendQueryParameter("start", "-104.3590974,19.1256515")
-                .appendQueryParameter("end", "-104.4093514,19.1256791")
-                .toString();
-        Log.e("URL", url);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray features = response.getJSONArray("features");
-                    JSONObject featuresContent = features.getJSONObject(0);
-                    JSONObject geometry = featuresContent.getJSONObject("geometry");
-                    JSONArray coordinates = geometry.getJSONArray("coordinates");
-
-                    PolylineOptions polylineOptions = new PolylineOptions();
-                    polylineOptions.color(getResources().getColor(R.color.purple_500));
-                    polylineOptions.width(7);
-                    for(int i=0; i < coordinates.length(); i++){
-                        JSONArray coordinate = coordinates.getJSONArray(i);
-                        polylineOptions.add(new LatLng(coordinate.getDouble(1), coordinate.getDouble(0)));
-                    }
-                    gmap.addPolyline(polylineOptions);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MapsClient.this, "Error del Servidor", Toast.LENGTH_SHORT).show();
-                Log.e("Error Servidor", error.toString());
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }*/
-
-
-
-    /*@Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        googleMap.setTrafficEnabled(false);
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        gmap = googleMap;
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        gmap.setMyLocationEnabled(true);
-        getLastLocation();
-        gmap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(@NonNull LatLng latLng) {
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                try {
-                    List<Address> direccion = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                    String mostradireccion = direccion.get(0).getAddressLine(0);
-                    markerOptions.title(mostradireccion);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                gmap.clear();
-                gmap.addMarker(markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-
-            }
-        });
-        LocationManager locationManager = (LocationManager) MapsClient.this.getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                LatLng miUbicacion = new LatLng(location.getLatitude(), location.getLongitude());
-
-                //googleMap.moveCamera(CameraUpdateFactory.newLatLng(miUbicacion));
-
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
-
-    }*/
-
-    /*private void getLastLocation() {
-        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(MapsClient.this);
-        try {
-            locationClient.getLastLocation()
-                    .addOnSuccessListener(new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // GPS location can be null if GPS is switched off
-                            if (location != null) {
-                                if (gmap != null) {
-
-                                    gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16));
-                                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                                }
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("MapDemoActivity", "Error trying to get last GPS location");
-                            e.printStackTrace();
-                        }
-                    });
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-    }*/
 }
